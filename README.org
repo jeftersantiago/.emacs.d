@@ -1,7 +1,8 @@
-#+TITLE: EMACS CONFIGURATIONS
+#+TITLE: Emacs configurations
 #+AUTHOR: Jefter Santiago
 #+EMAIL: jefterrsantiago@gmail.com
 #+OPTIONS: toc:nil num:nil
+
 * Packages 
   I download everthing through melpa
  |--------------------+--------------------------+----------------+--------------------|
