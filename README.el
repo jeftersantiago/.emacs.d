@@ -4,25 +4,25 @@
 (load "~/.local/bin/private.el")
 
 (setq confirm-kill-processes nil)
-(setq-default transient-mark-mode t)
-(setq-default visual-line-mode t)
-(setq-default truncate-lines nil)
-(setq-default cursor-type 'box)
-(setq-default fill-column 78)
-;; (setq-default sentence-end-double-space nil)
-;; Enable maximum syntax highlighting wherever possible.
-(setq-default global-font-lock-mode t)
+	(setq-default transient-mark-mode t)
+	(setq-default visual-line-mode t)
+	(setq-default truncate-lines nil)
+	(setq-default cursor-type 'box)
+	(setq-default fill-column 78)
+	(setq-default sentence-end-double-space nil)
+; Enable maximum syntax highlighting wherever possible.
+	(setq-default global-font-lock-mode t)
 
 ;;	(fset 'yes-or-no-p 'y-or-n-p)
 	(defalias 'yes-or-no-p 'y-or-n-p)
 
 (setq-default tab-width 4)
 (use-package smartparens
-  :ensure t
-  :config
-  (sp-use-paredit-bindings)
-  (add-hook 'prog-mode-hook #'smartparens-mode)
-  (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+      :ensure t
+      :config
+      (sp-use-paredit-bindings)
+      (add-hook 'prog-mode-hook #'smartparens-mode)
+      (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
 
 (setq inhibit-splash-screen t
 		initial-scratch-message nil
@@ -32,14 +32,12 @@
 (setq kill-buffer-query-functions
 	      (remq 'process-kill-buffer-query-function
 			kill-buffer-query-functions))
-;; smother scroll
 (setq scroll-step            1
 	      scroll-conservatively  10000
 	      mouse-wheel-scroll-amount '(1 ((shift) . 1))
 	      mouse-wheel-progressive-speed nil
 	      mouse-wheel-follow-mouse 't)
 
-;; insert new line whithout breaking
 (defun insert-new-line-below ()
       "Add a new line below the current line"
       (interactive)
@@ -48,7 +46,6 @@
 	(newline-and-indent)))
 (global-set-key (kbd "C-o") 'insert-new-line-below)
 
-;; trash "custom-variables" goes to a file that is ignored
 (setq custom-file "~/.emacs.d/custom.el")
 
 (use-package inkpot-theme
@@ -297,7 +294,7 @@ current buffer's, reload dir-locals."
  :config 
  (progn
       (global-set-key (kbd "C-x t") 'multi-term)))
- (setq multi-term-program "/bin/bash")
+ (setq multi-term-program "/bin/sh")
 
 (use-package counsel
       :ensure t
