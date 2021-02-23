@@ -4,36 +4,36 @@
 #+OPTIONS: toc:nil num:nil
 
 *  Packages 
-|--------------------------|
-| Inkpot-theme             |
-| Almost-mono-themes       |
-| Org-mode                 |
-| default-text-scale       |
-| diff-hl                  |
-| rainbow-delimiters       |
-| mood-line                |
-| real-auto-save           |
-| evil                     |
-| dired-sidebar            |
-| all-the-icons-dired-mode |
-| dired-open               |
-| dired-hide-dotfiles      |
-| swiper                   |
-| ace-window               |
-| try                      |
-| latex-preview-pane       |
-| auctex                   |
-| auctex-latexmk           |
-| org-bullets              |
-| graphviz-dot-mode        |
-| multi-term               |
-| counsel                  |
-| auto-complete            |
-| flycheck                 |
-| flymake                  |
-| yasnippet                |
-| elcord                   |
-|--------------------------|
+          |--------------------------|
+          | inkpot-theme             |
+          | almost-mono-themes       |
+          | org-mode                 |
+          | default-text-scale       |
+          | diff-hl                  |
+          | rainbow-delimiters       |
+          | mood-line                |
+          | real-auto-save           |
+          | evil                     |
+          | dired-sidebar            |
+          | all-the-icons-dired-mode |
+          | dired-open               |
+          | dired-hide-dotfiles      |
+          | swiper                   |
+          | ace-window               |
+          | try                      |
+          | latex-preview-pane       |
+          | auctex                   |
+          | auctex-latexmk           |
+          | org-bullets              |
+          | graphviz-dot-mode        |
+          | multi-term               |
+          | counsel                  |
+          | auto-complete            |
+          | flycheck                 |
+          | flymake                  |
+          | yasnippet                |
+          | elcord                   |
+          |--------------------------|
 * Info
 #+begin_src emacs-lisp
   (setq-default user-full-name "Jefter Santiago Mares")
