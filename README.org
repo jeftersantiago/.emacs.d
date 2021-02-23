@@ -4,20 +4,19 @@
 #+OPTIONS: toc:nil num:nil
 
 *  Packages 
- |--------------------+--------------------------+--------------------|
- | Appearence         | Navigation               | Code               |
- |--------------------+--------------------------+--------------------|
- | org-mode           | evil                     | latex-preview-pane |
- | diff-hl            | dired-sidebar            | auctex             |
- | mood-line          | all-the-icons-dired-mode | auctex-latexmk     |
- | real-auto-save     | dired-open               | multi-term         |
- | default-text-scale | dired-hide-dotfiles      | counsel            |
- | rainbow-delimiters | swiper                   | auto-complete      |
- | almost-mono-themes | ace-window               | flycheck           |
- | inkpot-theme       | try                      | flymake            |
- | org-bullets        | graphviz-dot-mode        |                    |
- | elcord             | yasnippet                |                    |
- |--------------------+--------------------------+--------------------|
+ |--------------------+--------------------------+----------------+--------------------|
+ | Appearence         | Navigation               | Code           | Other              |
+ |--------------------+--------------------------+----------------+--------------------|
+ | org-mode           | evil                     |                | graphviz-dot-mode  |
+ | mood-line          | all-the-icons-dired-mode | auctex-latexmk | latex-preview-pane |
+ | real-auto-save     | dired-open               | multi-term     | rainbow-delimiters |
+ | default-text-scale | dired-hide-dotfiles      | counsel        |                    |
+ | almost-mono-themes | swiper                   | auto-complete  |                    |
+ | inkpot-theme       | ace-window               | flycheck       |                    |
+ | org-bullets        | try                      | flymake        |                    |
+ | elcord             | yasnippet                | auctex         |                    |
+ | diff-hl            | dired-sidebar            |                |                    |
+ |--------------------+--------------------------+----------------+--------------------|
 
 * Info
 #+begin_src emacs-lisp
