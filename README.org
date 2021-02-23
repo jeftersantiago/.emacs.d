@@ -18,7 +18,7 @@
  | diff-hl            | dired-sidebar            | which-key      |                    |
  |--------------------+--------------------------+----------------+--------------------|
 
-* Info
+* About me
 #+begin_src emacs-lisp
   (setq-default user-full-name "Jefter Santiago Mares")
   (setq-default user-mail-address "jefterrsantiago@gmail.com")
@@ -91,7 +91,7 @@
   (setq custom-file "~/.emacs.d/custom.el")
 #+end_src
 * Appearence
-** Theme
+*** Theme
 #+begin_src emacs-lisp
   (use-package inkpot-theme
 	  :config
@@ -103,7 +103,7 @@
    (load-theme 'almost-mono-gray t)
    :ensure t)
 #+end_src
-** Fonts
+*** Fonts
 #+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(font . "Inconsolata 10"))
   ;; https://emacs.stackexchange.com/q/45895
@@ -112,24 +112,24 @@
 	:demand t
    :hook (after-init . default-text-scale-mode))
 #+end_src
-** Font locking
+*** Font locking
    Removing syntax highlinting 
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-l") 'font-lock-mode)
 #+end_src
-** Highlight current line
+*** Highlight current line
 #+begin_src emacs-lisp
   (use-package diff-hl
 	:config
 	(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
 	(add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
 #+end_src
-** Displaying line number
+*** Displaying line number
 #+begin_src emacs-lisp
 (global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
 #+end_src
-** Envoirment
+*** Envoirment
 #+begin_src emacs-lisp
   (set-face-attribute 'default nil :height 80)
   (setq ring-bell-function 'ignore)
@@ -137,21 +137,21 @@
   (set-language-environment "UTF-8")
   (global-prettify-symbols-mode t)
 #+end_src
-** Window tweaks
+*** Window tweaks
   #+begin_src emacs-lisp
 	(scroll-bar-mode -1)
 	(tool-bar-mode -1)
 	(menu-bar-mode -1)
 	(set-window-scroll-bars (minibuffer-window) nil nil)
   #+end_src
-** Rainbow delemiters and mode line
+*** Rainbow delemiters and mode line
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters)
   ;; simple mode line
   (use-package mood-line)
   (mood-line-mode)
 #+end_src
-** Lambdas
+*** Lambdas
   #+begin_src emacs-lisp
 	(global-prettify-symbols-mode t)
   #+end_src
@@ -200,20 +200,20 @@
 			(my-reload-dir-locals-for-current-buffer)))))
 #+end_src
 * Dired
-** Dired-sidebar
+*** Dired-sidebar
 #+begin_src emacs-lisp
 	(use-package dired-sidebar
 		:ensure t )
   ;;	  :config (dired-sidebar-toggle-sidebar))
 	(global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
 #+end_src
-** Icons
+*** Icons
 #+begin_src emacs-lisp
   (use-package all-the-icons-dired
   :ensure t
   :config (all-the-icons-dired-mode))
 #+end_src
-** Opening media in respective applications
+*** Opening media in respective applications
 #+begin_src emacs-lisp
   (use-package dired-open
 	:config
@@ -234,7 +234,7 @@
 			("webm" . "mpv")
 			)))
 #+end_src
-** Hide dotfiles and extra information (aka ownership and such)
+*** Hide dotfiles and extra information (aka ownership and such)
 #+begin_src emacs-lisp
 	(use-package dired-hide-dotfiles
 	  :config
@@ -245,7 +245,7 @@
   (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
 #+end_src
 * Search and buffers behavior
-** Swiper
+*** Swiper
 #+begin_src  emacs-lisp
   (use-package swiper
 	:ensure t
@@ -256,7 +256,7 @@
 	  (global-set-key "\C-s" 'swiper)
 	  (global-set-key "\C-r" 'swiper)))
 #+end_src
-** Ace-window
+*** Ace-window
 #+begin_src emacs-lisp
 	 (use-package ace-window
 	   :ensure t
@@ -268,7 +268,7 @@
 			((t (:inherit ace-jump-face-foreground :height 2.0)))))
 		 ))
 #+end_src
-** Try
+*** Try
    #+begin_SRC  emacs-lisp
 	 (use-package try
 	   :ensure t
@@ -304,7 +304,7 @@
 	  (auctex-latexmk-setup))
   #+end_src
 * Org-mode
-** Tweaks
+*** Tweaks
 #+begin_src emacs-lisp
   (use-package org-bullets
 		:ensure t
@@ -317,7 +317,7 @@
 	  (add-to-list 'org-structure-template-alist
 				   '("el" . "src emacs-lisp"))
 #+end_src
-** Tasks magagement
+*** Tasks magagement
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (setq-default fill-column 79)
@@ -343,7 +343,7 @@
 	(global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
 	(setq org-log-done 'time)
 #+end_src
-** Capturing tasks
+*** Capturing tasks
 #+begin_src emacs-lisp
   (setq org-capture-templates
 		'(("t" "Todo"
@@ -363,7 +363,7 @@
   (global-set-key (kbd "C-c i") 'hrs/open-index-file)
 
 #+end_src
-** Displaying inline images
+*** Displaying inline images
    The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/
 #+begin_src emacs-lisp
 	 (defun my/fix-inline-images ()
@@ -372,7 +372,7 @@
 	 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
 	 (setq-default org-image-actual-width 620)
 #+end_src
-** Exporting with org-mode
+*** Exporting with org-mode
    HTML
 #+begin_src emacs-lisp
   (setq org-html-postamble nil)
@@ -398,8 +398,15 @@ Exporting diagrams
    (setq multi-term-program "/bin/bash")
 #+end_src
 * Code
-** Counsel
-   I use counsel mostly for navigation.
+*** Yasnippet
+#+begin_src  emacs-lisp
+  (use-package yasnippet
+	:ensure t
+	:init
+	(yas-global-mode 1))
+#+end_src
+*** Counsel
+	I use counsel mostly for navigation.
 #+begin_src  emacs-lisp
   (use-package counsel
 	:ensure t
@@ -409,7 +416,8 @@ Exporting diagrams
 	   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
     ))
 #+end_src
-** Auto-complete
+** Auto Completation
+*** Auto-complete
 #+begin_src emacs-lisp
   (use-package auto-complete
 	 :ensure t
@@ -417,7 +425,16 @@ Exporting diagrams
 	 (progn
 	   (global-auto-complete-mode t)))
 #+end_src
-** Flycheck
+*** Company
+   Completation framework
+#+begin_src  emacs-lisp
+	 (use-package company
+	   :ensure t
+	   :demand t
+	   :config (setq company-tooltip-align-annotations t))
+#+end_src
+** Syntax checking
+*** Flycheck
    Syntax checking
 #+begin_src  emacs-lisp
   (use-package flycheck
@@ -429,7 +446,7 @@ Exporting diagrams
 	(set-face-underline 'flycheck-info '(:color "#268bd2" :style line))
 	   )
 #+end_src
-** Flymake
+*** Flymake
 Checks for syntax errors and hilight the line.
 #+begin_src  emacs-lisp
    (use-package flymake
@@ -439,22 +456,7 @@ Checks for syntax errors and hilight the line.
 	(set-face-underline 'flymake-note '(:color "#268bd2" :style line))
    )
 #+end_src
-** Company
-   Completation framework
-#+begin_src  emacs-lisp
-	 (use-package company
-	   :ensure t
-	   :demand t
-	   :config (setq company-tooltip-align-annotations t))
-#+end_src
-** Yasnippet
-#+begin_src  emacs-lisp
-  (use-package yasnippet
-	:ensure t
-	:init
-	(yas-global-mode 1))
-#+end_src
-** Shell
+*** Shell
    For this to work, =checkbashisms= needs to be available on the =$PATH=:
    #+begin_src sh
 	 sudo pacman -S checkbashisms # Arch Linux, from AUR
@@ -470,7 +472,7 @@ Checks for syntax errors and hilight the line.
 	   (setq flycheck-checkbashisms-posix t))
 #+end_src
 * External Stuff 
-** Discord
+*** Discord
  - Uses elcord package to show a discord status...
 #+begin_src emacs-lisp
   (use-package elcord
