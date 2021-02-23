@@ -1,0 +1,474 @@
+#+TITLE: EMACS CONFIGURATIONS
+#+AUTHOR: Jefter Santiago
+#+EMAIL: jefterrsantiago@gmail.com
+#+OPTIONS: toc:nil num:nil
+
+
+* Info
+#+begin_src emacs-lisp
+  (setq-default user-full-name "Jefter Santiago Mares")
+  (setq-default user-mail-address "jefterrsantiago@gmail.com")
+#+end_src
+* Private configs
+#+begin_src emacs-lisp
+(load "~/.local/bin/private.el")
+#+end_src
+* General configuration
+** defaults
+  #+begin_src emacs-lisp
+	(setq confirm-kill-processes nil)
+	(setq-default transient-mark-mode t)
+	(setq-default visual-line-mode t)
+	(setq-default truncate-lines nil)
+	(setq-default cursor-type 'box)
+	(setq-default fill-column 78)
+	;; (setq-default sentence-end-double-space nil)
+	;; Enable maximum syntax highlighting wherever possible.
+	(setq-default global-font-lock-mode t)
+#+end_src
+** yes or no
+#+begin_src emacs-lisp
+;;	(fset 'yes-or-no-p 'y-or-n-p)
+	(defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+** smart parents
+#+begin_src emacs-lisp
+	(setq-default tab-width 4)
+	(use-package smartparens
+	  :ensure t
+	  :config
+	  (sp-use-paredit-bindings)
+	  (add-hook 'prog-mode-hook #'smartparens-mode)
+	  (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+#+end_src
+** disabling splash-screen and startup message
+#+begin_src emacs-lisp
+  (setq inhibit-splash-screen t
+		  initial-scratch-message nil
+		  initial-major-mode 'org-mode)
+  (setq inhibit-startup-message t)
+#+end_src
+** mouse scrolling
+#+begin_src emacs-lisp
+  (setq kill-buffer-query-functions
+		(remq 'process-kill-buffer-query-function
+			  kill-buffer-query-functions))
+  ;; smother scroll
+  (setq scroll-step            1
+		scroll-conservatively  10000
+		mouse-wheel-scroll-amount '(1 ((shift) . 1))
+		mouse-wheel-progressive-speed nil
+		mouse-wheel-follow-mouse 't)
+#+end_src
+** inserting new lines below
+#+begin_src emacs-lisp
+  ;; insert new line whithout breaking
+  (defun insert-new-line-below ()
+	"Add a new line below the current line"
+	(interactive)
+	(let ((oldpos (point)))
+	  (end-of-line)
+	  (newline-and-indent)))
+  (global-set-key (kbd "C-o") 'insert-new-line-below)
+#+end_src
+** taking out the trash "custom-variables"
+#+begin_src emacs-lisp
+	;; trash "custom-variables" goes to a file that is ignored
+	(setq custom-file "~/.emacs.d/custom.el")
+#+end_src
+* Appearence
+** theme
+#+begin_src emacs-lisp
+  (use-package inkpot-theme
+	  :config
+   (load-theme 'inkpot t)
+   :ensure t)
+
+  (use-package almost-mono-themes
+	  :config
+   (load-theme 'almost-mono-gray t)
+   :ensure t)
+#+end_src
+** fonts
+#+begin_src emacs-lisp
+  (add-to-list 'default-frame-alist '(font . "Inconsolata 10"))
+  ;; https://emacs.stackexchange.com/q/45895
+  (set-face-attribute 'fixed-pitch nil :family "Inconsolata 10")
+  (use-package default-text-scale
+	:demand t
+   :hook (after-init . default-text-scale-mode))
+#+end_src
+Removing font colors
+#+begin_src emacs-lisp
+		(global-set-key (kbd "C-x C-l") 'font-lock-mode)
+#+end_src
+** highlight current line
+#+begin_src emacs-lisp
+  (use-package diff-hl
+	:config
+	(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+	(add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+#+end_src
+** displaying line number
+#+begin_src emacs-lisp
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
+#+end_src
+** envoirment
+#+begin_src emacs-lisp
+  (set-face-attribute 'default nil :height 80)
+  (setq ring-bell-function 'ignore)
+  (global-set-key (kbd "<f5>") 'revert-buffer)
+  (set-language-environment "UTF-8")
+  (global-prettify-symbols-mode t)
+
+  ;;(use-package delight)
+  ;;(delight 'emacs-lisp-mode "Elisp" :major)
+  ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+#+end_src
+** window tweaks
+  #+begin_src emacs-lisp
+	(scroll-bar-mode -1)
+	(tool-bar-mode -1)
+	(menu-bar-mode -1)
+	(set-window-scroll-bars (minibuffer-window) nil nil)
+  #+end_src
+** rainbow delemiters and mode line
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters)
+  ;; simple mode line
+  (use-package mood-line)
+  (mood-line-mode)
+#+end_src
+** lambdas
+  #+begin_src emacs-lisp
+	(global-prettify-symbols-mode t)
+  #+end_src
+* Backup/autosaving
+  #+begin_src emacs-lisp
+	;; backup disabled
+	(setq-default backup-inhibited t)
+	(setq-default create-lockfiles nil)
+	(setq-default make-backup-files nil)
+	(use-package real-auto-save
+	  :ensure t
+	  :demand t
+	  :config (setq real-auto-save-interval 10)
+	  :hook (prog-mode . real-auto-save-mode))
+  #+end_src
+* Utf-8
+  #+begin_src emacs-lisp
+	(setq locale-coding-system 'utf-8)
+	(set-terminal-coding-system 'utf-8)
+	(set-keyboard-coding-system 'utf-8)
+	(set-selection-coding-system 'utf-8)
+	(prefer-coding-system 'utf-8)
+  #+end_src
+* Evil mode
+  #+begin_src emacs-lisp
+	(require 'evil)
+	(evil-mode 1)
+  #+end_src
+* Dir-locals
+  Taken from https://emacs.stackexchange.com/a/13096/10950
+#+begin_src emacs-lisp
+	(defun my-reload-dir-locals-for-current-buffer ()
+	  "reload dir locals for the current buffer"
+	  (interactive)
+	  (let ((enable-local-variables :all))
+		(hack-dir-local-variables-non-file-buffer)))
+
+	(defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
+	  "For every buffer with the same `default-directory` as the
+	current buffer's, reload dir-locals."
+	  (interactive)
+	  (let ((dir default-directory))
+		(dolist (buffer (buffer-list))
+		  (with-current-buffer buffer
+			(when (equal default-directory dir))
+			(my-reload-dir-locals-for-current-buffer)))))
+#+end_src
+* Dired
+** dired-sidebar
+#+begin_src emacs-lisp
+	(use-package dired-sidebar
+		:ensure t )
+  ;;	  :config (dired-sidebar-toggle-sidebar))
+	(global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
+#+end_src
+** icons
+#+begin_src emacs-lisp
+  (use-package all-the-icons-dired
+  :ensure t
+  :config (all-the-icons-dired-mode))
+#+end_src
+** opening media in respective applications
+#+begin_src emacs-lisp
+  (use-package dired-open
+	:config
+	(setq dired-open-extensions
+		  '(("doc" . "openoffice4")
+			("docx" . "openoffice4")
+			("xopp" . "xournalpp")
+			("gif" . "mirage")
+			("jpeg" ."mirage")
+			("jpg" . "mirage")
+			("png" . "mirage")
+			("mkv" . "mpv")
+			("avi" . "mpv")
+			("mov" . "mpv")
+			("mp3" . "mpv")
+			("mp4" . "mpv")
+			("pdf" . "okular")
+			("webm" . "mpv")
+			)))
+#+end_src
+** hide dotfiles and extra information (aka ownership and such)
+#+begin_src emacs-lisp
+	(use-package dired-hide-dotfiles
+	  :config
+	  (dired-hide-dotfiles-mode)
+	  (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
+
+  (setq-default dired-listing-switches "-lhvA")
+  (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
+#+end_src
+
+* Search and buffers behavior
+** swiper
+#+begin_src  emacs-lisp
+  (use-package swiper
+	:ensure t
+	:config
+	(progn
+	  (ivy-mode 1)
+	  (setq ivy-use-virtual-buffers t)
+	  (global-set-key "\C-s" 'swiper)
+	  (global-set-key "\C-r" 'swiper)))
+#+end_src
+** ace-window
+#+begin_src emacs-lisp
+	 (use-package ace-window
+	   :ensure t
+	   :init
+	   (progn
+		 (global-set-key [remap other-window] 'ace-window)
+		 (custom-set-faces
+		  '(aw-leading-char-face
+			((t (:inherit ace-jump-face-foreground :height 2.0)))))
+		 ))
+#+end_src
+** try
+   #+begin_SRC  emacs-lisp
+	 (use-package try
+	   :ensure t
+	   :config
+	   (progn (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
+	 (ivy-mode 1)
+	 (setq ivy-use-virtual-buffers t)
+	 (setq ivy-display-style 'fancy)
+
+	 (use-package which-key
+	   :ensure t
+	   :config
+	   (which-key-mode))
+   #+END_SRC
+* Latex
+  #+begin_src emacs-lisp
+	(setq TeX-auto-save t)
+	(setq TeX-parse-self t)
+	(setq TeX-save-query nil)
+	(setq-default TeX-master nil)
+	(setq TeX-PDF-mode t)
+	(add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
+	(global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
+  #+END_SRC
+  #+begin_src emacs-lisp
+	(use-package auctex
+	  :hook ((latex-mode LaTeX-mode) . lsp)
+	  :config
+	  (add-to-list 'font-latex-math-environments "dmath"))
+	(use-package auctex-latexmk
+	  :after auctex
+	  :init
+	  (auctex-latexmk-setup))
+  #+end_src
+* Org-mode
+Tweaks
+#+begin_src emacs-lisp
+  (use-package org-bullets
+		:ensure t
+		:config
+		(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+	  (setq org-ellipsis "⤵")
+	  (setq org-src-fontify-natively t)
+	  (setq org-src-tab-acts-natively t)
+	  (setq org-src-window-setup 'current-window)
+	  (add-to-list 'org-structure-template-alist
+				   '("el" . "src emacs-lisp"))
+#+end_src
+Tasks magagement
+#+begin_src emacs-lisp
+
+  (add-hook 'org-mode-hook 'auto-fill-mode)
+  (setq-default fill-column 79)
+  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
+   org-log-into-drawer t)
+
+	(defun org-file-path (filename)
+	  " Return the absolute address of an org file, give its relative name"
+	  (concat (file-name-as-directory org-directory) filename))
+
+	(setq org-index-file (org-file-path "tasks.org"))
+	(setq org-archive-location
+		  (concat (org-file-path "done-tasks.org") "::* From %s"))
+
+	;; copy the content out of the archive.org file and yank in the inbox.org
+	(setq org-agenda-files (list org-index-file))
+   ; mark  a todo as done and move it to an appropriate place in the archive.
+	(defun hrs/mark-done-and-archive ()
+	  " Mark the state of an org-mode item as DONE and archive it."
+	  (interactive)
+	  (org-todo 'done)
+	  (org-archive-subtree))
+	(global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
+	(setq org-log-done 'time)
+#+end_src
+Capturing tasks
+#+begin_src emacs-lisp
+
+  (setq org-capture-templates
+		'(("t" "Todo"
+		   entry
+		   (file+headline org-index-file "Inbox")
+		   "* TODO %?\n")))
+  (setq org-refile-use-outline-path t)
+  (setq org-outline-path-complete-in-steps nil)
+  (define-key global-map "\C-cc" 'org-capture)
+  (defun hrs/open-index-file ()
+	"Open the master org TODO list."
+	(interactive)
+	(hrs/copy-tasks-from-inbox)
+	(find-file org-index-file)
+	(flycheck-mode -1)
+	(end-of-buffer))
+  (global-set-key (kbd "C-c i") 'hrs/open-index-file)
+
+#+end_src
+Displaying inline images
+#+begin_src emacs-lisp
+;; The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/
+	 (defun my/fix-inline-images ()
+	   (when org-inline-image-overlays
+		 (org-redisplay-inline-images)))
+
+	 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
+	 (setq-default org-image-actual-width 620)
+#+end_src
+Exporting with org-mode
+#+begin_src emacs-lisp
+  ;; html
+  (setq org-html-postamble nil)
+  (setq browse-url-browse-function 'browse-url-generic
+		browse-url-generic-program "firefox")
+  (setenv "BROWSER" "firefox")
+  ;; diagrams
+  (use-package graphviz-dot-mode
+	:ensure t)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((dot . t)))
+  #+end_src
+* Multi-term
+#+begin_src emacs-lisp
+  (use-package multi-term 
+   :ensure t
+   :config 
+   (progn
+	(global-set-key (kbd "C-x t") 'multi-term)))
+   (setq multi-term-program "/bin/bash")
+#+end_src
+* Code
+** Counsel
+   I use counsel mostly for navigation.
+#+begin_src  emacs-lisp
+  (use-package counsel
+	:ensure t
+	:config
+	 (progn
+	   (global-set-key "\M-x" 'counsel-M-x)
+	   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    ))
+#+end_src
+** Auto-complete
+#+begin_src emacs-lisp
+  (use-package auto-complete
+	 :ensure t
+	 :init
+	 (progn
+	   (global-auto-complete-mode t)))
+#+end_src
+** Flycheck
+   Syntax checking
+#+begin_src  emacs-lisp
+  (use-package flycheck
+   :ensure t
+   :config
+	(add-hook 'prog-mode-hook #'flycheck-mode)
+	(set-face-underline 'flycheck-error '(:color "#dc322f" :style line))
+	(set-face-underline 'flycheck-warning '(:color "#e5aa00" :style line))
+	(set-face-underline 'flycheck-info '(:color "#268bd2" :style line))
+	   )
+#+end_src
+** Flymake
+Checks for syntax errors and hilight the line.
+#+begin_src  emacs-lisp
+   (use-package flymake
+	 :config
+	(set-face-underline 'flymake-error '(:color "#dc322f" :style line))
+	(set-face-underline 'flymake-warning '(:color "#e5aa00" :style line))
+	(set-face-underline 'flymake-note '(:color "#268bd2" :style line))
+   )
+#+end_src
+** Company
+   Completation framework
+#+begin_src  emacs-lisp
+	 (use-package company
+	   :ensure t
+	   :demand t
+	   :config (setq company-tooltip-align-annotations t))
+#+end_src
+** Yasnippet
+#+begin_src  emacs-lisp
+  (use-package yasnippet
+	:ensure t
+	:init
+	(yas-global-mode 1))
+#+end_src
+** Shell
+   For this to work, =checkbashisms= needs to be available on the =$PATH=:
+   #+begin_src sh
+	 sudo pacman -S checkbashisms # Arch Linux, from AUR
+   #+end_src
+   #+begin_src emacs-lisp
+	 (use-package flycheck-checkbashisms
+	   ;; We assume that shellcheck can handle this.
+	   :disabled t
+	   :hook (flycheck-mode . flycheck-checkbashisms-setup)
+	   :config
+	   ;; Check 'echo -n' usage
+	   (setq flycheck-checkbashisms-newline t)
+	   (setq flycheck-checkbashisms-posix t))
+#+end_src
+* External Stuff 
+** Discord
+ - Uses elcord package to show a discord status...
+#+begin_src emacs-lisp
+  (use-package elcord
+	:config
+	  (setq elcord-client-id '"714056771391717468")
+	  (setq elcord-refresh-rate 5)
+	  (setq elcord-use-major-mode-as-main-icon t)
+	:init
+	(elcord-mode))
+#+end_src
