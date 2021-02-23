@@ -220,48 +220,43 @@ current buffer's, reload dir-locals."
   :init
   (auctex-latexmk-setup))
 
-;; tweaks
 (use-package org-bullets
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-(setq org-ellipsis "⤵")
-(setq org-src-fontify-natively t)
-(setq org-src-tab-acts-natively t)
-(setq org-src-window-setup 'current-window)
-(add-to-list 'org-structure-template-alist
-			 '("el" . "src emacs-lisp"))
-
+	      :ensure t
+	      :config
+	      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+	(setq org-ellipsis "⤵")
+	(setq org-src-fontify-natively t)
+	(setq org-src-tab-acts-natively t)
+	(setq org-src-window-setup 'current-window)
+	(add-to-list 'org-structure-template-alist
+				 '("el" . "src emacs-lisp"))
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (setq-default fill-column 79)
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
-	  org-log-into-drawer t)
+ org-log-into-drawer t)
 
+      (defun org-file-path (filename)
+	" Return the absolute address of an org file, give its relative name"
+	(concat (file-name-as-directory org-directory) filename))
 
-;; tasks magagement
-(defun org-file-path (filename)
-  " Return the absolute address of an org file, give its relative name"
-  (concat (file-name-as-directory org-directory) filename))
+      (setq org-index-file (org-file-path "tasks.org"))
+      (setq org-archive-location
+		(concat (org-file-path "done-tasks.org") "::* From %s"))
 
-(setq org-index-file (org-file-path "tasks.org"))
-(setq org-archive-location
-	  (concat (org-file-path "done-tasks.org") "::* From %s"))
+      ;; copy the content out of the archive.org file and yank in the inbox.org
+      (setq org-agenda-files (list org-index-file))
+ ; mark  a todo as done and move it to an appropriate place in the archive.
+      (defun hrs/mark-done-and-archive ()
+	" Mark the state of an org-mode item as DONE and archive it."
+	(interactive)
+	(org-todo 'done)
+	(org-archive-subtree))
+      (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
+      (setq org-log-done 'time)
 
-;; copy the content out of the archive.org file and yank in the inbox.org
-(setq org-agenda-files (list org-index-file))
-										; mark  a todo as done and move it to an appropriate place in the archive.
-(defun hrs/mark-done-and-archive ()
-  " Mark the state of an org-mode item as DONE and archive it."
-  (interactive)
-  (org-todo 'done)
-  (org-archive-subtree))
-(global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
-(setq org-log-done 'time)
-
-;; capturing tasks
 (setq org-capture-templates
-	  '(("t" "Todo"
+	      '(("t" "Todo"
 		 entry
 		 (file+headline org-index-file "Inbox")
 		 "* TODO %?\n")))
@@ -269,32 +264,30 @@ current buffer's, reload dir-locals."
 (setq org-outline-path-complete-in-steps nil)
 (define-key global-map "\C-cc" 'org-capture)
 (defun hrs/open-index-file ()
-  "Open the master org TODO list."
-  (interactive)
-  (hrs/copy-tasks-from-inbox)
-  (find-file org-index-file)
-  (flycheck-mode -1)
-  (end-of-buffer))
+      "Open the master org TODO list."
+      (interactive)
+      (hrs/copy-tasks-from-inbox)
+      (find-file org-index-file)
+      (flycheck-mode -1)
+      (end-of-buffer))
 (global-set-key (kbd "C-c i") 'hrs/open-index-file)
 
-
-;; displaying inline images
 ;; The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/
-(defun my/fix-inline-images ()
-  (when org-inline-image-overlays
-	(org-redisplay-inline-images)))
+	 (defun my/fix-inline-images ()
+	   (when org-inline-image-overlays
+		 (org-redisplay-inline-images)))
 
-(add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
-(setq-default org-image-actual-width 620)
-;; exporting with org-mode
+	 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
+	 (setq-default org-image-actual-width 620)
+
 ;; html
 (setq org-html-postamble nil)
 (setq browse-url-browse-function 'browse-url-generic
-	  browse-url-generic-program "firefox")
+	      browse-url-generic-program "firefox")
 (setenv "BROWSER" "firefox")
 ;; diagrams
 (use-package graphviz-dot-mode
-  :ensure t)
+      :ensure t)
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((dot . t)))
