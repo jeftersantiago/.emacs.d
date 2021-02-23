@@ -23,12 +23,12 @@
   (setq-default user-full-name "Jefter Santiago Mares")
   (setq-default user-mail-address "jefterrsantiago@gmail.com")
 #+end_src
-* Private configs
+* General configuration
+*** Private configs
 #+begin_src emacs-lisp
   (load "~/.local/bin/private.el")
 #+end_src
-* General configuration
-** Defaults
+*** Defaults
   #+begin_src emacs-lisp
 	(setq confirm-kill-processes nil)
 	(setq-default transient-mark-mode t)
@@ -40,12 +40,12 @@
 ; Enable maximum syntax highlighting wherever possible.
 	(setq-default global-font-lock-mode t)
 #+end_src
-** Yes or no
+*** Yes or no
 #+begin_src emacs-lisp
 ;;	(fset 'yes-or-no-p 'y-or-n-p)
 	(defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
-** Smart parents
+*** Smart parents
 #+begin_src emacs-lisp
   (setq-default tab-width 4)
   (use-package smartparens
@@ -55,14 +55,14 @@
 	(add-hook 'prog-mode-hook #'smartparens-mode)
 	(sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
 #+end_src
-** Disabling splash-screen and startup message
+*** Disabling splash-screen and startup message
 #+begin_src emacs-lisp
   (setq inhibit-splash-screen t
 		  initial-scratch-message nil
 		  initial-major-mode 'org-mode)
   (setq inhibit-startup-message t)
 #+end_src
-** Mouse scrolling
+*** Mouse scrolling
    Smother scroll
 #+begin_src emacs-lisp
   (setq kill-buffer-query-functions
@@ -74,7 +74,7 @@
 		mouse-wheel-progressive-speed nil
 		mouse-wheel-follow-mouse 't)
 #+end_src
-** Inserting new lines below
+*** Inserting new lines below
    Insert new line whithout breaking
 #+begin_src emacs-lisp
   (defun insert-new-line-below ()
@@ -85,7 +85,7 @@
 	  (newline-and-indent)))
   (global-set-key (kbd "C-o") 'insert-new-line-below)
 #+end_src
-** Custom-variables 
+*** Custom-variables 
    Trash "custom-variables" goes to a file that is ignored
 #+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
