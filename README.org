@@ -2,8 +2,8 @@
 #+AUTHOR: Jefter Santiago
 #+EMAIL: jefterrsantiago@gmail.com
 #+OPTIONS: toc:nil num:nil
-
-*  Packages 
+* Packages 
+  I download everthing through melpa
  |--------------------+--------------------------+----------------+--------------------|
  | Appearence         | Navigation               | Code           | Other              |
  |--------------------+--------------------------+----------------+--------------------|
@@ -25,7 +25,7 @@
 #+end_src
 * Private configs
 #+begin_src emacs-lisp
-(load "~/.local/bin/private.el")
+  (load "~/.local/bin/private.el")
 #+end_src
 * General configuration
 ** defaults
@@ -36,8 +36,8 @@
 	(setq-default truncate-lines nil)
 	(setq-default cursor-type 'box)
 	(setq-default fill-column 78)
-	;; (setq-default sentence-end-double-space nil)
-	;; Enable maximum syntax highlighting wherever possible.
+	(setq-default sentence-end-double-space nil)
+; Enable maximum syntax highlighting wherever possible.
 	(setq-default global-font-lock-mode t)
 #+end_src
 ** yes or no
