@@ -25,9 +25,9 @@
       (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
 
 (setq inhibit-splash-screen t
-		initial-scratch-message nil
-		initial-major-mode 'org-mode)
-(setq inhibit-startup-message t)
+;  initial-scratch-message nil
+  	initial-major-mode 'org-mode)
+(setq inhibit-startup-echo-area-message t)
 
 (setq kill-buffer-query-functions
 	      (remq 'process-kill-buffer-query-function
@@ -80,10 +80,6 @@
 (global-set-key (kbd "<f5>") 'revert-buffer)
 (set-language-environment "UTF-8")
 (global-prettify-symbols-mode t)
-
-;;(use-package delight)
-;;(delight 'emacs-lisp-mode "Elisp" :major)
-;;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -269,20 +265,17 @@ current buffer's, reload dir-locals."
       (end-of-buffer))
 (global-set-key (kbd "C-c i") 'hrs/open-index-file)
 
-;; The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/
-	 (defun my/fix-inline-images ()
-	   (when org-inline-image-overlays
-		 (org-redisplay-inline-images)))
+(defun my/fix-inline-images ()
+  (when org-inline-image-overlays
+	(org-redisplay-inline-images)))
+(add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
+(setq-default org-image-actual-width 620)
 
-	 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
-	 (setq-default org-image-actual-width 620)
-
-;; html
 (setq org-html-postamble nil)
 (setq browse-url-browse-function 'browse-url-generic
 	      browse-url-generic-program "firefox")
 (setenv "BROWSER" "firefox")
-;; diagrams
+
 (use-package graphviz-dot-mode
       :ensure t)
 (org-babel-do-load-languages
@@ -295,6 +288,11 @@ current buffer's, reload dir-locals."
  (progn
       (global-set-key (kbd "C-x t") 'multi-term)))
  (setq multi-term-program "/bin/bash")
+
+(use-package yasnippet
+      :ensure t
+      :init
+      (yas-global-mode 1))
 
 (use-package counsel
       :ensure t
@@ -309,6 +307,11 @@ current buffer's, reload dir-locals."
        :init
        (progn
 	 (global-auto-complete-mode t)))
+
+(use-package company
+  :ensure t
+  :demand t
+  :config (setq company-tooltip-align-annotations t))
 
 (use-package flycheck
  :ensure t
@@ -325,16 +328,6 @@ current buffer's, reload dir-locals."
      (set-face-underline 'flymake-warning '(:color "#e5aa00" :style line))
      (set-face-underline 'flymake-note '(:color "#268bd2" :style line))
 )
-
-(use-package company
-  :ensure t
-  :demand t
-  :config (setq company-tooltip-align-annotations t))
-
-(use-package yasnippet
-      :ensure t
-      :init
-      (yas-global-mode 1))
 
 (use-package flycheck-checkbashisms
   ;; We assume that shellcheck can handle this.
