@@ -15,7 +15,7 @@
  | inkpot-theme       | ace-window               | flycheck       |                    |
  | org-bullets        | try                      | flymake        |                    |
  | elcord             | yasnippet                | auctex         |                    |
- | diff-hl            | dired-sidebar            |                |                    |
+ | diff-hl            | dired-sidebar            | which-key      |                    |
  |--------------------+--------------------------+----------------+--------------------|
 
 * Info
@@ -28,7 +28,7 @@
   (load "~/.local/bin/private.el")
 #+end_src
 * General configuration
-** defaults
+** Defaults
   #+begin_src emacs-lisp
 	(setq confirm-kill-processes nil)
 	(setq-default transient-mark-mode t)
@@ -40,12 +40,12 @@
 ; Enable maximum syntax highlighting wherever possible.
 	(setq-default global-font-lock-mode t)
 #+end_src
-** yes or no
+** Yes or no
 #+begin_src emacs-lisp
 ;;	(fset 'yes-or-no-p 'y-or-n-p)
 	(defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
-** smart parents
+** Smart parents
 #+begin_src emacs-lisp
   (setq-default tab-width 4)
   (use-package smartparens
@@ -86,7 +86,7 @@
   (global-set-key (kbd "C-o") 'insert-new-line-below)
 #+end_src
 ** Custom-variables 
-   trash "custom-variables" goes to a file that is ignored
+   Trash "custom-variables" goes to a file that is ignored
 #+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
 #+end_src
@@ -112,9 +112,10 @@
 	:demand t
    :hook (after-init . default-text-scale-mode))
 #+end_src
-Removing font colors
+** Font locking
+   Removing syntax highlinting 
 #+begin_src emacs-lisp
-		(global-set-key (kbd "C-x C-l") 'font-lock-mode)
+  (global-set-key (kbd "C-x C-l") 'font-lock-mode)
 #+end_src
 ** Highlight current line
 #+begin_src emacs-lisp
@@ -135,10 +136,6 @@ Removing font colors
   (global-set-key (kbd "<f5>") 'revert-buffer)
   (set-language-environment "UTF-8")
   (global-prettify-symbols-mode t)
-
-  ;;(use-package delight)
-  ;;(delight 'emacs-lisp-mode "Elisp" :major)
-  ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 #+end_src
 ** Window tweaks
   #+begin_src emacs-lisp
@@ -154,7 +151,7 @@ Removing font colors
   (use-package mood-line)
   (mood-line-mode)
 #+end_src
-** lambdas
+** Lambdas
   #+begin_src emacs-lisp
 	(global-prettify-symbols-mode t)
   #+end_src
@@ -247,7 +244,6 @@ Removing font colors
   (setq-default dired-listing-switches "-lhvA")
   (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
 #+end_src
-
 * Search and buffers behavior
 ** Swiper
 #+begin_src  emacs-lisp
@@ -323,7 +319,6 @@ Removing font colors
 #+end_src
 ** Tasks magagement
 #+begin_src emacs-lisp
-
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (setq-default fill-column 79)
   (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
@@ -350,7 +345,6 @@ Removing font colors
 #+end_src
 ** Capturing tasks
 #+begin_src emacs-lisp
-
   (setq org-capture-templates
 		'(("t" "Todo"
 		   entry
@@ -370,29 +364,30 @@ Removing font colors
 
 #+end_src
 ** Displaying inline images
+   The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/
 #+begin_src emacs-lisp
-;; The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/
 	 (defun my/fix-inline-images ()
 	   (when org-inline-image-overlays
 		 (org-redisplay-inline-images)))
-
 	 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
 	 (setq-default org-image-actual-width 620)
 #+end_src
 ** Exporting with org-mode
+   HTML
 #+begin_src emacs-lisp
-  ;; html
   (setq org-html-postamble nil)
   (setq browse-url-browse-function 'browse-url-generic
 		browse-url-generic-program "firefox")
   (setenv "BROWSER" "firefox")
-  ;; diagrams
+#+end_src
+Exporting diagrams
+#+begin_src emacs-lisp
   (use-package graphviz-dot-mode
 	:ensure t)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((dot . t)))
-  #+end_src
+#+end_src
 * Multi-term
 #+begin_src emacs-lisp
   (use-package multi-term 

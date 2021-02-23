@@ -294,7 +294,7 @@ current buffer's, reload dir-locals."
  :config 
  (progn
       (global-set-key (kbd "C-x t") 'multi-term)))
- (setq multi-term-program "/bin/sh")
+ (setq multi-term-program "/bin/bash")
 
 (use-package counsel
       :ensure t
