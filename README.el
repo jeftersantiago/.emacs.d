@@ -16,13 +16,15 @@
 ;;	(fset 'yes-or-no-p 'y-or-n-p)
 	(defalias 'yes-or-no-p 'y-or-n-p)
 
-(setq-default tab-width 4)
 (use-package smartparens
-      :ensure t
-      :config
-      (sp-use-paredit-bindings)
-      (add-hook 'prog-mode-hook #'smartparens-mode)
-      (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+  :ensure t
+  :config
+  (sp-use-paredit-bindings)
+  (add-hook 'prog-mode-hook #'smartparens-mode)
+  (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
 
 (setq inhibit-splash-screen t
 ;  initial-scratch-message nil
@@ -39,28 +41,36 @@
 	      mouse-wheel-follow-mouse 't)
 
 (defun insert-new-line-below ()
-      "Add a new line below the current line"
-      (interactive)
-      (let ((oldpos (point)))
-	(end-of-line)
-	(newline-and-indent)))
+  "Add a new line below the current line"
+  (interactive)
+  (let ((oldpos (point)))
+    (end-of-line)
+    (newline-and-indent)))
 (global-set-key (kbd "C-o") 'insert-new-line-below)
 
 (setq custom-file "~/.emacs.d/custom.el")
 
-(use-package inkpot-theme
-	:config
- (load-theme 'inkpot t)
- :ensure t)
+(use-package dracula-theme
+      :config
+   (load-theme 'dracula  t)
+   :ensure t)
+ (use-package modus-vivendi-theme
+   :config
+   (load-theme 'modus-vivendi t)
+   :ensure t)
 
-(use-package almost-mono-themes
-	:config
- (load-theme 'almost-mono-gray t)
- :ensure t)
+(defun light-theme ()
+   (interactive)
+   (light-theme)
+   (use-package modus-operandi-theme
+    :config
+    (load-theme 'modus-operandi t)
+    :ensure t))
+ (global-set-key (kbd "C-c l") 'light-theme)
 
-(add-to-list 'default-frame-alist '(font . "Inconsolata 10"))
+(add-to-list 'default-frame-alist '(font . "Source Code Pro 10"))
 ;; https://emacs.stackexchange.com/q/45895
-(set-face-attribute 'fixed-pitch nil :family "Inconsolata 10")
+(set-face-attribute 'fixed-pitch nil :family "Source Code Pro 10")
 (use-package default-text-scale
       :demand t
  :hook (after-init . default-text-scale-mode))
@@ -72,8 +82,8 @@
       (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
       (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
 
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
+;;(global-display-line-numbers-mode)
+;;(setq display-line-numbers-type 'relative)
 
 (set-face-attribute 'default nil :height 80)
 (setq ring-bell-function 'ignore)
@@ -249,21 +259,21 @@ current buffer's, reload dir-locals."
       (setq org-log-done 'time)
 
 (setq org-capture-templates
-	      '(("t" "Todo"
-		 entry
-		 (file+headline org-index-file "Inbox")
-		 "* TODO %?\n")))
-(setq org-refile-use-outline-path t)
-(setq org-outline-path-complete-in-steps nil)
-(define-key global-map "\C-cc" 'org-capture)
+       '(("t" "Todo"
+          entry
+          (file+headline org-index-file "Inbox")
+          "* TODO %?\n")))
+ (setq org-refile-use-outline-path t)
+ (setq org-outline-path-complete-in-steps nil)
+ (define-key global-map "\C-cc" 'org-capture)
 (defun hrs/open-index-file ()
-      "Open the master org TODO list."
-      (interactive)
-      (hrs/copy-tasks-from-inbox)
-      (find-file org-index-file)
-      (flycheck-mode -1)
-      (end-of-buffer))
-(global-set-key (kbd "C-c i") 'hrs/open-index-file)
+       "Open the master org TODO list."
+       (interactive)
+       (hrs/copy-tasks-from-inbox)
+       (find-file org-index-file)
+       (flycheck-mode -1)
+       (end-of-buffer))
+ (global-set-key (kbd "C-c i") 'hrs/open-index-file)
 
 (defun my/fix-inline-images ()
   (when org-inline-image-overlays
@@ -288,6 +298,9 @@ current buffer's, reload dir-locals."
  (progn
       (global-set-key (kbd "C-x t") 'multi-term)))
  (setq multi-term-program "/bin/bash")
+
+(use-package julia-mode
+  :ensure t)
 
 (use-package yasnippet
       :ensure t
@@ -339,9 +352,9 @@ current buffer's, reload dir-locals."
   (setq flycheck-checkbashisms-posix t))
 
 (use-package elcord
-      :config
-	(setq elcord-client-id '"714056771391717468")
-	(setq elcord-refresh-rate 5)
-	(setq elcord-use-major-mode-as-main-icon t)
-      :init
-      (elcord-mode))
+	:config
+	  (setq elcord-client-id '"714056771391717468")
+    (setq elcord-refresh-rate 5)
+    (setq elcord-use-major-mode-as-main-icon t)
+  :init
+(elcord-mode))

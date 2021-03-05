@@ -1,4 +1,4 @@
-#+TITLE: Emacs configurations
++TITLE: Emacs configurations
 #+AUTHOR: Jefter Santiago
 #+EMAIL: jefterrsantiago@gmail.com
 #+OPTIONS: toc:nil num:nil
@@ -31,15 +31,15 @@
 #+end_src
 ** Defaults
   #+begin_src emacs-lisp
-	(setq confirm-kill-processes nil)
-	(setq-default transient-mark-mode t)
-	(setq-default visual-line-mode t)
-	(setq-default truncate-lines nil)
-	(setq-default cursor-type 'box)
-	(setq-default fill-column 78)
-	(setq-default sentence-end-double-space nil)
-; Enable maximum syntax highlighting wherever possible.
-	(setq-default global-font-lock-mode t)
+	    (setq confirm-kill-processes nil)
+	    (setq-default transient-mark-mode t)
+	    (setq-default visual-line-mode t)
+	    (setq-default truncate-lines nil)
+	    (setq-default cursor-type 'box)
+	    (setq-default fill-column 78)
+	    (setq-default sentence-end-double-space nil)
+    ; Enable maximum syntax highlighting wherever possible.
+	    (setq-default global-font-lock-mode t)
 #+end_src
 ** Yes or no
 #+begin_src emacs-lisp
@@ -48,13 +48,18 @@
 #+end_src
 ** Smart parents
 #+begin_src emacs-lisp
+
+   (use-package smartparens
+     :ensure t
+     :config
+     (sp-use-paredit-bindings)
+     (add-hook 'prog-mode-hook #'smartparens-mode)
+     (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+#+end_src
+** Tabs
+#+begin_src emacs-lisp
+  (setq-default indent-tabs-mode nil)
   (setq-default tab-width 4)
-  (use-package smartparens
-	:ensure t
-	:config
-	(sp-use-paredit-bindings)
-	(add-hook 'prog-mode-hook #'smartparens-mode)
-	(sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
 #+end_src
 ** Disabling splash-screen and startup message
 #+begin_src emacs-lisp
@@ -79,11 +84,11 @@
    Insert new line whithout breaking
 #+begin_src emacs-lisp
   (defun insert-new-line-below ()
-	"Add a new line below the current line"
-	(interactive)
-	(let ((oldpos (point)))
-	  (end-of-line)
-	  (newline-and-indent)))
+    "Add a new line below the current line"
+    (interactive)
+    (let ((oldpos (point)))
+      (end-of-line)
+      (newline-and-indent)))
   (global-set-key (kbd "C-o") 'insert-new-line-below)
 #+end_src
 ** Custom-variables 
@@ -94,21 +99,29 @@
 * Appearence
 ** Theme
 #+begin_src emacs-lisp
-  (use-package inkpot-theme
-	  :config
-   (load-theme 'inkpot t)
-   :ensure t)
+    (use-package dracula-theme
+        :config
+     (load-theme 'dracula  t)
+     :ensure t)
+   (use-package modus-vivendi-theme
+     :config
+     (load-theme 'modus-vivendi t)
+     :ensure t)
 
-  (use-package almost-mono-themes
-	  :config
-   (load-theme 'almost-mono-gray t)
-   :ensure t)
+  (defun light-theme ()
+     (interactive)
+     (light-theme)
+     (use-package modus-operandi-theme
+      :config
+      (load-theme 'modus-operandi t)
+      :ensure t))
+   (global-set-key (kbd "C-c l") 'light-theme)
 #+end_src
 ** Fonts
 #+begin_src emacs-lisp
-  (add-to-list 'default-frame-alist '(font . "Inconsolata 10"))
+  (add-to-list 'default-frame-alist '(font . "Source Code Pro 10"))
   ;; https://emacs.stackexchange.com/q/45895
-  (set-face-attribute 'fixed-pitch nil :family "Inconsolata 10")
+  (set-face-attribute 'fixed-pitch nil :family "Source Code Pro 10")
   (use-package default-text-scale
 	:demand t
    :hook (after-init . default-text-scale-mode))
@@ -127,8 +140,8 @@
 #+end_src
 ** Displaying line number
 #+begin_src emacs-lisp
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
+;;(global-display-line-numbers-mode)
+;;(setq display-line-numbers-type 'relative)
 #+end_src
 ** Envoirment
 #+begin_src emacs-lisp
@@ -145,12 +158,12 @@
 	(menu-bar-mode -1)
 	(set-window-scroll-bars (minibuffer-window) nil nil)
   #+end_src
-** Rainbow delemiters and mode line
+** Rainbow delimiters and mode line
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters)
   ;; simple mode line
   (use-package mood-line)
-  (mood-line-mode)
+  (mood-line-mode) 
 #+end_src
 ** Lambdas
   #+begin_src emacs-lisp
@@ -347,14 +360,14 @@
 ** Capturing tasks
 #+begin_src emacs-lisp
   (setq org-capture-templates
-		'(("t" "Todo"
-		   entry
-		   (file+headline org-index-file "Inbox")
-		   "* TODO %?\n")))
+        '(("t" "Todo"
+           entry
+           (file+headline org-index-file "Inbox")
+           "* TODO %?\n")))
   (setq org-refile-use-outline-path t)
   (setq org-outline-path-complete-in-steps nil)
   (define-key global-map "\C-cc" 'org-capture)
-  (defun hrs/open-index-file ()
+ (defun hrs/open-index-file ()
 	"Open the master org TODO list."
 	(interactive)
 	(hrs/copy-tasks-from-inbox)
@@ -363,7 +376,8 @@
 	(end-of-buffer))
   (global-set-key (kbd "C-c i") 'hrs/open-index-file)
 
-#+end_src
+
+ #+end_src
 ** Displaying inline images
    The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/
 #+begin_src emacs-lisp
@@ -398,7 +412,12 @@ Exporting diagrams
 	(global-set-key (kbd "C-x t") 'multi-term)))
    (setq multi-term-program "/bin/bash")
 #+end_src
-* Code
+* Programming
+** julia
+#+begin_src emacs-lisp
+  (use-package julia-mode
+    :ensure t)
+#+end_src
 ** Yasnippet
 #+begin_src  emacs-lisp
   (use-package yasnippet
@@ -479,8 +498,8 @@ Checks for syntax errors and hilight the line.
   (use-package elcord
 	:config
 	  (setq elcord-client-id '"714056771391717468")
-	  (setq elcord-refresh-rate 5)
-	  (setq elcord-use-major-mode-as-main-icon t)
-	:init
-	(elcord-mode))
+    (setq elcord-refresh-rate 5)
+    (setq elcord-use-major-mode-as-main-icon t)
+  :init
+(elcord-mode))
 #+end_src
