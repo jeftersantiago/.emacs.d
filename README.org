@@ -1,4 +1,4 @@
-+TITLE: Emacs configurations
+#+TITLE: Emacs configurations
 #+AUTHOR: Jefter Santiago
 #+EMAIL: jefterrsantiago@gmail.com
 #+OPTIONS: toc:nil num:nil
