@@ -32,13 +32,13 @@
 (setq inhibit-startup-echo-area-message t)
 
 (setq kill-buffer-query-functions
-	      (remq 'process-kill-buffer-query-function
-			kill-buffer-query-functions))
+  (remq 'process-kill-buffer-query-function
+   kill-buffer-query-functions))
 (setq scroll-step            1
-	      scroll-conservatively  10000
-	      mouse-wheel-scroll-amount '(1 ((shift) . 1))
-	      mouse-wheel-progressive-speed nil
-	      mouse-wheel-follow-mouse 't)
+scroll-conservatively  10000
+mouse-wheel-scroll-amount '(1 ((shift) . 1))
+mouse-wheel-progressive-speed nil
+mouse-wheel-follow-mouse 't)
 
 (defun insert-new-line-below ()
   "Add a new line below the current line"
@@ -50,27 +50,19 @@
 
 (setq custom-file "~/.emacs.d/custom.el")
 
-(use-package dracula-theme
-      :config
-   (load-theme 'dracula  t)
-   :ensure t)
- (use-package modus-vivendi-theme
-   :config
-   (load-theme 'modus-vivendi t)
-   :ensure t)
+(use-package inkpot-theme 
+     :config
+  (load-theme 'inkpot t)
+  :ensure t)
 
-(defun light-theme ()
-   (interactive)
-   (light-theme)
-   (use-package modus-operandi-theme
-    :config
-    (load-theme 'modus-operandi t)
-    :ensure t))
- (global-set-key (kbd "C-c l") 'light-theme)
+(use-package twilight-anti-bright-theme
+  :config
+  (load-theme 'twilight-anti-bright t) 
+  :ensure t)
 
-(add-to-list 'default-frame-alist '(font . "Source Code Pro 10"))
+(add-to-list 'default-frame-alist '(font . "Noto Sans 10"))
 ;; https://emacs.stackexchange.com/q/45895
-(set-face-attribute 'fixed-pitch nil :family "Source Code Pro 10")
+(set-face-attribute 'fixed-pitch nil :family "Noto Sans 10")
 (use-package default-text-scale
       :demand t
  :hook (after-init . default-text-scale-mode))
@@ -162,7 +154,7 @@ current buffer's, reload dir-locals."
 		      ("mov" . "mpv")
 		      ("mp3" . "mpv")
 		      ("mp4" . "mpv")
-		      ("pdf" . "okular")
+		      ("pdf" . "mupdf")
 		      ("webm" . "mpv")
 		      )))
 
@@ -229,57 +221,22 @@ current buffer's, reload dir-locals."
 	      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 	(setq org-ellipsis "⤵")
 	(setq org-src-fontify-natively t)
-	(setq org-src-tab-acts-natively t)
+      ;  (setq org-src-tab-acts-natively t)
 	(setq org-src-window-setup 'current-window)
 	(add-to-list 'org-structure-template-alist
 				 '("el" . "src emacs-lisp"))
-
-(add-hook 'org-mode-hook 'auto-fill-mode)
-(setq-default fill-column 79)
-(setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
- org-log-into-drawer t)
-
-      (defun org-file-path (filename)
-	" Return the absolute address of an org file, give its relative name"
-	(concat (file-name-as-directory org-directory) filename))
-
-      (setq org-index-file (org-file-path "tasks.org"))
-      (setq org-archive-location
-		(concat (org-file-path "done-tasks.org") "::* From %s"))
-
-      ;; copy the content out of the archive.org file and yank in the inbox.org
-      (setq org-agenda-files (list org-index-file))
- ; mark  a todo as done and move it to an appropriate place in the archive.
-      (defun hrs/mark-done-and-archive ()
-	" Mark the state of an org-mode item as DONE and archive it."
-	(interactive)
-	(org-todo 'done)
-	(org-archive-subtree))
-      (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
-      (setq org-log-done 'time)
-
-(setq org-capture-templates
-       '(("t" "Todo"
-          entry
-          (file+headline org-index-file "Inbox")
-          "* TODO %?\n")))
- (setq org-refile-use-outline-path t)
- (setq org-outline-path-complete-in-steps nil)
- (define-key global-map "\C-cc" 'org-capture)
-(defun hrs/open-index-file ()
-       "Open the master org TODO list."
-       (interactive)
-       (hrs/copy-tasks-from-inbox)
-       (find-file org-index-file)
-       (flycheck-mode -1)
-       (end-of-buffer))
- (global-set-key (kbd "C-c i") 'hrs/open-index-file)
 
 (defun my/fix-inline-images ()
   (when org-inline-image-overlays
 	(org-redisplay-inline-images)))
 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
 (setq-default org-image-actual-width 620)
+
+(add-hook 'org-mode-hook
+          (lambda () (org-toggle-pretty-entities)))
+
+(add-to-list 'org-file-apps '("\\.pdf" . "mupdf %s"))
+(global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
 
 (setq org-html-postamble nil)
 (setq browse-url-browse-function 'browse-url-generic
