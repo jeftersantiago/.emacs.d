@@ -2,6 +2,8 @@
 #+AUTHOR: Jefter Santiago
 #+EMAIL: jefterrsantiago@gmail.com
 #+OPTIONS: toc:nil num:nil
+#+CAPTION: Screenshot 
+#+NAME:   fig:print
 [[./screenshot.png]]
 * Packages 
   I download everthing through melpa
