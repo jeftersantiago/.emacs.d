@@ -215,16 +215,19 @@ current buffer's, reload dir-locals."
   :init
   (auctex-latexmk-setup))
 
-(use-package org-bullets
-	      :ensure t
-	      :config
-	      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-	(setq org-ellipsis "⤵")
-	(setq org-src-fontify-natively t)
-      ;  (setq org-src-tab-acts-natively t)
-	(setq org-src-window-setup 'current-window)
-	(add-to-list 'org-structure-template-alist
-				 '("el" . "src emacs-lisp"))
+(add-to-list 'org-modules 'org-tempo t)
+ (use-package org-bullets
+	       :ensure t
+	       :config
+	       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+	 (setq org-ellipsis "⤵")
+	 (setq org-src-fontify-natively t)
+       ;  (setq org-src-tab-acts-natively t)
+	 (setq org-src-window-setup 'current-window)
+	 (add-to-list 'org-structure-template-alist
+				  '("el" . "src emacs-lisp"))
+
+(require 'org-tempo)
 
 (defun my/fix-inline-images ()
   (when org-inline-image-overlays
@@ -233,7 +236,9 @@ current buffer's, reload dir-locals."
 (setq-default org-image-actual-width 620)
 
 (add-hook 'org-mode-hook
-          (lambda () (org-toggle-pretty-entities)))
+         (lambda () (org-toggle-pretty-entities)))
+
+(global-set-key (kbd "C-c t") 'org-toggle-inline-images)
 
 (add-to-list 'org-file-apps '("\\.pdf" . "mupdf %s"))
 (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
