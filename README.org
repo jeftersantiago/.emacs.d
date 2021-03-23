@@ -4,7 +4,7 @@
 #+OPTIONS: toc:nil num:nil
 #+CAPTION: Screenshot 
 #+NAME:   fig:print
-[[./screenshot.png]]
+[[./print.png]]
 * Packages 
   I download everthing through melpa
  |--------------------+--------------------------+----------------+--------------------|
