@@ -464,7 +464,7 @@ Checks for syntax errors and hilight the line.
 #+end_src
 * External Stuff 
 ** Discord
- - Uses elcord package to show a discord status...
+   Want to show to everybody that you are using Emacs ?! This is how you do it.
 #+begin_src emacs-lisp
   (use-package elcord
 	:config
