@@ -55,9 +55,9 @@ mouse-wheel-follow-mouse 't)
   (load-theme 'inkpot t)
   :ensure t)
 
-(use-package twilight-anti-bright-theme
+(use-package  almost-mono-themes
   :config
-  (load-theme 'twilight-anti-bright t) 
+  (load-theme 'almost-mono-black t)
   :ensure t)
 
 (add-to-list 'default-frame-alist '(font . "Noto Sans 10"))
@@ -240,7 +240,7 @@ current buffer's, reload dir-locals."
 
 (global-set-key (kbd "C-c t") 'org-toggle-inline-images)
 
-(add-to-list 'org-file-apps '("\\.pdf" . "mupdf %s"))
+(add-to-list 'org-file-apps '("\\.pdf" . "evince %s"))
 (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
 
 (setq org-html-postamble nil)

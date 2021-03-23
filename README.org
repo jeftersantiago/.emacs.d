@@ -106,9 +106,9 @@ mouse-wheel-follow-mouse 't)
     (load-theme 'inkpot t)
     :ensure t)
 
-  (use-package twilight-anti-bright-theme
+  (use-package  almost-mono-themes
     :config
-    (load-theme 'twilight-anti-bright t) 
+    (load-theme 'almost-mono-black t)
     :ensure t)
 #+end_src
 ** Fonts
@@ -355,7 +355,7 @@ Shortcut for structured (old) template
  #+end_src
   Shortcut to export pdf and opening. 
 #+begin_src emacs-lisp
-(add-to-list 'org-file-apps '("\\.pdf" . "mupdf %s"))
+(add-to-list 'org-file-apps '("\\.pdf" . "evince %s"))
 (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
 #+end_src
 *** Others
