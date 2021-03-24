@@ -97,16 +97,12 @@ mouse-wheel-follow-mouse 't)
 #+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
 #+end_src
-* Appearence
+* GUI 
 ** Theme
 #+begin_src emacs-lisp
 (use-package dracula-theme
  :config
  (load-theme 'dracula  t)
- :ensure t)
-(use-package modus-vivendi-theme
- :config
- (load-theme 'modus-vivendi t)
  :ensure t)
 #+end_src
 ** Fonts
@@ -123,6 +119,16 @@ mouse-wheel-follow-mouse 't)
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-l") 'font-lock-mode)
 #+end_src
+** Utf-8
+  #+begin_src emacs-lisp
+	(setq locale-coding-system 'utf-8)
+	(set-terminal-coding-system 'utf-8)
+	(set-keyboard-coding-system 'utf-8)
+	(set-selection-coding-system 'utf-8)
+	(prefer-coding-system 'utf-8)
+    (set-language-environment "UTF-8")
+    (global-prettify-symbols-mode t)
+  #+end_src
 ** Highlight current line
 #+begin_src emacs-lisp
   (use-package diff-hl
@@ -132,16 +138,8 @@ mouse-wheel-follow-mouse 't)
 #+end_src
 ** Displaying line number
 #+begin_src emacs-lisp
-;;(global-display-line-numbers-mode)
-;;(setq display-line-numbers-type 'relative)
-#+end_src
-** Envoirment
-#+begin_src emacs-lisp
-  (set-face-attribute 'default nil :height 80)
-  (setq ring-bell-function 'ignore)
-  (global-set-key (kbd "<f5>") 'revert-buffer)
-  (set-language-environment "UTF-8")
-  (global-prettify-symbols-mode t)
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
 #+end_src
 ** Window tweaks
   #+begin_src emacs-lisp
@@ -157,10 +155,70 @@ mouse-wheel-follow-mouse 't)
   (use-package mood-line)
   (mood-line-mode) 
 #+end_src
-** Lambdas
-  #+begin_src emacs-lisp
-	(global-prettify-symbols-mode t)
-  #+end_src
+* Dired
+** Dired-sidebar
+#+begin_src emacs-lisp
+	(use-package dired-sidebar
+		:ensure t )
+  ;;	  :config (dired-sidebar-toggle-sidebar))
+	(global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
+#+end_src
+** Icons
+#+begin_src emacs-lisp
+  (use-package all-the-icons-dired
+  :ensure t
+  :config (all-the-icons-dired-mode))
+#+end_src
+** Opening media in respective applications
+#+begin_src emacs-lisp
+  (use-package dired-open
+	:config
+	(setq dired-open-extensions
+		  '(("doc" . "openoffice4")
+			("docx" . "openoffice4")
+			("xopp" . "xournalpp")
+			("gif" . "mirage")
+			("jpeg" ."mirage")
+			("jpg" . "mirage")
+			("png" . "mirage")
+			("mkv" . "mpv")
+			("avi" . "mpv")
+			("mov" . "mpv")
+			("mp3" . "mpv")
+			("mp4" . "mpv")
+			("pdf" . "mupdf")
+			("webm" . "mpv")
+			)))
+#+end_src
+** Hide dotfiles and extra information (aka ownership and such)
+#+begin_src emacs-lisp
+	(use-package dired-hide-dotfiles
+	  :config
+	  (dired-hide-dotfiles-mode)
+	  (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
+
+  (setq-default dired-listing-switches "-lhvA")
+  (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
+#+end_src
+** Dir-locals
+  Taken from https://emacs.stackexchange.com/a/13096/10950
+#+begin_src emacs-lisp
+	(defun my-reload-dir-locals-for-current-buffer ()
+	  "reload dir locals for the current buffer"
+	  (interactive)
+	  (let ((enable-local-variables :all))
+		(hack-dir-local-variables-non-file-buffer)))
+
+	(defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
+	  "For every buffer with the same `default-directory` as the
+	current buffer's, reload dir-locals."
+	  (interactive)
+	  (let ((dir default-directory))
+		(dolist (buffer (buffer-list))
+		  (with-current-buffer buffer
+			(when (equal default-directory dir))
+			(my-reload-dir-locals-for-current-buffer)))))
+#+end_src
 * Org-mode
 ** Tweaks
 Accepting old shortcuts
@@ -235,8 +293,8 @@ Shortcut for structured (old) template
     Makes UTF-8 symbols appears in the buffer
     I use it for editing Latex 
   #+begin_src emacs-lisp
- (add-hook 'org-mode-hook
-          (lambda () (org-toggle-pretty-entities)))
+  (add-hook 'org-mode-hook
+  (lambda () (org-toggle-pretty-entities)))
 #+end_src
   Inline images
  #+begin_src emacs-lisp
@@ -263,15 +321,6 @@ Exporting diagrams
    'org-babel-load-languages
    '((dot . t)))
 #+end_src 
-* Multi-term
-#+begin_src emacs-lisp
-  (use-package multi-term 
-   :ensure t
-   :config 
-   (progn
-	(global-set-key (kbd "C-x t") 'multi-term)))
-   (setq multi-term-program "/bin/bash")
-#+end_src
 * Latex
   When editing pure Tex files i like to load a buffer with the pdf.
   #+begin_src emacs-lisp
@@ -294,76 +343,21 @@ Exporting diagrams
   :init
   (auctex-latexmk-setup))
   #+end_src
-* Dired
-** Dired-sidebar
-#+begin_src emacs-lisp
-	(use-package dired-sidebar
-		:ensure t )
-  ;;	  :config (dired-sidebar-toggle-sidebar))
-	(global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
-#+end_src
-** Icons
-#+begin_src emacs-lisp
-  (use-package all-the-icons-dired
-  :ensure t
-  :config (all-the-icons-dired-mode))
-#+end_src
-** Opening media in respective applications
-#+begin_src emacs-lisp
-  (use-package dired-open
-	:config
-	(setq dired-open-extensions
-		  '(("doc" . "openoffice4")
-			("docx" . "openoffice4")
-			("xopp" . "xournalpp")
-			("gif" . "mirage")
-			("jpeg" ."mirage")
-			("jpg" . "mirage")
-			("png" . "mirage")
-			("mkv" . "mpv")
-			("avi" . "mpv")
-			("mov" . "mpv")
-			("mp3" . "mpv")
-			("mp4" . "mpv")
-			("pdf" . "mupdf")
-			("webm" . "mpv")
-			)))
-#+end_src
-** Hide dotfiles and extra information (aka ownership and such)
-#+begin_src emacs-lisp
-	(use-package dired-hide-dotfiles
-	  :config
-	  (dired-hide-dotfiles-mode)
-	  (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
-
-  (setq-default dired-listing-switches "-lhvA")
-  (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
-#+end_src
-* Dir-locals
-  Taken from https://emacs.stackexchange.com/a/13096/10950
-#+begin_src emacs-lisp
-	(defun my-reload-dir-locals-for-current-buffer ()
-	  "reload dir locals for the current buffer"
-	  (interactive)
-	  (let ((enable-local-variables :all))
-		(hack-dir-local-variables-non-file-buffer)))
-
-	(defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
-	  "For every buffer with the same `default-directory` as the
-	current buffer's, reload dir-locals."
-	  (interactive)
-	  (let ((dir default-directory))
-		(dolist (buffer (buffer-list))
-		  (with-current-buffer buffer
-			(when (equal default-directory dir))
-			(my-reload-dir-locals-for-current-buffer)))))
-#+end_src
 * Evil mode
   #+begin_src emacs-lisp
 	(require 'evil)
 	(evil-mode 1)
   #+end_src
-* Programming
+* Multi-term
+#+begin_src emacs-lisp
+  (use-package multi-term 
+   :ensure t
+   :config 
+   (progn
+	(global-set-key (kbd "C-x t") 'multi-term)))
+   (setq multi-term-program "/bin/bash")
+#+end_src
+* Code 
 ** julia
 #+begin_src emacs-lisp
   (use-package julia-mode
@@ -388,14 +382,6 @@ Exporting diagrams
     ))
 #+end_src
 ** Auto Completation
-*** Auto-complete
-#+begin_src emacs-lisp
-  (use-package auto-complete
-	 :ensure t
-	 :init
-	 (progn
-	   (global-auto-complete-mode t)))
-#+end_src
 *** Company
    Completation framework
 #+begin_src  emacs-lisp
@@ -442,7 +428,7 @@ Checks for syntax errors and hilight the line.
 	   (setq flycheck-checkbashisms-newline t)
 	   (setq flycheck-checkbashisms-posix t))
 #+end_src
-* Search and buffers behavior
+* Buffers behavior & search config
 ** Swiper
 #+begin_src  emacs-lisp
   (use-package swiper
@@ -481,14 +467,6 @@ Checks for syntax errors and hilight the line.
 	   :config
 	   (which-key-mode))
    #+END_SRC
-* Utf-8
-  #+begin_src emacs-lisp
-	(setq locale-coding-system 'utf-8)
-	(set-terminal-coding-system 'utf-8)
-	(set-keyboard-coding-system 'utf-8)
-	(set-selection-coding-system 'utf-8)
-	(prefer-coding-system 'utf-8)
-  #+end_src
 * Backup/autosaving
   #+begin_src emacs-lisp
 	;; backup disabled

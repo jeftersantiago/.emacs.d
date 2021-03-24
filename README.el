@@ -1,5 +1,5 @@
-(setq-default user-full-name "Jefter Santiago Mares")
-(setq-default user-mail-address "jefterrsantiago@gmail.com")
+(setq-default user-full-name "Jefter S. Mares")
+(setq-default user-mail-address "jefter.santiago66@gmail.com")
 
 (load "~/.local/bin/private.el")
 
@@ -54,10 +54,10 @@ mouse-wheel-follow-mouse 't)
  :config
  (load-theme 'dracula  t)
  :ensure t)
-(use-package modus-vivendi-theme
- :config
- (load-theme 'modus-vivendi t)
- :ensure t)
+;(use-package modus-vivendi-theme
+; :config
+; (load-theme 'modus-vivendi t)
+; :ensure t)
 
 (add-to-list 'default-frame-alist '(font . "Source Code Pro 10"))
 ;; https://emacs.stackexchange.com/q/45895
@@ -68,19 +68,21 @@ mouse-wheel-follow-mouse 't)
 
 (global-set-key (kbd "C-x C-l") 'font-lock-mode)
 
+(setq locale-coding-system 'utf-8)
+    (set-terminal-coding-system 'utf-8)
+    (set-keyboard-coding-system 'utf-8)
+    (set-selection-coding-system 'utf-8)
+    (prefer-coding-system 'utf-8)
+(set-language-environment "UTF-8")
+(global-prettify-symbols-mode t)
+
 (use-package diff-hl
       :config
       (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
       (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
 
-;;(global-display-line-numbers-mode)
-;;(setq display-line-numbers-type 'relative)
-
-(set-face-attribute 'default nil :height 80)
-(setq ring-bell-function 'ignore)
-(global-set-key (kbd "<f5>") 'revert-buffer)
-(set-language-environment "UTF-8")
-(global-prettify-symbols-mode t)
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -91,43 +93,6 @@ mouse-wheel-follow-mouse 't)
 ;; simple mode line
 (use-package mood-line)
 (mood-line-mode)
-
-(global-prettify-symbols-mode t)
-
-;; backup disabled
-(setq-default backup-inhibited t)
-(setq-default create-lockfiles nil)
-(setq-default make-backup-files nil)
-(use-package real-auto-save
-  :ensure t
-  :demand t
-  :config (setq real-auto-save-interval 10)
-  :hook (prog-mode . real-auto-save-mode))
-
-(setq locale-coding-system 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-selection-coding-system 'utf-8)
-(prefer-coding-system 'utf-8)
-
-(require 'evil)
-(evil-mode 1)
-
-(defun my-reload-dir-locals-for-current-buffer ()
-  "reload dir locals for the current buffer"
-  (interactive)
-  (let ((enable-local-variables :all))
-	(hack-dir-local-variables-non-file-buffer)))
-
-(defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
-  "For every buffer with the same `default-directory` as the
-current buffer's, reload dir-locals."
-  (interactive)
-  (let ((dir default-directory))
-	(dolist (buffer (buffer-list))
-	  (with-current-buffer buffer
-		(when (equal default-directory dir))
-		(my-reload-dir-locals-for-current-buffer)))))
 
 (use-package dired-sidebar
 	      :ensure t )
@@ -165,54 +130,21 @@ current buffer's, reload dir-locals."
 (setq-default dired-listing-switches "-lhvA")
 (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
 
-(use-package swiper
-      :ensure t
-      :config
-      (progn
-	(ivy-mode 1)
-	(setq ivy-use-virtual-buffers t)
-	(global-set-key "\C-s" 'swiper)
-	(global-set-key "\C-r" 'swiper)))
+(defun my-reload-dir-locals-for-current-buffer ()
+  "reload dir locals for the current buffer"
+  (interactive)
+  (let ((enable-local-variables :all))
+	(hack-dir-local-variables-non-file-buffer)))
 
-(use-package ace-window
-  :ensure t
-  :init
-  (progn
-	(global-set-key [remap other-window] 'ace-window)
-	(custom-set-faces
-	 '(aw-leading-char-face
-	       ((t (:inherit ace-jump-face-foreground :height 2.0)))))
-	))
-
-(use-package try
-  :ensure t
-  :config
-  (progn (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
-(setq ivy-display-style 'fancy)
-
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode))
-
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq TeX-save-query nil)
-(setq-default TeX-master nil)
-(setq TeX-PDF-mode t)
-(add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
-(global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
-
-(use-package auctex
-:hook ((latex-mode LaTeX-mode) . lsp)
-:config
-(add-to-list 'font-latex-math-environments "dmath"))
-(use-package auctex-latexmk
-:after auctex
-:init
-(auctex-latexmk-setup))
+(defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
+  "For every buffer with the same `default-directory` as the
+current buffer's, reload dir-locals."
+  (interactive)
+  (let ((dir default-directory))
+	(dolist (buffer (buffer-list))
+	  (with-current-buffer buffer
+		(when (equal default-directory dir))
+		(my-reload-dir-locals-for-current-buffer)))))
 
 (require 'org-tempo)
 
@@ -263,15 +195,6 @@ current buffer's, reload dir-locals."
 (setq org-outline-path-complete-in-steps nil)
 (define-key global-map "\C-cc" 'org-capture)
 
-(defun hrs/open-index-file ()
-       "Open the master org TODO list."
-       (interactive)
-       (hrs/copy-tasks-from-inbox)
-       (find-file org-index-file)
-       (flycheck-mode -1)
-       (end-of-buffer))
-(global-set-key (kbd "C-cu ") 'hrs/open-index-file)
-
 (defun my/fix-inline-images ()
   (when org-inline-image-overlays
 	(org-redisplay-inline-images)))
@@ -279,7 +202,7 @@ current buffer's, reload dir-locals."
 (setq-default org-image-actual-width 620)
 
 (add-hook 'org-mode-hook
-         (lambda () (org-toggle-pretty-entities)))
+(lambda () (org-toggle-pretty-entities)))
 
 (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
 
@@ -297,12 +220,32 @@ current buffer's, reload dir-locals."
  'org-babel-load-languages
  '((dot . t)))
 
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq TeX-save-query nil)
+(setq-default TeX-master nil)
+(setq TeX-PDF-mode t)
+(add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
+(global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
+
+(use-package auctex
+:hook ((latex-mode LaTeX-mode) . lsp)
+:config
+(add-to-list 'font-latex-math-environments "dmath"))
+(use-package auctex-latexmk
+:after auctex
+:init
+(auctex-latexmk-setup))
+
 (use-package multi-term 
  :ensure t
  :config 
  (progn
       (global-set-key (kbd "C-x t") 'multi-term)))
  (setq multi-term-program "/bin/bash")
+
+(require 'evil)
+(evil-mode 1)
 
 (use-package julia-mode
   :ensure t)
@@ -319,12 +262,6 @@ current buffer's, reload dir-locals."
 	 (global-set-key "\M-x" 'counsel-M-x)
 	 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
   ))
-
-(use-package auto-complete
-       :ensure t
-       :init
-       (progn
-	 (global-auto-complete-mode t)))
 
 (use-package company
   :ensure t
@@ -355,6 +292,48 @@ current buffer's, reload dir-locals."
   ;; Check 'echo -n' usage
   (setq flycheck-checkbashisms-newline t)
   (setq flycheck-checkbashisms-posix t))
+
+(use-package swiper
+      :ensure t
+      :config
+      (progn
+	(ivy-mode 1)
+	(setq ivy-use-virtual-buffers t)
+	(global-set-key "\C-s" 'swiper)
+	(global-set-key "\C-r" 'swiper)))
+
+(use-package ace-window
+  :ensure t
+  :init
+  (progn
+	(global-set-key [remap other-window] 'ace-window)
+	(custom-set-faces
+	 '(aw-leading-char-face
+	       ((t (:inherit ace-jump-face-foreground :height 2.0)))))
+	))
+
+(use-package try
+  :ensure t
+  :config
+  (progn (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq ivy-display-style 'fancy)
+
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode))
+
+;; backup disabled
+(setq-default backup-inhibited t)
+(setq-default create-lockfiles nil)
+(setq-default make-backup-files nil)
+(use-package real-auto-save
+  :ensure t
+  :demand t
+  :config (setq real-auto-save-interval 10)
+  :hook (prog-mode . real-auto-save-mode))
 
 (use-package elcord
 	:config
