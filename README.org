@@ -20,11 +20,10 @@
  | elcord             | yasnippet                | auctex         |                    |
  | diff-hl            | dired-sidebar            | which-key      |                    |
  |--------------------+--------------------------+----------------+--------------------|
-
 * About me
 #+begin_src emacs-lisp
-  (setq-default user-full-name "Jefter Santiago Mares")
-  (setq-default user-mail-address "jefterrsantiago@gmail.com")
+  (setq-default user-full-name "Jefter S. Mares")
+  (setq-default user-mail-address "jefter.santiago66@gmail.com")
 #+end_src
 * General configuration
 ** Private configs
@@ -101,21 +100,20 @@ mouse-wheel-follow-mouse 't)
 * Appearence
 ** Theme
 #+begin_src emacs-lisp
-   (use-package inkpot-theme 
-       :config
-    (load-theme 'inkpot t)
-    :ensure t)
-
-  (use-package  almost-mono-themes
-    :config
-    (load-theme 'almost-mono-black t)
-    :ensure t)
+(use-package dracula-theme
+ :config
+ (load-theme 'dracula  t)
+ :ensure t)
+(use-package modus-vivendi-theme
+ :config
+ (load-theme 'modus-vivendi t)
+ :ensure t)
 #+end_src
 ** Fonts
 #+begin_src emacs-lisp
-  (add-to-list 'default-frame-alist '(font . "Noto Sans 10"))
+  (add-to-list 'default-frame-alist '(font . "Source Code Pro 10"))
   ;; https://emacs.stackexchange.com/q/45895
-  (set-face-attribute 'fixed-pitch nil :family "Noto Sans 10")
+  (set-face-attribute 'fixed-pitch nil :family "Source Code Pro 10")
   (use-package default-text-scale
 	:demand t
    :hook (after-init . default-text-scale-mode))
@@ -163,50 +161,139 @@ mouse-wheel-follow-mouse 't)
   #+begin_src emacs-lisp
 	(global-prettify-symbols-mode t)
   #+end_src
-* Backup/autosaving
-  #+begin_src emacs-lisp
-	;; backup disabled
-	(setq-default backup-inhibited t)
-	(setq-default create-lockfiles nil)
-	(setq-default make-backup-files nil)
-	(use-package real-auto-save
-	  :ensure t
-	  :demand t
-	  :config (setq real-auto-save-interval 10)
-	  :hook (prog-mode . real-auto-save-mode))
-  #+end_src
-* Utf-8
-  #+begin_src emacs-lisp
-	(setq locale-coding-system 'utf-8)
-	(set-terminal-coding-system 'utf-8)
-	(set-keyboard-coding-system 'utf-8)
-	(set-selection-coding-system 'utf-8)
-	(prefer-coding-system 'utf-8)
-  #+end_src
-* Evil mode
-  #+begin_src emacs-lisp
-	(require 'evil)
-	(evil-mode 1)
-  #+end_src
-* Dir-locals
-  Taken from https://emacs.stackexchange.com/a/13096/10950
+* Org-mode
+** Tweaks
+Accepting old shortcuts
 #+begin_src emacs-lisp
-	(defun my-reload-dir-locals-for-current-buffer ()
-	  "reload dir locals for the current buffer"
-	  (interactive)
-	  (let ((enable-local-variables :all))
-		(hack-dir-local-variables-non-file-buffer)))
-
-	(defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
-	  "For every buffer with the same `default-directory` as the
-	current buffer's, reload dir-locals."
-	  (interactive)
-	  (let ((dir default-directory))
-		(dolist (buffer (buffer-list))
-		  (with-current-buffer buffer
-			(when (equal default-directory dir))
-			(my-reload-dir-locals-for-current-buffer)))))
+(require 'org-tempo)
+#+end_src 
+#+begin_src emacs-lisp
+(add-to-list 'org-modules 'org-tempo t)
+(use-package org-bullets
+ :ensure t
+ :config
+ (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+ (setq org-ellipsis "⮟")
+ (setq org-src-fontify-natively t)
+; (setq org-src-tab-acts-natively t)
+ (setq org-src-window-setup 'current-window)
+ (add-to-list 'org-structure-template-alist
+ '("el" . "src emacs-lisp"))
 #+end_src
+Shortcut for structured (old) template
+ #+begin_src emacs-lisp
+  (require 'org-tempo)
+ #+end_src
+** Tasks management
+#+begin_src emacs-lisp
+ (add-hook 'org-mode-hook 'auto-fill-mode)
+ (setq-default fill-column 79)
+ (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
+  org-log-into-drawer t)
+
+	(defun org-file-path (filename)
+	  " Return the absolute address of an org file, give its relative name"
+	  (concat (file-name-as-directory org-directory) filename))
+
+	(setq org-index-file (org-file-path "daily-tasks.org"))
+	(setq org-archive-location
+		  (concat (org-file-path "done-tasks.org") "::* From %s"))
+
+	;; copy the content out of the archive.org file and yank in the inbox.org
+	(setq org-agenda-files (list org-index-file))
+  ; mark  a todo as done and move it to an appropriate place in the archive.
+	(defun hrs/mark-done-and-archive ()
+	  " Mark the state of an org-mode item as DONE and archive it."
+	  (interactive)
+	  (org-todo 'done)
+	  (org-archive-subtree))
+	(global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
+	(setq org-log-done 'time)
+#+end_src
+** Capturing Tasks
+#+begin_src emacs-lisp
+ (setq org-capture-templates
+		'(("t" "Todo"
+		   entry
+		   (file+headline org-index-file "Inbox")
+		   "* TODO %?\n")))
+ (setq org-refile-use-outline-path t)
+ (setq org-outline-path-complete-in-steps nil)
+ (define-key global-map "\C-cc" 'org-capture)
+#+end_src
+** Displaying inline images
+   The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/
+#+begin_src emacs-lisp
+	 (defun my/fix-inline-images ()
+	   (when org-inline-image-overlays
+		 (org-redisplay-inline-images)))
+	 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
+	 (setq-default org-image-actual-width 620)
+#+end_src
+** Exporting with org-mode
+*** Latex related 
+    Makes UTF-8 symbols appears in the buffer
+    I use it for editing Latex 
+  #+begin_src emacs-lisp
+ (add-hook 'org-mode-hook
+          (lambda () (org-toggle-pretty-entities)))
+#+end_src
+  Inline images
+ #+begin_src emacs-lisp
+ (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
+ #+end_src
+ Shortcut to export pdf and opening. 
+#+begin_src emacs-lisp
+(add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
+(global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
+#+end_src
+*** Others
+    HTML
+#+begin_src emacs-lisp
+  (setq org-html-postamble nil)
+  (setq browse-url-browse-function 'browse-url-generic
+		browse-url-generic-program "firefox")
+  (setenv "BROWSER" "firefox")
+#+end_src
+Exporting diagrams
+#+begin_src emacs-lisp
+  (use-package graphviz-dot-mode
+	:ensure t)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((dot . t)))
+#+end_src 
+* Multi-term
+#+begin_src emacs-lisp
+  (use-package multi-term 
+   :ensure t
+   :config 
+   (progn
+	(global-set-key (kbd "C-x t") 'multi-term)))
+   (setq multi-term-program "/bin/bash")
+#+end_src
+* Latex
+  When editing pure Tex files i like to load a buffer with the pdf.
+  #+begin_src emacs-lisp
+	(setq TeX-auto-save t)
+	(setq TeX-parse-self t)
+	(setq TeX-save-query nil)
+	(setq-default TeX-master nil)
+	(setq TeX-PDF-mode t)
+	(add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
+	(global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
+  #+end_src
+  Auctex
+  #+begin_src emacs-lisp
+  (use-package auctex
+  :hook ((latex-mode LaTeX-mode) . lsp)
+  :config
+  (add-to-list 'font-latex-math-environments "dmath"))
+  (use-package auctex-latexmk
+  :after auctex
+  :init
+  (auctex-latexmk-setup))
+  #+end_src
 * Dired
 ** Dired-sidebar
 #+begin_src emacs-lisp
@@ -252,137 +339,30 @@ mouse-wheel-follow-mouse 't)
   (setq-default dired-listing-switches "-lhvA")
   (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
 #+end_src
-* Search and buffers behavior
-** Swiper
-#+begin_src  emacs-lisp
-  (use-package swiper
-	:ensure t
-	:config
-	(progn
-	  (ivy-mode 1)
-	  (setq ivy-use-virtual-buffers t)
-	  (global-set-key "\C-s" 'swiper)
-	  (global-set-key "\C-r" 'swiper)))
-#+end_src
-** Ace-window
+* Dir-locals
+  Taken from https://emacs.stackexchange.com/a/13096/10950
 #+begin_src emacs-lisp
-	 (use-package ace-window
-	   :ensure t
-	   :init
-	   (progn
-		 (global-set-key [remap other-window] 'ace-window)
-		 (custom-set-faces
-		  '(aw-leading-char-face
-			((t (:inherit ace-jump-face-foreground :height 2.0)))))
-		 ))
-#+end_src
-** Try
-   #+begin_SRC  emacs-lisp
-	 (use-package try
-	   :ensure t
-	   :config
-	   (progn (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
-	 (ivy-mode 1)
-	 (setq ivy-use-virtual-buffers t)
-	 (setq ivy-display-style 'fancy)
+	(defun my-reload-dir-locals-for-current-buffer ()
+	  "reload dir locals for the current buffer"
+	  (interactive)
+	  (let ((enable-local-variables :all))
+		(hack-dir-local-variables-non-file-buffer)))
 
-	 (use-package which-key
-	   :ensure t
-	   :config
-	   (which-key-mode))
-   #+END_SRC
-* Latex
+	(defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
+	  "For every buffer with the same `default-directory` as the
+	current buffer's, reload dir-locals."
+	  (interactive)
+	  (let ((dir default-directory))
+		(dolist (buffer (buffer-list))
+		  (with-current-buffer buffer
+			(when (equal default-directory dir))
+			(my-reload-dir-locals-for-current-buffer)))))
+#+end_src
+* Evil mode
   #+begin_src emacs-lisp
-	(setq TeX-auto-save t)
-	(setq TeX-parse-self t)
-	(setq TeX-save-query nil)
-	(setq-default TeX-master nil)
-	(setq TeX-PDF-mode t)
-	(add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
-	(global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
+	(require 'evil)
+	(evil-mode 1)
   #+end_src
-  Auctex
-  #+begin_src emacs-lisp
-	(use-package auctex
-	  :hook ((latex-mode LaTeX-mode) . lsp)
-	  :config
-	  (add-to-list 'font-latex-math-environments "dmath"))
-	(use-package auctex-latexmk
-	  :after auctex
-	  :init
-	  (auctex-latexmk-setup))
-  #+end_src
-* Org-mode
-** Tweaks
-#+begin_src emacs-lisp
- (add-to-list 'org-modules 'org-tempo t)
-  (use-package org-bullets
-		:ensure t
-		:config
-		(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-	  (setq org-ellipsis "⤵")
-	  (setq org-src-fontify-natively t)
-	;  (setq org-src-tab-acts-natively t)
-	  (setq org-src-window-setup 'current-window)
-	  (add-to-list 'org-structure-template-alist
-				   '("el" . "src emacs-lisp"))
-#+end_src
-Shortcut for structured (old) template
-#+begin_src emacs-lisp
-(require 'org-tempo)
-#+end_src 
-
-** Displaying inline images
-   The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/
-#+begin_src emacs-lisp
-	 (defun my/fix-inline-images ()
-	   (when org-inline-image-overlays
-		 (org-redisplay-inline-images)))
-	 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
-	 (setq-default org-image-actual-width 620)
-#+end_src
-** Exporting with org-mode
-*** Latex related 
-    Makes UTF-8 symbols appears in the buffer
-    I use it for editing Latex 
-  #+begin_src emacs-lisp
- (add-hook 'org-mode-hook
-          (lambda () (org-toggle-pretty-entities)))
-#+end_src
- Inline images
- #+begin_src emacs-lisp
- (global-set-key (kbd "C-c t") 'org-toggle-inline-images)
- #+end_src
-  Shortcut to export pdf and opening. 
-#+begin_src emacs-lisp
-(add-to-list 'org-file-apps '("\\.pdf" . "evince %s"))
-(global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
-#+end_src
-*** Others
-    HTML
-#+begin_src emacs-lisp
-  (setq org-html-postamble nil)
-  (setq browse-url-browse-function 'browse-url-generic
-		browse-url-generic-program "firefox")
-  (setenv "BROWSER" "firefox")
-#+end_src
-Exporting diagrams
-#+begin_src emacs-lisp
-  (use-package graphviz-dot-mode
-	:ensure t)
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((dot . t)))
-#+end_src 
-* Multi-term
-#+begin_src emacs-lisp
-  (use-package multi-term 
-   :ensure t
-   :config 
-   (progn
-	(global-set-key (kbd "C-x t") 'multi-term)))
-   (setq multi-term-program "/bin/bash")
-#+end_src
 * Programming
 ** julia
 #+begin_src emacs-lisp
@@ -462,6 +442,65 @@ Checks for syntax errors and hilight the line.
 	   (setq flycheck-checkbashisms-newline t)
 	   (setq flycheck-checkbashisms-posix t))
 #+end_src
+* Search and buffers behavior
+** Swiper
+#+begin_src  emacs-lisp
+  (use-package swiper
+	:ensure t
+	:config
+	(progn
+	  (ivy-mode 1)
+	  (setq ivy-use-virtual-buffers t)
+	  (global-set-key "\C-s" 'swiper)
+	  (global-set-key "\C-r" 'swiper)))
+#+end_src
+** Ace-window
+#+begin_src emacs-lisp
+	 (use-package ace-window
+	   :ensure t
+	   :init
+	   (progn
+		 (global-set-key [remap other-window] 'ace-window)
+		 (custom-set-faces
+		  '(aw-leading-char-face
+			((t (:inherit ace-jump-face-foreground :height 2.0)))))
+		 ))
+#+end_src
+** Try
+   #+begin_SRC  emacs-lisp
+	 (use-package try
+	   :ensure t
+	   :config
+	   (progn (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
+	 (ivy-mode 1)
+	 (setq ivy-use-virtual-buffers t)
+	 (setq ivy-display-style 'fancy)
+
+	 (use-package which-key
+	   :ensure t
+	   :config
+	   (which-key-mode))
+   #+END_SRC
+* Utf-8
+  #+begin_src emacs-lisp
+	(setq locale-coding-system 'utf-8)
+	(set-terminal-coding-system 'utf-8)
+	(set-keyboard-coding-system 'utf-8)
+	(set-selection-coding-system 'utf-8)
+	(prefer-coding-system 'utf-8)
+  #+end_src
+* Backup/autosaving
+  #+begin_src emacs-lisp
+	;; backup disabled
+	(setq-default backup-inhibited t)
+	(setq-default create-lockfiles nil)
+	(setq-default make-backup-files nil)
+	(use-package real-auto-save
+	  :ensure t
+	  :demand t
+	  :config (setq real-auto-save-interval 10)
+	  :hook (prog-mode . real-auto-save-mode))
+  #+end_src
 * External Stuff 
 ** Discord
    Want to show to everybody that you are using Emacs ?! This is how you do it.
