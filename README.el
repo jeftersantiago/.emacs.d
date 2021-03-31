@@ -50,14 +50,14 @@ mouse-wheel-follow-mouse 't)
 
 (setq custom-file "~/.emacs.d/custom.el")
 
-(use-package dracula-theme
- :config
- (load-theme 'dracula  t)
- :ensure t)
-;(use-package modus-vivendi-theme
+;(use-package dracula-theme
 ; :config
-; (load-theme 'modus-vivendi t)
+; (load-theme 'dracula  t)
 ; :ensure t)
+(use-package tron-legacy-theme 
+ :config
+ (load-theme 'tron-legacy t)
+ :ensure t)
 
 (add-to-list 'default-frame-alist '(font . "Source Code Pro 10"))
 ;; https://emacs.stackexchange.com/q/45895
@@ -81,8 +81,8 @@ mouse-wheel-follow-mouse 't)
       (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
       (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
 
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
+;(global-display-line-numbers-mode)
+;(setq display-line-numbers-type 'relative)
 
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -237,15 +237,15 @@ current buffer's, reload dir-locals."
 :init
 (auctex-latexmk-setup))
 
+(require 'evil)
+(evil-mode 1)
+
 (use-package multi-term 
  :ensure t
  :config 
  (progn
       (global-set-key (kbd "C-x t") 'multi-term)))
  (setq multi-term-program "/bin/bash")
-
-(require 'evil)
-(evil-mode 1)
 
 (use-package julia-mode
   :ensure t)
@@ -269,20 +269,20 @@ current buffer's, reload dir-locals."
   :config (setq company-tooltip-align-annotations t))
 
 (use-package flycheck
- :ensure t
- :config
-      (add-hook 'prog-mode-hook #'flycheck-mode)
-      (set-face-underline 'flycheck-error '(:color "#dc322f" :style line))
-      (set-face-underline 'flycheck-warning '(:color "#e5aa00" :style line))
-      (set-face-underline 'flycheck-info '(:color "#268bd2" :style line))
-	 )
+  :ensure t
+  :config
+(add-hook 'prog-mode-hook #'flycheck-mode)
+(set-face-underline 'flycheck-error '(:color "#dc322f" :style line))
+(set-face-underline 'flycheck-warning '(:color "#e5aa00" :style line))
+(set-face-underline 'flycheck-info '(:color "#268bd2" :style line))
+   )
 
 (use-package flymake
-      :config
-     (set-face-underline 'flymake-error '(:color "#dc322f" :style line))
-     (set-face-underline 'flymake-warning '(:color "#e5aa00" :style line))
-     (set-face-underline 'flymake-note '(:color "#268bd2" :style line))
-)
+ :config
+(set-face-underline 'flymake-error '(:color "#dc322f" :style line))
+(set-face-underline 'flymake-warning '(:color "#e5aa00" :style line))
+(set-face-underline 'flymake-note '(:color "#268bd2" :style line))
+  )
 
 (use-package flycheck-checkbashisms
   ;; We assume that shellcheck can handle this.
