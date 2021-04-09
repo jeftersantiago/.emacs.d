@@ -50,18 +50,14 @@ mouse-wheel-follow-mouse 't)
 
 (setq custom-file "~/.emacs.d/custom.el")
 
-;(use-package dracula-theme
-; :config
-; (load-theme 'dracula  t)
-; :ensure t)
-(use-package tron-legacy-theme 
- :config
- (load-theme 'tron-legacy t)
- :ensure t)
+(use-package dracula-theme 
+  :config
+  (load-theme 'dracula t)
+  :ensure t)
 
-(add-to-list 'default-frame-alist '(font . "Source Code Pro 10"))
+(add-to-list 'default-frame-alist '(font . "Source Code Pro 12"))
 ;; https://emacs.stackexchange.com/q/45895
-(set-face-attribute 'fixed-pitch nil :family "Source Code Pro 10")
+(set-face-attribute 'fixed-pitch nil :family "Source Code Pro 12")
 (use-package default-text-scale
       :demand t
  :hook (after-init . default-text-scale-mode))
