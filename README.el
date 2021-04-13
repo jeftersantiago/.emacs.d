@@ -1,17 +1,17 @@
 (setq-default user-full-name "Jefter S. Mares")
-(setq-default user-mail-address "jefter.santiago66@gmail.com")
+(setq-default user-mail-address "jefterrsantiago@gmail.com")
 
 (load "~/.local/bin/private.el")
 
 (setq confirm-kill-processes nil)
-	(setq-default transient-mark-mode t)
-	(setq-default visual-line-mode t)
-	(setq-default truncate-lines nil)
-	(setq-default cursor-type 'box)
-	(setq-default fill-column 78)
-	(setq-default sentence-end-double-space nil)
+(setq-default transient-mark-mode t)
+(setq-default visual-line-mode t)
+(setq-default truncate-lines nil)
+(setq-default cursor-type 'box)
+(setq-default fill-column 78)
+(setq-default sentence-end-double-space nil)
 ; Enable maximum syntax highlighting wherever possible.
-	(setq-default global-font-lock-mode t)
+(global-font-lock-mode 0)
 
 ;;	(fset 'yes-or-no-p 'y-or-n-p)
 	(defalias 'yes-or-no-p 'y-or-n-p)
@@ -53,6 +53,10 @@ mouse-wheel-follow-mouse 't)
 (use-package dracula-theme 
   :config
   (load-theme 'dracula t)
+  :ensure t)
+(use-package almost-mono-themes 
+  :config
+  (load-theme 'almost-mono-black t)
   :ensure t)
 
 (add-to-list 'default-frame-alist '(font . "Source Code Pro 12"))
@@ -141,6 +145,8 @@ current buffer's, reload dir-locals."
 	  (with-current-buffer buffer
 		(when (equal default-directory dir))
 		(my-reload-dir-locals-for-current-buffer)))))
+
+(add-hook 'org-mode-hook 'font-lock-mode)
 
 (require 'org-tempo)
 

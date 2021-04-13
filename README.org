@@ -12,15 +12,15 @@
  | real-auto-save     | dired-open               | multi-term     | rainbow-delimiters |
  | default-text-scale | dired-hide-dotfiles      | counsel        |                    |
  | almost-mono-themes | swiper                   | auto-complete  |                    |
- | inkpot-theme       | ace-window               | flycheck       |                    |
- | org-bullets        | try                      | flymake        |                    |
- | elcord             | yasnippet                | auctex         |                    |
- | diff-hl            | dired-sidebar            | which-key      |                    |
+ | org-bullets        | ace-window               | flycheck       |                    |
+ | elcord             | try                      | flymake        |                    |
+ | diff-hl            | yasnippet                | auctex         |                    |
+ |                    | dired-sidebar            | which-key      |                    |
  |--------------------+--------------------------+----------------+--------------------|
 * About me
 #+begin_src emacs-lisp
   (setq-default user-full-name "Jefter S. Mares")
-  (setq-default user-mail-address "jefter.santiago66@gmail.com")
+  (setq-default user-mail-address "jefterrsantiago@gmail.com")
 #+end_src
 * General configuration
 ** Private configs
@@ -28,16 +28,16 @@
   (load "~/.local/bin/private.el")
 #+end_src
 ** Defaults
-  #+begin_src emacs-lisp
-	    (setq confirm-kill-processes nil)
-	    (setq-default transient-mark-mode t)
-	    (setq-default visual-line-mode t)
-	    (setq-default truncate-lines nil)
-	    (setq-default cursor-type 'box)
-	    (setq-default fill-column 78)
-	    (setq-default sentence-end-double-space nil)
-    ; Enable maximum syntax highlighting wherever possible.
-	    (setq-default global-font-lock-mode t)
+#+begin_src emacs-lisp
+  (setq confirm-kill-processes nil)
+  (setq-default transient-mark-mode t)
+  (setq-default visual-line-mode t)
+  (setq-default truncate-lines nil)
+  (setq-default cursor-type 'box)
+  (setq-default fill-column 78)
+  (setq-default sentence-end-double-space nil)
+  ; Enable maximum syntax highlighting wherever possible.
+  (global-font-lock-mode 0)
 #+end_src
 ** Yes or no
 #+begin_src emacs-lisp
@@ -100,6 +100,10 @@ mouse-wheel-follow-mouse 't)
  (use-package dracula-theme 
    :config
    (load-theme 'dracula t)
+   :ensure t)
+ (use-package almost-mono-themes 
+   :config
+   (load-theme 'almost-mono-black t)
    :ensure t)
 #+end_src
 ** Fonts
@@ -218,6 +222,10 @@ mouse-wheel-follow-mouse 't)
 #+end_src
 * Org-mode
 ** Tweaks
+Disabling font-lock
+#+begin_src emacs-lisp
+(add-hook 'org-mode-hook 'font-lock-mode)
+#+end_src
 Accepting old shortcuts
 #+begin_src emacs-lisp
 (require 'org-tempo)
