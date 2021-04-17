@@ -13,8 +13,8 @@
 ; Enable maximum syntax highlighting wherever possible.
 (global-font-lock-mode 0)
 
-;;	(fset 'yes-or-no-p 'y-or-n-p)
-	(defalias 'yes-or-no-p 'y-or-n-p)
+;;      (fset 'yes-or-no-p 'y-or-n-p)
+        (defalias 'yes-or-no-p 'y-or-n-p)
 
 (use-package smartparens
   :ensure t
@@ -28,7 +28,7 @@
 
 (setq inhibit-splash-screen t
 ;  initial-scratch-message nil
-  	initial-major-mode 'org-mode)
+        initial-major-mode 'org-mode)
 (setq inhibit-startup-echo-area-message t)
 
 (setq kill-buffer-query-functions
@@ -50,11 +50,11 @@ mouse-wheel-follow-mouse 't)
 
 (setq custom-file "~/.emacs.d/custom.el")
 
-(use-package dracula-theme 
+(use-package dracula-theme
   :config
   (load-theme 'dracula t)
   :ensure t)
-(use-package almost-mono-themes 
+(use-package almost-mono-themes
   :config
   (load-theme 'almost-mono-black t)
   :ensure t)
@@ -95,8 +95,8 @@ mouse-wheel-follow-mouse 't)
 (mood-line-mode)
 
 (use-package dired-sidebar
-	      :ensure t )
-;;	  :config (dired-sidebar-toggle-sidebar))
+              :ensure t )
+;;      :config (dired-sidebar-toggle-sidebar))
       (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
 
 (use-package all-the-icons-dired
@@ -106,26 +106,26 @@ mouse-wheel-follow-mouse 't)
 (use-package dired-open
       :config
       (setq dired-open-extensions
-		'(("doc" . "openoffice4")
-		      ("docx" . "openoffice4")
-		      ("xopp" . "xournalpp")
-		      ("gif" . "mirage")
-		      ("jpeg" ."mirage")
-		      ("jpg" . "mirage")
-		      ("png" . "mirage")
-		      ("mkv" . "mpv")
-		      ("avi" . "mpv")
-		      ("mov" . "mpv")
-		      ("mp3" . "mpv")
-		      ("mp4" . "mpv")
-		      ("pdf" . "mupdf")
-		      ("webm" . "mpv")
-		      )))
+                '(("doc" . "openoffice4")
+                      ("docx" . "openoffice4")
+                      ("xopp" . "xournalpp")
+                      ("gif" . "mirage")
+                      ("jpeg" ."mirage")
+                      ("jpg" . "mirage")
+                      ("png" . "mirage")
+                      ("mkv" . "mpv")
+                      ("avi" . "mpv")
+                      ("mov" . "mpv")
+                      ("mp3" . "mpv")
+                      ("mp4" . "mpv")
+                      ("pdf" . "mupdf")
+                      ("webm" . "mpv")
+                      )))
 
 (use-package dired-hide-dotfiles
-	:config
-	(dired-hide-dotfiles-mode)
-	(define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
+        :config
+        (dired-hide-dotfiles-mode)
+        (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
 
 (setq-default dired-listing-switches "-lhvA")
 (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
@@ -134,17 +134,17 @@ mouse-wheel-follow-mouse 't)
   "reload dir locals for the current buffer"
   (interactive)
   (let ((enable-local-variables :all))
-	(hack-dir-local-variables-non-file-buffer)))
+        (hack-dir-local-variables-non-file-buffer)))
 
 (defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
   "For every buffer with the same `default-directory` as the
 current buffer's, reload dir-locals."
   (interactive)
   (let ((dir default-directory))
-	(dolist (buffer (buffer-list))
-	  (with-current-buffer buffer
-		(when (equal default-directory dir))
-		(my-reload-dir-locals-for-current-buffer)))))
+        (dolist (buffer (buffer-list))
+          (with-current-buffer buffer
+                (when (equal default-directory dir))
+                (my-reload-dir-locals-for-current-buffer)))))
 
 (add-hook 'org-mode-hook 'font-lock-mode)
 
@@ -170,36 +170,36 @@ current buffer's, reload dir-locals."
  org-log-into-drawer t)
 
        (defun org-file-path (filename)
-	 " Return the absolute address of an org file, give its relative name"
-	 (concat (file-name-as-directory org-directory) filename))
+         " Return the absolute address of an org file, give its relative name"
+         (concat (file-name-as-directory org-directory) filename))
 
        (setq org-index-file (org-file-path "daily-tasks.org"))
        (setq org-archive-location
-		 (concat (org-file-path "done-tasks.org") "::* From %s"))
+                 (concat (org-file-path "done-tasks.org") "::* From %s"))
 
        ;; copy the content out of the archive.org file and yank in the inbox.org
        (setq org-agenda-files (list org-index-file))
  ; mark  a todo as done and move it to an appropriate place in the archive.
        (defun hrs/mark-done-and-archive ()
-	 " Mark the state of an org-mode item as DONE and archive it."
-	 (interactive)
-	 (org-todo 'done)
-	 (org-archive-subtree))
+         " Mark the state of an org-mode item as DONE and archive it."
+         (interactive)
+         (org-todo 'done)
+         (org-archive-subtree))
        (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
        (setq org-log-done 'time)
 
 (setq org-capture-templates
-	       '(("t" "Todo"
-		  entry
-		  (file+headline org-index-file "Inbox")
-		  "* TODO %?\n")))
+               '(("t" "Todo"
+                  entry
+                  (file+headline org-index-file "Inbox")
+                  "* TODO %?\n")))
 (setq org-refile-use-outline-path t)
 (setq org-outline-path-complete-in-steps nil)
 (define-key global-map "\C-cc" 'org-capture)
 
 (defun my/fix-inline-images ()
   (when org-inline-image-overlays
-	(org-redisplay-inline-images)))
+        (org-redisplay-inline-images)))
 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
 (setq-default org-image-actual-width 620)
 
@@ -213,7 +213,7 @@ current buffer's, reload dir-locals."
 
 (setq org-html-postamble nil)
 (setq browse-url-browse-function 'browse-url-generic
-	      browse-url-generic-program "firefox")
+              browse-url-generic-program "firefox")
 (setenv "BROWSER" "firefox")
 
 (use-package graphviz-dot-mode
@@ -242,12 +242,13 @@ current buffer's, reload dir-locals."
 (require 'evil)
 (evil-mode 1)
 
-(use-package multi-term 
- :ensure t
- :config 
- (progn
-      (global-set-key (kbd "C-x t") 'multi-term)))
- (setq multi-term-program "/bin/bash")
+(use-package eshell 
+   :ensure t
+   :config
+   (progn
+    (global-set-key (kbd "C-x t") 'eshell)))
+;   (setq multi-term-program "/bin/bash")
+;   (shell-command "xmodmap ~/.Xmodmap")
 
 (use-package julia-mode
   :ensure t)
@@ -261,8 +262,8 @@ current buffer's, reload dir-locals."
       :ensure t
       :config
        (progn
-	 (global-set-key "\M-x" 'counsel-M-x)
-	 (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+         (global-set-key "\M-x" 'counsel-M-x)
+         (global-set-key (kbd "C-x C-f") 'counsel-find-file)
   ))
 
 (use-package company
@@ -299,20 +300,20 @@ current buffer's, reload dir-locals."
       :ensure t
       :config
       (progn
-	(ivy-mode 1)
-	(setq ivy-use-virtual-buffers t)
-	(global-set-key "\C-s" 'swiper)
-	(global-set-key "\C-r" 'swiper)))
+        (ivy-mode 1)
+        (setq ivy-use-virtual-buffers t)
+        (global-set-key "\C-s" 'swiper)
+        (global-set-key "\C-r" 'swiper)))
 
 (use-package ace-window
   :ensure t
   :init
   (progn
-	(global-set-key [remap other-window] 'ace-window)
-	(custom-set-faces
-	 '(aw-leading-char-face
-	       ((t (:inherit ace-jump-face-foreground :height 2.0)))))
-	))
+        (global-set-key [remap other-window] 'ace-window)
+        (custom-set-faces
+         '(aw-leading-char-face
+               ((t (:inherit ace-jump-face-foreground :height 2.0)))))
+        ))
 
 (use-package try
   :ensure t
@@ -338,8 +339,8 @@ current buffer's, reload dir-locals."
   :hook (prog-mode . real-auto-save-mode))
 
 (use-package elcord
-	:config
-	  (setq elcord-client-id '"714056771391717468")
+        :config
+          (setq elcord-client-id '"714056771391717468")
     (setq elcord-refresh-rate 5)
     (setq elcord-use-major-mode-as-main-icon t)
   :init

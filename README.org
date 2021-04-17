@@ -2,7 +2,7 @@
 #+AUTHOR: Jefter Santiago
 #+EMAIL: jefterrsantiago@gmail.com
 #+OPTIONS: toc:nil num:nil
-* Packages 
+* Packages
   I download everthing through melpa
  |--------------------+--------------------------+----------------+--------------------|
  | Appearence         | Navigation               | Code           | Other              |
@@ -41,8 +41,8 @@
 #+end_src
 ** Yes or no
 #+begin_src emacs-lisp
-;;	(fset 'yes-or-no-p 'y-or-n-p)
-	(defalias 'yes-or-no-p 'y-or-n-p)
+;;      (fset 'yes-or-no-p 'y-or-n-p)
+        (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
 ** Smart parents
 #+begin_src emacs-lisp
@@ -63,7 +63,7 @@
 #+begin_src emacs-lisp
    (setq inhibit-splash-screen t
   ;  initial-scratch-message nil
-  	  initial-major-mode 'org-mode)
+          initial-major-mode 'org-mode)
   (setq inhibit-startup-echo-area-message t)
 #+end_src
 ** Mouse scrolling
@@ -89,19 +89,19 @@ mouse-wheel-follow-mouse 't)
       (newline-and-indent)))
   (global-set-key (kbd "C-o") 'insert-new-line-below)
 #+end_src
-** Custom-variables 
+** Custom-variables
    Trash "custom-variables" goes to a file that is ignored
 #+begin_src emacs-lisp
   (setq custom-file "~/.emacs.d/custom.el")
 #+end_src
-* GUI 
+* GUI
 ** Theme
 #+begin_src emacs-lisp
- (use-package dracula-theme 
+ (use-package dracula-theme
    :config
    (load-theme 'dracula t)
    :ensure t)
- (use-package almost-mono-themes 
+ (use-package almost-mono-themes
    :config
    (load-theme 'almost-mono-black t)
    :ensure t)
@@ -112,30 +112,30 @@ mouse-wheel-follow-mouse 't)
   ;; https://emacs.stackexchange.com/q/45895
   (set-face-attribute 'fixed-pitch nil :family "Source Code Pro 12")
   (use-package default-text-scale
-	:demand t
+        :demand t
    :hook (after-init . default-text-scale-mode))
 #+end_src
 ** Font locking
-   Removing syntax highlinting 
+   Removing syntax highlinting
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-l") 'font-lock-mode)
 #+end_src
 ** Utf-8
   #+begin_src emacs-lisp
-	(setq locale-coding-system 'utf-8)
-	(set-terminal-coding-system 'utf-8)
-	(set-keyboard-coding-system 'utf-8)
-	(set-selection-coding-system 'utf-8)
-	(prefer-coding-system 'utf-8)
+        (setq locale-coding-system 'utf-8)
+        (set-terminal-coding-system 'utf-8)
+        (set-keyboard-coding-system 'utf-8)
+        (set-selection-coding-system 'utf-8)
+        (prefer-coding-system 'utf-8)
     (set-language-environment "UTF-8")
     (global-prettify-symbols-mode t)
   #+end_src
 ** Highlight current line
 #+begin_src emacs-lisp
   (use-package diff-hl
-	:config
-	(add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
-	(add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+        :config
+        (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+        (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
 #+end_src
 ** Displaying line number
 #+begin_src emacs-lisp
@@ -144,25 +144,25 @@ mouse-wheel-follow-mouse 't)
 #+end_src
 ** Window tweaks
   #+begin_src emacs-lisp
-	(scroll-bar-mode -1)
-	(tool-bar-mode -1)
-	(menu-bar-mode -1)
-	(set-window-scroll-bars (minibuffer-window) nil nil)
+        (scroll-bar-mode -1)
+        (tool-bar-mode -1)
+        (menu-bar-mode -1)
+        (set-window-scroll-bars (minibuffer-window) nil nil)
   #+end_src
 ** Rainbow delimiters and mode line
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters)
   ;; simple mode line
   (use-package mood-line)
-  (mood-line-mode) 
+  (mood-line-mode)
 #+end_src
 * Dired
 ** Dired-sidebar
 #+begin_src emacs-lisp
-	(use-package dired-sidebar
-		:ensure t )
-  ;;	  :config (dired-sidebar-toggle-sidebar))
-	(global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
+        (use-package dired-sidebar
+                :ensure t )
+  ;;      :config (dired-sidebar-toggle-sidebar))
+        (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
 #+end_src
 ** Icons
 #+begin_src emacs-lisp
@@ -173,30 +173,30 @@ mouse-wheel-follow-mouse 't)
 ** Opening media in respective applications
 #+begin_src emacs-lisp
   (use-package dired-open
-	:config
-	(setq dired-open-extensions
-		  '(("doc" . "openoffice4")
-			("docx" . "openoffice4")
-			("xopp" . "xournalpp")
-			("gif" . "mirage")
-			("jpeg" ."mirage")
-			("jpg" . "mirage")
-			("png" . "mirage")
-			("mkv" . "mpv")
-			("avi" . "mpv")
-			("mov" . "mpv")
-			("mp3" . "mpv")
-			("mp4" . "mpv")
-			("pdf" . "mupdf")
-			("webm" . "mpv")
-			)))
+        :config
+        (setq dired-open-extensions
+                  '(("doc" . "openoffice4")
+                        ("docx" . "openoffice4")
+                        ("xopp" . "xournalpp")
+                        ("gif" . "mirage")
+                        ("jpeg" ."mirage")
+                        ("jpg" . "mirage")
+                        ("png" . "mirage")
+                        ("mkv" . "mpv")
+                        ("avi" . "mpv")
+                        ("mov" . "mpv")
+                        ("mp3" . "mpv")
+                        ("mp4" . "mpv")
+                        ("pdf" . "mupdf")
+                        ("webm" . "mpv")
+                        )))
 #+end_src
 ** Hide dotfiles and extra information (aka ownership and such)
 #+begin_src emacs-lisp
-	(use-package dired-hide-dotfiles
-	  :config
-	  (dired-hide-dotfiles-mode)
-	  (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
+        (use-package dired-hide-dotfiles
+          :config
+          (dired-hide-dotfiles-mode)
+          (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
 
   (setq-default dired-listing-switches "-lhvA")
   (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
@@ -204,21 +204,21 @@ mouse-wheel-follow-mouse 't)
 ** Dir-locals
   Taken from https://emacs.stackexchange.com/a/13096/10950
 #+begin_src emacs-lisp
-	(defun my-reload-dir-locals-for-current-buffer ()
-	  "reload dir locals for the current buffer"
-	  (interactive)
-	  (let ((enable-local-variables :all))
-		(hack-dir-local-variables-non-file-buffer)))
+        (defun my-reload-dir-locals-for-current-buffer ()
+          "reload dir locals for the current buffer"
+          (interactive)
+          (let ((enable-local-variables :all))
+                (hack-dir-local-variables-non-file-buffer)))
 
-	(defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
-	  "For every buffer with the same `default-directory` as the
-	current buffer's, reload dir-locals."
-	  (interactive)
-	  (let ((dir default-directory))
-		(dolist (buffer (buffer-list))
-		  (with-current-buffer buffer
-			(when (equal default-directory dir))
-			(my-reload-dir-locals-for-current-buffer)))))
+        (defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
+          "For every buffer with the same `default-directory` as the
+        current buffer's, reload dir-locals."
+          (interactive)
+          (let ((dir default-directory))
+                (dolist (buffer (buffer-list))
+                  (with-current-buffer buffer
+                        (when (equal default-directory dir))
+                        (my-reload-dir-locals-for-current-buffer)))))
 #+end_src
 * Org-mode
 ** Tweaks
@@ -229,7 +229,7 @@ Disabling font-lock
 Accepting old shortcuts
 #+begin_src emacs-lisp
 (require 'org-tempo)
-#+end_src 
+#+end_src
 #+begin_src emacs-lisp
 (add-to-list 'org-modules 'org-tempo t)
 (use-package org-bullets
@@ -254,32 +254,32 @@ Shortcut for structured (old) template
  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
   org-log-into-drawer t)
 
-	(defun org-file-path (filename)
-	  " Return the absolute address of an org file, give its relative name"
-	  (concat (file-name-as-directory org-directory) filename))
+        (defun org-file-path (filename)
+          " Return the absolute address of an org file, give its relative name"
+          (concat (file-name-as-directory org-directory) filename))
 
-	(setq org-index-file (org-file-path "daily-tasks.org"))
-	(setq org-archive-location
-		  (concat (org-file-path "done-tasks.org") "::* From %s"))
+        (setq org-index-file (org-file-path "daily-tasks.org"))
+        (setq org-archive-location
+                  (concat (org-file-path "done-tasks.org") "::* From %s"))
 
-	;; copy the content out of the archive.org file and yank in the inbox.org
-	(setq org-agenda-files (list org-index-file))
+        ;; copy the content out of the archive.org file and yank in the inbox.org
+        (setq org-agenda-files (list org-index-file))
   ; mark  a todo as done and move it to an appropriate place in the archive.
-	(defun hrs/mark-done-and-archive ()
-	  " Mark the state of an org-mode item as DONE and archive it."
-	  (interactive)
-	  (org-todo 'done)
-	  (org-archive-subtree))
-	(global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
-	(setq org-log-done 'time)
+        (defun hrs/mark-done-and-archive ()
+          " Mark the state of an org-mode item as DONE and archive it."
+          (interactive)
+          (org-todo 'done)
+          (org-archive-subtree))
+        (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
+        (setq org-log-done 'time)
 #+end_src
 ** Capturing Tasks
 #+begin_src emacs-lisp
  (setq org-capture-templates
-		'(("t" "Todo"
-		   entry
-		   (file+headline org-index-file "Inbox")
-		   "* TODO %?\n")))
+                '(("t" "Todo"
+                   entry
+                   (file+headline org-index-file "Inbox")
+                   "* TODO %?\n")))
  (setq org-refile-use-outline-path t)
  (setq org-outline-path-complete-in-steps nil)
  (define-key global-map "\C-cc" 'org-capture)
@@ -287,16 +287,16 @@ Shortcut for structured (old) template
 ** Displaying inline images
    The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/
 #+begin_src emacs-lisp
-	 (defun my/fix-inline-images ()
-	   (when org-inline-image-overlays
-		 (org-redisplay-inline-images)))
-	 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
-	 (setq-default org-image-actual-width 620)
+         (defun my/fix-inline-images ()
+           (when org-inline-image-overlays
+                 (org-redisplay-inline-images)))
+         (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
+         (setq-default org-image-actual-width 620)
 #+end_src
 ** Exporting with org-mode
-*** Latex related 
+*** Latex related
     Makes UTF-8 symbols appears in the buffer
-    I use it for editing Latex 
+    I use it for editing Latex
   #+begin_src emacs-lisp
   (add-hook 'org-mode-hook
   (lambda () (org-toggle-pretty-entities)))
@@ -305,7 +305,7 @@ Shortcut for structured (old) template
  #+begin_src emacs-lisp
  (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
  #+end_src
- Shortcut to export pdf and opening. 
+ Shortcut to export pdf and opening.
 #+begin_src emacs-lisp
 (add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
 (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
@@ -315,27 +315,27 @@ Shortcut for structured (old) template
 #+begin_src emacs-lisp
   (setq org-html-postamble nil)
   (setq browse-url-browse-function 'browse-url-generic
-		browse-url-generic-program "firefox")
+                browse-url-generic-program "firefox")
   (setenv "BROWSER" "firefox")
 #+end_src
 Exporting diagrams
 #+begin_src emacs-lisp
   (use-package graphviz-dot-mode
-	:ensure t)
+        :ensure t)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((dot . t)))
-#+end_src 
+#+end_src
 * Latex
   When editing pure Tex files i like to load a buffer with the pdf.
   #+begin_src emacs-lisp
-	(setq TeX-auto-save t)
-	(setq TeX-parse-self t)
-	(setq TeX-save-query nil)
-	(setq-default TeX-master nil)
-	(setq TeX-PDF-mode t)
-	(add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
-	(global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
+        (setq TeX-auto-save t)
+        (setq TeX-parse-self t)
+        (setq TeX-save-query nil)
+        (setq-default TeX-master nil)
+        (setq TeX-PDF-mode t)
+        (add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
+        (global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
   #+end_src
   Auctex
   #+begin_src emacs-lisp
@@ -350,19 +350,20 @@ Exporting diagrams
   #+end_src
 * Evil mode
   #+begin_src emacs-lisp
-	(require 'evil)
-	(evil-mode 1)
+        (require 'evil)
+        (evil-mode 1)
   #+end_src
 * Multi-term
 #+begin_src emacs-lisp
-  (use-package multi-term 
+  (use-package eshell 
    :ensure t
-   :config 
+   :config
    (progn
-	(global-set-key (kbd "C-x t") 'multi-term)))
-   (setq multi-term-program "/bin/bash")
+    (global-set-key (kbd "C-x t") 'eshell)))
+;   (setq multi-term-program "/bin/bash")
+;   (shell-command "xmodmap ~/.Xmodmap")
 #+end_src
-* Code 
+* Code
 ** julia
 #+begin_src emacs-lisp
   (use-package julia-mode
@@ -371,29 +372,29 @@ Exporting diagrams
 ** Yasnippet
 #+begin_src  emacs-lisp
   (use-package yasnippet
-	:ensure t
-	:init
-	(yas-global-mode 1))
+        :ensure t
+        :init
+        (yas-global-mode 1))
 #+end_src
 ** Counsel
-	I use counsel mostly for navigation.
+        I use counsel mostly for navigation.
 #+begin_src  emacs-lisp
   (use-package counsel
-	:ensure t
-	:config
-	 (progn
-	   (global-set-key "\M-x" 'counsel-M-x)
-	   (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+        :ensure t
+        :config
+         (progn
+           (global-set-key "\M-x" 'counsel-M-x)
+           (global-set-key (kbd "C-x C-f") 'counsel-find-file)
     ))
 #+end_src
 ** Auto Completation
 *** Company
    Completation framework
 #+begin_src  emacs-lisp
-	 (use-package company
-	   :ensure t
-	   :demand t
-	   :config (setq company-tooltip-align-annotations t))
+         (use-package company
+           :ensure t
+           :demand t
+           :config (setq company-tooltip-align-annotations t))
 #+end_src
 ** Syntax checking
 *** Flycheck
@@ -421,78 +422,79 @@ Checks for syntax errors and hilight the line.
 *** Shell
    For this to work, =checkbashisms= needs to be available on the =$PATH=:
    #+begin_src sh
-	 sudo pacman -S checkbashisms # Arch Linux, from AUR
+         sudo pacman -S checkbashisms # Arch Linux, from AUR
    #+end_src
    #+begin_src emacs-lisp
-	 (use-package flycheck-checkbashisms
-	   ;; We assume that shellcheck can handle this.
-	   :disabled t
-	   :hook (flycheck-mode . flycheck-checkbashisms-setup)
-	   :config
-	   ;; Check 'echo -n' usage
-	   (setq flycheck-checkbashisms-newline t)
-	   (setq flycheck-checkbashisms-posix t))
+         (use-package flycheck-checkbashisms
+           ;; We assume that shellcheck can handle this.
+           :disabled t
+           :hook (flycheck-mode . flycheck-checkbashisms-setup)
+           :config
+           ;; Check 'echo -n' usage
+           (setq flycheck-checkbashisms-newline t)
+           (setq flycheck-checkbashisms-posix t))
 #+end_src
 * Buffers behavior & search config
 ** Swiper
 #+begin_src  emacs-lisp
   (use-package swiper
-	:ensure t
-	:config
-	(progn
-	  (ivy-mode 1)
-	  (setq ivy-use-virtual-buffers t)
-	  (global-set-key "\C-s" 'swiper)
-	  (global-set-key "\C-r" 'swiper)))
+        :ensure t
+        :config
+        (progn
+          (ivy-mode 1)
+          (setq ivy-use-virtual-buffers t)
+          (global-set-key "\C-s" 'swiper)
+          (global-set-key "\C-r" 'swiper)))
 #+end_src
 ** Ace-window
 #+begin_src emacs-lisp
-	 (use-package ace-window
-	   :ensure t
-	   :init
-	   (progn
-		 (global-set-key [remap other-window] 'ace-window)
-		 (custom-set-faces
-		  '(aw-leading-char-face
-			((t (:inherit ace-jump-face-foreground :height 2.0)))))
-		 ))
+         (use-package ace-window
+           :ensure t
+           :init
+           (progn
+                 (global-set-key [remap other-window] 'ace-window)
+                 (custom-set-faces
+                  '(aw-leading-char-face
+                        ((t (:inherit ace-jump-face-foreground :height 2.0)))))
+                 ))
 #+end_src
 ** Try
    #+begin_SRC  emacs-lisp
-	 (use-package try
-	   :ensure t
-	   :config
-	   (progn (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
-	 (ivy-mode 1)
-	 (setq ivy-use-virtual-buffers t)
-	 (setq ivy-display-style 'fancy)
+         (use-package try
+           :ensure t
+           :config
+           (progn (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
+         (ivy-mode 1)
+         (setq ivy-use-virtual-buffers t)
+         (setq ivy-display-style 'fancy)
 
-	 (use-package which-key
-	   :ensure t
-	   :config
-	   (which-key-mode))
+         (use-package which-key
+           :ensure t
+           :config
+           (which-key-mode))
    #+END_SRC
 * Backup/autosaving
   #+begin_src emacs-lisp
-	;; backup disabled
-	(setq-default backup-inhibited t)
-	(setq-default create-lockfiles nil)
-	(setq-default make-backup-files nil)
-	(use-package real-auto-save
-	  :ensure t
-	  :demand t
-	  :config (setq real-auto-save-interval 10)
-	  :hook (prog-mode . real-auto-save-mode))
+        ;; backup disabled
+        (setq-default backup-inhibited t)
+        (setq-default create-lockfiles nil)
+        (setq-default make-backup-files nil)
+        (use-package real-auto-save
+          :ensure t
+          :demand t
+          :config (setq real-auto-save-interval 10)
+          :hook (prog-mode . real-auto-save-mode))
   #+end_src
-* External Stuff 
+* External Stuff
 ** Discord
    Want to show to everybody that you are using Emacs ?! This is how you do it.
 #+begin_src emacs-lisp
   (use-package elcord
-	:config
-	  (setq elcord-client-id '"714056771391717468")
+        :config
+          (setq elcord-client-id '"714056771391717468")
     (setq elcord-refresh-rate 5)
     (setq elcord-use-major-mode-as-main-icon t)
   :init
 (elcord-mode))
 #+end_src
+
