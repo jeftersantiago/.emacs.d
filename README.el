@@ -1,4 +1,4 @@
-(setq-default user-full-name "Jefter S. Mares")
+(setq-default user-full-name "Jefter Santiago")
 (setq-default user-mail-address "jefterrsantiago@gmail.com")
 
 (load "~/.local/bin/private.el")
@@ -246,7 +246,7 @@ current buffer's, reload dir-locals."
    :ensure t
    :config
    (progn
-    (global-set-key (kbd "C-x t") 'eshell)))
+   (global-set-key (kbd "C-x t") 'eshell)))
 ;   (setq multi-term-program "/bin/bash")
 ;   (shell-command "xmodmap ~/.Xmodmap")
 

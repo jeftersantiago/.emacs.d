@@ -1,0 +1,2 @@
+;;; Generated package description from /home/jefterrsantiago/.emacs.d/elpa/dired-open-20180922.1113/dired-open.el  -*- no-byte-compile: t -*-
+(define-package "dired-open" "20180922.1113" "Open files from dired using using custom actions" '((dash "2.5.0") (dired-hacks-utils "0.0.1")) :commit "d1a2bda6aa8f890cb367297ed93aee6d3b5ba388" :authors '(("Matúš Goljer" . "matus.goljer@gmail.com")) :maintainer '("Matúš Goljer" . "matus.goljer@gmail.com") :keywords '("files"))

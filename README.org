@@ -19,7 +19,7 @@
  |--------------------+--------------------------+----------------+--------------------|
 * About me
 #+begin_src emacs-lisp
-  (setq-default user-full-name "Jefter S. Mares")
+  (setq-default user-full-name "Jefter Santiago")
   (setq-default user-mail-address "jefterrsantiago@gmail.com")
 #+end_src
 * General configuration
@@ -355,13 +355,13 @@ Exporting diagrams
   #+end_src
 * Multi-term
 #+begin_src emacs-lisp
-  (use-package eshell 
-   :ensure t
-   :config
-   (progn
-    (global-set-key (kbd "C-x t") 'eshell)))
-;   (setq multi-term-program "/bin/bash")
-;   (shell-command "xmodmap ~/.Xmodmap")
+    (use-package eshell 
+     :ensure t
+     :config
+     (progn
+     (global-set-key (kbd "C-x t") 'eshell)))
+  ;   (setq multi-term-program "/bin/bash")
+  ;   (shell-command "xmodmap ~/.Xmodmap")
 #+end_src
 * Code
 ** julia
