@@ -4,14 +4,14 @@
 (load "~/.local/bin/private.el")
 
 (setq confirm-kill-processes nil)
-(setq-default transient-mark-mode t)
-(setq-default visual-line-mode t)
-(setq-default truncate-lines nil)
-(setq-default cursor-type 'box)
-(setq-default fill-column 78)
-(setq-default sentence-end-double-space nil)
-; Enable maximum syntax highlighting wherever possible.
-(global-font-lock-mode 0)
+ (setq-default transient-mark-mode t)
+ (setq-default visual-line-mode t)
+ (setq-default truncate-lines nil)
+ (setq-default cursor-type 'box)
+ (setq-default fill-column 78)
+ (setq-default sentence-end-double-space nil)
+ ; Enable maximum syntax highlighting wherever possible.
+ (global-font-lock-mode 0)
 
 ;;      (fset 'yes-or-no-p 'y-or-n-p)
         (defalias 'yes-or-no-p 'y-or-n-p)
@@ -104,23 +104,23 @@ mouse-wheel-follow-mouse 't)
 :config (all-the-icons-dired-mode))
 
 (use-package dired-open
-      :config
-      (setq dired-open-extensions
-                '(("doc" . "openoffice4")
-                      ("docx" . "openoffice4")
-                      ("xopp" . "xournalpp")
-                      ("gif" . "mirage")
-                      ("jpeg" ."mirage")
-                      ("jpg" . "mirage")
-                      ("png" . "mirage")
-                      ("mkv" . "mpv")
-                      ("avi" . "mpv")
-                      ("mov" . "mpv")
-                      ("mp3" . "mpv")
-                      ("mp4" . "mpv")
-                      ("pdf" . "mupdf")
-                      ("webm" . "mpv")
-                      )))
+  :config
+  (setq dired-open-extensions
+        '(("doc" . "openoffice4")
+          ("docx" . "openoffice4")
+          ("xopp" . "xournalpp")
+          ("gif" . "mirage")
+          ("jpeg" ."mirage")
+          ("jpg" . "mirage")
+          ("png" . "mirage")
+          ("mkv" . "mpv")
+          ("avi" . "mpv")
+          ("mov" . "mpv")
+          ("mp3" . "mpv")
+          ("mp4" . "mpv")
+          ("pdf" . "mupdf")
+          ("webm" . "mpv")
+          )))
 
 (use-package dired-hide-dotfiles
         :config
@@ -167,39 +167,39 @@ current buffer's, reload dir-locals."
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (setq-default fill-column 79)
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
- org-log-into-drawer t)
+      org-log-into-drawer t)
 
-       (defun org-file-path (filename)
-         " Return the absolute address of an org file, give its relative name"
-         (concat (file-name-as-directory org-directory) filename))
+(defun org-file-path (filename)
+  " Return the absolute address of an org file, give its relative name"
+  (concat (file-name-as-directory org-directory) filename))
 
-       (setq org-index-file (org-file-path "daily-tasks.org"))
-       (setq org-archive-location
-                 (concat (org-file-path "done-tasks.org") "::* From %s"))
+(setq org-index-file (org-file-path "todo.org"))
+(setq org-archive-location
+      (concat (org-file-path "done-tasks.org") "::* From %s"))
 
-       ;; copy the content out of the archive.org file and yank in the inbox.org
-       (setq org-agenda-files (list org-index-file))
- ; mark  a todo as done and move it to an appropriate place in the archive.
-       (defun hrs/mark-done-and-archive ()
-         " Mark the state of an org-mode item as DONE and archive it."
-         (interactive)
-         (org-todo 'done)
-         (org-archive-subtree))
-       (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
-       (setq org-log-done 'time)
+;; copy the content out of the archive.org file and yank in the inbox.org
+(setq org-agenda-files (list org-index-file))
+                                        ; mark  a todo as done and move it to an appropriate place in the archive.
+(defun hrs/mark-done-and-archive ()
+  " Mark the state of an org-mode item as DONE and archive it."
+  (interactive)
+  (org-todo 'done)
+  (org-archive-subtree))
+(global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
+(setq org-log-done 'time)
 
 (setq org-capture-templates
-               '(("t" "Todo"
-                  entry
-                  (file+headline org-index-file "Inbox")
-                  "* TODO %?\n")))
+      '(("t" "Todo"
+         entry
+         (file+headline org-index-file "Inbox")
+         "* TODO %?\n")))
 (setq org-refile-use-outline-path t)
 (setq org-outline-path-complete-in-steps nil)
 (define-key global-map "\C-cc" 'org-capture)
 
 (defun my/fix-inline-images ()
   (when org-inline-image-overlays
-        (org-redisplay-inline-images)))
+    (org-redisplay-inline-images)))
 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
 (setq-default org-image-actual-width 620)
 
@@ -223,10 +223,10 @@ current buffer's, reload dir-locals."
  '((dot . t)))
 
 (setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq TeX-save-query nil)
-(setq-default TeX-master nil)
-(setq TeX-PDF-mode t)
+ (setq TeX-parse-self t)
+ (setq TeX-save-query nil)
+ (setq-default TeX-master nil)
+ (setq TeX-PDF-mode t)
 (add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
 (global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
 
@@ -242,13 +242,12 @@ current buffer's, reload dir-locals."
 (require 'evil)
 (evil-mode 1)
 
-(use-package eshell 
-   :ensure t
-   :config
-   (progn
-   (global-set-key (kbd "C-x t") 'eshell)))
-;   (setq multi-term-program "/bin/bash")
-;   (shell-command "xmodmap ~/.Xmodmap")
+(use-package multi-term 
+ :ensure t
+ :config 
+ (progn
+   (global-set-key (kbd "C-x t") 'multi-term)))
+ (setq multi-term-program "/bin/bash")
 
 (use-package julia-mode
   :ensure t)
@@ -318,7 +317,7 @@ current buffer's, reload dir-locals."
 (use-package try
   :ensure t
   :config
-  (progn (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
+  (progn  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
 (ivy-mode 1)
 (setq ivy-use-virtual-buffers t)
 (setq ivy-display-style 'fancy)
@@ -337,11 +336,3 @@ current buffer's, reload dir-locals."
   :demand t
   :config (setq real-auto-save-interval 10)
   :hook (prog-mode . real-auto-save-mode))
-
-(use-package elcord
-        :config
-          (setq elcord-client-id '"714056771391717468")
-    (setq elcord-refresh-rate 5)
-    (setq elcord-use-major-mode-as-main-icon t)
-  :init
-(elcord-mode))
