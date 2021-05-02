@@ -10,7 +10,7 @@
  (setq-default cursor-type 'box)
  (setq-default fill-column 78)
  (setq-default sentence-end-double-space nil)
- ; Enable maximum syntax highlighting wherever possible.
+ ; i don't like syntax highlight very much
  (global-font-lock-mode 0)
 
 ;;      (fset 'yes-or-no-p 'y-or-n-p)
@@ -59,9 +59,10 @@ mouse-wheel-follow-mouse 't)
   (load-theme 'almost-mono-black t)
   :ensure t)
 
-(add-to-list 'default-frame-alist '(font . "Source Code Pro 12"))
+(add-to-list 'default-frame-alist '(font . "Monospace 15"))
 ;; https://emacs.stackexchange.com/q/45895
-(set-face-attribute 'fixed-pitch nil :family "Source Code Pro 12")
+(set-face-attribute 'fixed-pitch nil :family "Monospace 15")
+
 (use-package default-text-scale
       :demand t
  :hook (after-init . default-text-scale-mode))
@@ -69,10 +70,11 @@ mouse-wheel-follow-mouse 't)
 (global-set-key (kbd "C-x C-l") 'font-lock-mode)
 
 (setq locale-coding-system 'utf-8)
-    (set-terminal-coding-system 'utf-8)
-    (set-keyboard-coding-system 'utf-8)
-    (set-selection-coding-system 'utf-8)
-    (prefer-coding-system 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
 (set-language-environment "UTF-8")
 (global-prettify-symbols-mode t)
 
@@ -95,13 +97,8 @@ mouse-wheel-follow-mouse 't)
 (mood-line-mode)
 
 (use-package dired-sidebar
-              :ensure t )
-;;      :config (dired-sidebar-toggle-sidebar))
-      (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
-
-(use-package all-the-icons-dired
-:ensure t
-:config (all-the-icons-dired-mode))
+:ensure t)
+(global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
 
 (use-package dired-open
   :config
@@ -118,7 +115,7 @@ mouse-wheel-follow-mouse 't)
           ("mov" . "mpv")
           ("mp3" . "mpv")
           ("mp4" . "mpv")
-          ("pdf" . "mupdf")
+          ("pdf" . "xreader")
           ("webm" . "mpv")
           )))
 
@@ -224,20 +221,33 @@ current buffer's, reload dir-locals."
 
 (setq TeX-auto-save t)
  (setq TeX-parse-self t)
- (setq TeX-save-query nil)
+ (setq TeX-save-query t)
  (setq-default TeX-master nil)
  (setq TeX-PDF-mode t)
+
 (add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
+
 (global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
 
+(add-to-list 'org-latex-packages-alist '("" "listings" nil))
+(setq org-latex-listings t)   
+(setq org-latex-listings-options '(("breaklines" "true")))
+
 (use-package auctex
-:hook ((latex-mode LaTeX-mode) . lsp)
-:config
-(add-to-list 'font-latex-math-environments "dmath"))
+   :hook ((latex-mode LaTeX-mode) . lsp)
+   :config
+  (add-to-list 'font-latex-math-environments "dmath"))
 (use-package auctex-latexmk
-:after auctex
-:init
-(auctex-latexmk-setup))
+   :after auctex
+   :init
+  (auctex-latexmk-setup))
+
+(add-hook 'LaTeX-mode-hook 'visual-line-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+
+(add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+(setq reftex-plug-into-AUCTeX t)
 
 (require 'evil)
 (evil-mode 1)
@@ -249,51 +259,10 @@ current buffer's, reload dir-locals."
    (global-set-key (kbd "C-x t") 'multi-term)))
  (setq multi-term-program "/bin/bash")
 
-(use-package julia-mode
-  :ensure t)
-
 (use-package yasnippet
       :ensure t
       :init
       (yas-global-mode 1))
-
-(use-package counsel
-      :ensure t
-      :config
-       (progn
-         (global-set-key "\M-x" 'counsel-M-x)
-         (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-  ))
-
-(use-package company
-  :ensure t
-  :demand t
-  :config (setq company-tooltip-align-annotations t))
-
-(use-package flycheck
-  :ensure t
-  :config
-(add-hook 'prog-mode-hook #'flycheck-mode)
-(set-face-underline 'flycheck-error '(:color "#dc322f" :style line))
-(set-face-underline 'flycheck-warning '(:color "#e5aa00" :style line))
-(set-face-underline 'flycheck-info '(:color "#268bd2" :style line))
-   )
-
-(use-package flymake
- :config
-(set-face-underline 'flymake-error '(:color "#dc322f" :style line))
-(set-face-underline 'flymake-warning '(:color "#e5aa00" :style line))
-(set-face-underline 'flymake-note '(:color "#268bd2" :style line))
-  )
-
-(use-package flycheck-checkbashisms
-  ;; We assume that shellcheck can handle this.
-  :disabled t
-  :hook (flycheck-mode . flycheck-checkbashisms-setup)
-  :config
-  ;; Check 'echo -n' usage
-  (setq flycheck-checkbashisms-newline t)
-  (setq flycheck-checkbashisms-posix t))
 
 (use-package swiper
       :ensure t
@@ -336,3 +305,6 @@ current buffer's, reload dir-locals."
   :demand t
   :config (setq real-auto-save-interval 10)
   :hook (prog-mode . real-auto-save-mode))
+
+(require 'elcord)
+(elcord-mode)

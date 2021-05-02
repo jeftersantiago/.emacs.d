@@ -4,19 +4,19 @@
 #+OPTIONS: toc:nil num:nil
 * Packages
   I download everthing through melpa
- |--------------------+--------------------------+----------------+--------------------|
- | Appearence         | Navigation               | Code           | Other              |
- |--------------------+--------------------------+----------------+--------------------|
- | org-mode           | evil                     |                | graphviz-dot-mode  |
- | mood-line          | all-the-icons-dired-mode | auctex-latexmk | latex-preview-pane |
- | real-auto-save     | dired-open               | multi-term     | rainbow-delimiters |
- | default-text-scale | dired-hide-dotfiles      | counsel        |                    |
- | almost-mono-themes | swiper                   | auto-complete  |                    |
- | org-bullets        | ace-window               | flycheck       |                    |
- | elcord             | try                      | flymake        |                    |
- | diff-hl            | yasnippet                | auctex         |                    |
- |                    | dired-sidebar            | which-key      |                    |
- |--------------------+--------------------------+----------------+--------------------|
+ |--------------------+---------------------+----------------+--------------------|
+ | Appearence         | Navigation          | Code           | Other              |
+ |--------------------+---------------------+----------------+--------------------|
+ | org-mode           | evil                |                | graphviz-dot-mode  |
+ | mood-line          | dired-open          | auctex-latexmk | latex-preview-pane |
+ | real-auto-save     | dired-hide-dotfiles | multi-term     | rainbow-delimiters |
+ | default-text-scale | swiper              | counsel        |                    |
+ | almost-mono-themes | ace-window          | auto-complete  |                    |
+ | org-bullets        | try                 | flycheck       |                    |
+ | elcord             | yasnippet           | flymake        |                    |
+ | diff-hl            | dired-sidebar       | auctex         |                    |
+ |                    |                     | which-key      |                    |
+ |--------------------+---------------------+----------------+--------------------|
 * About me
 #+begin_src emacs-lisp
   (setq-default user-full-name "Jefter Santiago")
@@ -36,7 +36,7 @@
    (setq-default cursor-type 'box)
    (setq-default fill-column 78)
    (setq-default sentence-end-double-space nil)
-   ; Enable maximum syntax highlighting wherever possible.
+   ; i don't like syntax highlight very much
    (global-font-lock-mode 0)
 #+end_src
 ** Yes or no
@@ -46,7 +46,6 @@
 #+end_src
 ** Smart parents
 #+begin_src emacs-lisp
-
    (use-package smartparens
      :ensure t
      :config
@@ -108,9 +107,10 @@ mouse-wheel-follow-mouse 't)
 #+end_src
 ** Fonts
 #+begin_src emacs-lisp
-  (add-to-list 'default-frame-alist '(font . "Source Code Pro 12"))
+  (add-to-list 'default-frame-alist '(font . "Monospace 15"))
   ;; https://emacs.stackexchange.com/q/45895
-  (set-face-attribute 'fixed-pitch nil :family "Source Code Pro 12")
+  (set-face-attribute 'fixed-pitch nil :family "Monospace 15")
+
   (use-package default-text-scale
         :demand t
    :hook (after-init . default-text-scale-mode))
@@ -122,11 +122,12 @@ mouse-wheel-follow-mouse 't)
 #+end_src
 ** Utf-8
   #+begin_src emacs-lisp
-        (setq locale-coding-system 'utf-8)
-        (set-terminal-coding-system 'utf-8)
-        (set-keyboard-coding-system 'utf-8)
-        (set-selection-coding-system 'utf-8)
-        (prefer-coding-system 'utf-8)
+    (setq locale-coding-system 'utf-8)
+    (set-terminal-coding-system 'utf-8)
+    (set-keyboard-coding-system 'utf-8)
+    (set-selection-coding-system 'utf-8)
+    (prefer-coding-system 'utf-8)
+
     (set-language-environment "UTF-8")
     (global-prettify-symbols-mode t)
   #+end_src
@@ -159,16 +160,9 @@ mouse-wheel-follow-mouse 't)
 * Dired
 ** Dired-sidebar
 #+begin_src emacs-lisp
-        (use-package dired-sidebar
-                :ensure t )
-  ;;      :config (dired-sidebar-toggle-sidebar))
-        (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
-#+end_src
-** Icons
-#+begin_src emacs-lisp
-  (use-package all-the-icons-dired
-  :ensure t
-  :config (all-the-icons-dired-mode))
+    (use-package dired-sidebar
+    :ensure t)
+    (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
 #+end_src
 ** Opening media in respective applications
 #+begin_src emacs-lisp
@@ -187,7 +181,7 @@ mouse-wheel-follow-mouse 't)
             ("mov" . "mpv")
             ("mp3" . "mpv")
             ("mp4" . "mpv")
-            ("pdf" . "mupdf")
+            ("pdf" . "xreader")
             ("webm" . "mpv")
             )))
 #+end_src
@@ -237,7 +231,7 @@ Accepting old shortcuts
    :config
    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
    (setq org-ellipsis "⮟")
-   (setq org-src-fontify-natively t)
+
   ; (setq org-src-tab-acts-natively t)
    (setq org-src-window-setup 'current-window)
    (add-to-list 'org-structure-template-alist
@@ -295,7 +289,7 @@ Shortcut for structured (old) template
    #+end_src
 ** Exporting with org-mode
 *** Latex related
-    Makes UTF-8 symbols appears in the buffer
+    Makes UTF-8 symbols appears in  buffer
     I use it for editing Latex
   #+begin_src emacs-lisp
     (add-hook 'org-mode-hook
@@ -331,22 +325,35 @@ Exporting diagrams
   #+begin_src emacs-lisp
     (setq TeX-auto-save t)
     (setq TeX-parse-self t)
-    (setq TeX-save-query nil)
+    (setq TeX-save-query t)
     (setq-default TeX-master nil)
     (setq TeX-PDF-mode t)
+  
    (add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
+
    (global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
+
+   (add-to-list 'org-latex-packages-alist '("" "listings" nil))
+   (setq org-latex-listings t)   
+   (setq org-latex-listings-options '(("breaklines" "true")))
   #+end_src
   Auctex
   #+begin_src emacs-lisp
-    (use-package auctex
-    :hook ((latex-mode LaTeX-mode) . lsp)
-    :config
-    (add-to-list 'font-latex-math-environments "dmath"))
-    (use-package auctex-latexmk
-    :after auctex
-    :init
-    (auctex-latexmk-setup))
+   (use-package auctex
+      :hook ((latex-mode LaTeX-mode) . lsp)
+      :config
+     (add-to-list 'font-latex-math-environments "dmath"))
+   (use-package auctex-latexmk
+      :after auctex
+      :init
+     (auctex-latexmk-setup))
+
+   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+   (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+
+   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+   (setq reftex-plug-into-AUCTeX t)
   #+end_src
 * Evil mode
   #+begin_src emacs-lisp
@@ -363,75 +370,12 @@ Exporting diagrams
    (setq multi-term-program "/bin/bash")
 #+end_src
 * Code
-** julia
-#+begin_src emacs-lisp
-  (use-package julia-mode
-    :ensure t)
-#+end_src
 ** Yasnippet
 #+begin_src  emacs-lisp
   (use-package yasnippet
         :ensure t
         :init
         (yas-global-mode 1))
-#+end_src
-** Counsel
-   I use counsel mostly for navigation.
-#+begin_src  emacs-lisp
-  (use-package counsel
-        :ensure t
-        :config
-         (progn
-           (global-set-key "\M-x" 'counsel-M-x)
-           (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-    ))
-#+end_src
-** Auto Completation
-*** Company
-    Completation framework
-#+begin_src  emacs-lisp
-  (use-package company
-    :ensure t
-    :demand t
-    :config (setq company-tooltip-align-annotations t))
-#+end_src
-** Syntax checking
-*** Flycheck
-    Syntax checking
-#+begin_src  emacs-lisp
-   (use-package flycheck
-    :ensure t
-    :config
-  (add-hook 'prog-mode-hook #'flycheck-mode)
-  (set-face-underline 'flycheck-error '(:color "#dc322f" :style line))
-  (set-face-underline 'flycheck-warning '(:color "#e5aa00" :style line))
-  (set-face-underline 'flycheck-info '(:color "#268bd2" :style line))
-     )
-#+end_src
-*** Flymake
-    Checks for syntax errors and hilight the line.
-#+begin_src  emacs-lisp
-    (use-package flymake
-   :config
-  (set-face-underline 'flymake-error '(:color "#dc322f" :style line))
-  (set-face-underline 'flymake-warning '(:color "#e5aa00" :style line))
-  (set-face-underline 'flymake-note '(:color "#268bd2" :style line))
-    )
-#+end_src
-*** Shell
-    For this to work, =checkbashisms= needs to be available on the =$PATH=:
-   #+begin_src sh
-     sudo pacman -S checkbashisms # Arch Linux, from AUR
-   #+end_src
-   #+begin_src emacs-lisp
-     (use-package flycheck-checkbashisms
-       ;; We assume that shellcheck can handle this.
-       :disabled t
-       :hook (flycheck-mode . flycheck-checkbashisms-setup)
-       :config
-       ;; Check 'echo -n' usage
-       (setq flycheck-checkbashisms-newline t)
-       (setq flycheck-checkbashisms-posix t))
 #+end_src
 * Buffers behavior & search config
 ** Swiper
@@ -484,3 +428,11 @@ Exporting diagrams
       :config (setq real-auto-save-interval 10)
       :hook (prog-mode . real-auto-save-mode))
   #+end_src
+
+* Discord
+  Showing to everybody that i'm using emacs
+  #+begin_src emacs-lisp
+    (require 'elcord)
+    (elcord-mode)
+  #+end_src
+  
