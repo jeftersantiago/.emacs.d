@@ -59,9 +59,9 @@ mouse-wheel-follow-mouse 't)
   (load-theme 'almost-mono-black t)
   :ensure t)
 
-(add-to-list 'default-frame-alist '(font . "Monospace 15"))
+(add-to-list 'default-frame-alist '(font . "Monospace 20"))
 ;; https://emacs.stackexchange.com/q/45895
-(set-face-attribute 'fixed-pitch nil :family "Monospace 15")
+(set-face-attribute 'fixed-pitch nil :family "Monospace 20")
 
 (use-package default-text-scale
       :demand t
@@ -153,7 +153,7 @@ current buffer's, reload dir-locals."
  :config
  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
  (setq org-ellipsis "⮟")
- (setq org-src-fontify-natively t)
+
 ; (setq org-src-tab-acts-natively t)
  (setq org-src-window-setup 'current-window)
  (add-to-list 'org-structure-template-alist
@@ -172,7 +172,7 @@ current buffer's, reload dir-locals."
 
 (setq org-index-file (org-file-path "todo.org"))
 (setq org-archive-location
-      (concat (org-file-path "done-tasks.org") "::* From %s"))
+      (concat (org-file-path "done.org") "::* From %s"))
 
 ;; copy the content out of the archive.org file and yank in the inbox.org
 (setq org-agenda-files (list org-index-file))
