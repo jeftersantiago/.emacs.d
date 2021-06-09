@@ -3,7 +3,7 @@
 #+EMAIL: jefterrsantiago@gmail.com
 #+OPTIONS: toc:nil num:nil
 * Packages
-  I download everthing through melpa
+ I download everthing through melpa
  |--------------------+---------------------+----------------+--------------------|
  | Appearence         | Navigation          | Code           | Other              |
  |--------------------+---------------------+----------------+--------------------|
@@ -20,7 +20,7 @@
 * About me
 #+begin_src emacs-lisp
   (setq-default user-full-name "Jefter Santiago")
-  (setq-default user-mail-address "jefterrsantiago@gmail.com")
+  (setq-default user-mail-address "jeftersantiago@protonmail.com")
 #+end_src
 * General configuration
 ** Private configs
@@ -37,7 +37,7 @@
    (setq-default fill-column 78)
    (setq-default sentence-end-double-space nil)
    ; i don't like syntax highlight very much
-   (global-font-lock-mode 0)
+;   (global-font-lock-mode 0)
 #+end_src
 ** Yes or no
 #+begin_src emacs-lisp
@@ -96,15 +96,21 @@ mouse-wheel-follow-mouse 't)
 * GUI
 ** Theme
 #+begin_src emacs-lisp
-  (use-package dracula-theme
-    :config
-    (load-theme 'dracula t)
-    :ensure t)
-  (use-package almost-mono-themes
-    :config
-    (load-theme 'almost-mono-black t)
-    :ensure t)
+;    (use-package dracula-theme 
+;      :config
+;      (load-theme 'dracula t)
+;      :ensure t)
+     (use-package cherry-blossom-theme 
+       :config
+       (load-theme 'cherry-blossom t)
+       :ensure t)
 #+end_src
+** Transparency
+   #+begin_src emacs-lisp
+     ;; set transparency
+     (set-frame-parameter (selected-frame) 'alpha '(90 90))
+     (add-to-list 'default-frame-alist '(alpha 90 90))
+   #+end_src
 ** Fonts
 #+begin_src emacs-lisp
   (add-to-list 'default-frame-alist '(font . "Monospace 20"))
@@ -140,8 +146,8 @@ mouse-wheel-follow-mouse 't)
 #+end_src
 ** Displaying line number
 #+begin_src emacs-lisp
-  ;(global-display-line-numbers-mode)
-  ;(setq display-line-numbers-type 'relative)
+  (global-display-line-numbers-mode)
+  (setq display-line-numbers-type 'relative)
 #+end_src
 ** Window tweaks
   #+begin_src emacs-lisp
@@ -160,9 +166,10 @@ mouse-wheel-follow-mouse 't)
 * Dired
 ** Dired-sidebar
 #+begin_src emacs-lisp
-    (use-package dired-sidebar
-    :ensure t)
-    (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
+  (use-package dired-sidebar
+  :ensure t)
+  (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
+  
 #+end_src
 ** Opening media in respective applications
 #+begin_src emacs-lisp
@@ -216,9 +223,9 @@ mouse-wheel-follow-mouse 't)
 #+end_src
 * Org-mode
 ** Tweaks
-Disabling font-lock
+%Disabling font-lock
 #+begin_src emacs-lisp
-  (add-hook 'org-mode-hook 'font-lock-mode)
+;  (add-hook 'org-mode-hook 'font-lock-mode)
 #+end_src
 Accepting old shortcuts
 #+begin_src emacs-lisp
@@ -231,6 +238,11 @@ Accepting old shortcuts
    :config
    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
    (setq org-ellipsis "⮟")
+
+(font-lock-add-keywords
+ 'org-mode
+ '(("^[[:space:]]*\\(-\\) "
+        (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
   ; (setq org-src-tab-acts-natively t)
    (setq org-src-window-setup 'current-window)
@@ -304,8 +316,7 @@ Shortcut for structured (old) template
   (add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
   (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
 #+end_src
-*** Others
-    HTML
+*** HTML
 #+begin_src emacs-lisp
   (setq org-html-postamble nil)
   (setq browse-url-browse-function 'browse-url-generic
@@ -323,38 +334,40 @@ Exporting diagrams
 * Latex
   When editing pure Tex files i like to load a buffer with the pdf.
   #+begin_src emacs-lisp
-    (setq TeX-auto-save t)
-    (setq TeX-parse-self t)
-    (setq TeX-save-query t)
-    (setq-default TeX-master nil)
-    (setq TeX-PDF-mode t)
-  
-   (add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
+     (setq TeX-auto-save t)
+     (setq TeX-parse-self t)
+     (setq TeX-save-query t)
+     (setq-default TeX-master nil)
+     (setq TeX-PDF-mode t)
+    ; (add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
+    ; (global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
+     (global-set-key (kbd "C-x l ") 'pdflatex)
+    (add-to-list 'org-latex-packages-alist '("" "listings" nil))
+    (setq org-latex-listings t)   
+    (setq org-latex-listings-options '(("breaklines" "true")))
+#+end_src
+Auctex
+#+begin_src emacs-lisp
+      (use-package auctex
+          :hook ((latex-mode LaTeX-mode) . tex)
+          :config
+       (add-to-list 'font-latex-math-environments "dmath"))
+    ;  (use-package auctex-latexmk
+    ;      :after auctex
+    ;      :init
+    ;   (auctex-latexmk-setup))
 
-   (global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
+        (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+        (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+        (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
-   (add-to-list 'org-latex-packages-alist '("" "listings" nil))
-   (setq org-latex-listings t)   
-   (setq org-latex-listings-options '(("breaklines" "true")))
+        (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+        (setq reftex-plug-into-AUCTeX t)
   #+end_src
-  Auctex
-  #+begin_src emacs-lisp
-   (use-package auctex
-      :hook ((latex-mode LaTeX-mode) . lsp)
-      :config
-     (add-to-list 'font-latex-math-environments "dmath"))
-   (use-package auctex-latexmk
-      :after auctex
-      :init
-     (auctex-latexmk-setup))
-
-   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-   (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-
-   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-   (setq reftex-plug-into-AUCTeX t)
-  #+end_src
+#+begin_src emacs-lisp
+    ;; with latex i like colors :)
+    (add-hook 'LaTeX-mode-hook 'font-lock-mode)
+#+end_src
 * Evil mode
   #+begin_src emacs-lisp
     (require 'evil)
@@ -370,12 +383,19 @@ Exporting diagrams
    (setq multi-term-program "/bin/bash")
 #+end_src
 * Code
+** Auto-Complete 
+#+begin_src emacs-lisp
+  (ac-config-default)
+#+end_src
 ** Yasnippet
 #+begin_src  emacs-lisp
   (use-package yasnippet
         :ensure t
         :init
         (yas-global-mode 1))
+#+end_src
+** Julia
+#+begin_src emacs-lisp
 #+end_src
 * Buffers behavior & search config
 ** Swiper
@@ -428,11 +448,13 @@ Exporting diagrams
       :config (setq real-auto-save-interval 10)
       :hook (prog-mode . real-auto-save-mode))
   #+end_src
-
 * Discord
-  Showing to everybody that i'm using emacs
+  Showing to everybody that i’m using emacs
   #+begin_src emacs-lisp
-    (require 'elcord)
-    (elcord-mode)
+    (use-package elcord
+    :config
+    (setq elcord-refresh-rate 5)
+    :init
+    (elcord-mode))
   #+end_src
   
