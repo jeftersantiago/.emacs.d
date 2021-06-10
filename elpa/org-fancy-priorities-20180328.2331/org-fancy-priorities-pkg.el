@@ -1,2 +1,0 @@
-;;; Generated package description from /home/jefterrsantiago/.emacs.d/elpa/org-fancy-priorities-20180328.2331/org-fancy-priorities.el  -*- no-byte-compile: t -*-
-(define-package "org-fancy-priorities" "20180328.2331" "Display org priorities as custom strings" 'nil :commit "819bb993b71e7253cefef7047306ab4e0f9d0a86" :authors '(("Harry Bournis" . "harrybournis@gmail.com")) :maintainer '("Harry Bournis" . "harrybournis@gmail.com") :keywords '("convenience" "faces" "outlines") :url "https://github.com/harrybournis/org-fancy-priorities")
