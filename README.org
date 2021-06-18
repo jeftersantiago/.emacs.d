@@ -1,22 +1,20 @@
 #+TITLE: Emacs Configurations
 * Packages
  I download everthing through melpa
- |--------------------+---------------------+----------------+--------------------|
- | Appearence         | Navigation          | Code           | Other              |
- |--------------------+---------------------+----------------+--------------------|
- | org-mode           | evil                |                | graphviz-dot-mode  |
- | mood-line          | dired-open          | auctex-latexmk | latex-preview-pane |
- | real-auto-save     | dired-hide-dotfiles | multi-term     | rainbow-delimiters |
- | default-text-scale | swiper              | counsel        |                    |
- | almost-mono-themes | ace-window          | auto-complete  |                    |
- | org-bullets        | try                 | flycheck       |                    |
- | elcord             | yasnippet           | flymake        |                    |
- | diff-hl            | dired-sidebar       | auctex         |                    |
- |                    |                     | which-key      |                    |
- |--------------------+---------------------+----------------+--------------------|
-
-*
-
+ |----------------------+---------------------+----------------+--------------------|
+ | Appearence           | Navigation          | Writing        | Other              |
+ |----------------------+---------------------+----------------+--------------------|
+ | cherry-blossom-theme | evil                |                | graphviz-dot-mode  |
+ | almost-mono-themes   | dired-open          | org-mode       | latex-preview-pane |
+ | mood-line            | dired-hide-dotfiles | auctex         | real-auto-save     |
+ | org-bullets          | swiper              | flycheck       | multi-term         |
+ | default-text-scale   | ace-window          | auto-complete  | elcord             |
+ | rainbow-delimiters   | try                 | auctex-latexmk |                    |
+ |                      | flymake             | counsel        |                    |
+ |                      | which-key           |                |                    |
+ |                      | dired-sidebar       |                |                    |
+ |                      | yasnippet           |                |                    |
+ |----------------------+---------------------+----------------+--------------------|
 * [[env.el][Environment, themes, fonts]]
 * [[dired.el][Navigation through files]]
 * [[buffers.el][Controlling windows]]
