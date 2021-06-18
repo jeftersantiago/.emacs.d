@@ -1,12 +1,15 @@
 ; this allows to use some shortcuts .. begins_src..
 (require 'org-tempo)
 
+; enabling syntax hilight
+(add-hook 'org-mode-hook 'font-lock-mode)
+
 (add-to-list 'org-modules 'org-tempo t)
 (use-package org-bullets
   :ensure t
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-(setq org-ellipsis "⮟")
+(setq org-ellipsis "ᐯ")
 
 (font-lock-add-keywords
  'org-mode

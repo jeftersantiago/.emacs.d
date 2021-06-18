@@ -2,14 +2,19 @@
   :ensure t
   :hook ((latex-mode LaTeX-mode) . tex)
   :config
+  (font-lock-mode)
   (add-to-list 'font-latex-math-environments "dmath"))
+
 (add-hook 'LaTeX-mode-hook 'TeX-mode)
+(add-hook 'LaTeX-mode-hook 'font-lock-mode)
+
 
 (add-hook 'LaTeX-mode-hook 'visual-line-mode)
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
 (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+
 (setq reftex-plug-into-AUCTeX t)
 
 (setq TeX-auto-save t)

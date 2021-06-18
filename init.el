@@ -16,7 +16,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-; puts the outputs in a separated file 
+; puts the outputs in a separated file
 (setq custom-file "~/.emacs.d/custom.el")
 
 (load "~/.emacs.d/env.el")
@@ -26,5 +26,6 @@
 (load "~/.emacs.d/org.el")
 (load "~/.emacs.d/buffers.el")
 (load "~/.emacs.d/latex.el")
+(load "~/.emacs.d/autocompletation.el")
 
-
+;(set-frame-parameter nil 'fullscreen 'fullboth)

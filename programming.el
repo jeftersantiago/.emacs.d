@@ -36,3 +36,7 @@
   :config (setq real-auto-save-interval 10)
   :hook (prog-mode . real-auto-save-mode))
 
+
+(use-package julia-mode
+  :ensure t
+  :hook ((julia-mode) . jl))

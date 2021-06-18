@@ -1,6 +1,9 @@
 (use-package dired-sidebar
   :ensure t
-  :config(global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar))
+  :config
+  (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
+  (add-hook 'dired-mode-hook 'font-lock-mode))
+
 
 ;; Definying default applications open certain types of file.
 (use-package dired-open

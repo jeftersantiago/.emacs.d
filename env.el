@@ -1,19 +1,39 @@
 ;; Loading themes
-;(use-package cherry-blossom-theme
-;   :config(load-theme 'cherry-blossom t)
-;  :ensure t)
+(use-package cherry-blossom-theme
+  :config
+  (load-theme 'cherry-blossom t)
+  :ensure t)
+(use-package almost-mono-themes 
+  :config
+  (load-theme 'almost-mono-black t)
+  (let ((line (face-attribute 'mode-line :underline)))
+    (set-face-attribute 'mode-line          nil :overline   line)
+    (set-face-attribute 'mode-line-inactive nil :overline   line)
+   (set-face-attribute 'mode-line-inactive nil :underline  line)
+   (set-face-attribute 'mode-line          nil :box        nil)
+   (set-face-attribute 'mode-line-inactive nil :box        nil)
+   (set-face-attribute 'mode-line-inactive nil :background "#212121"))
+                                         :ensure t)
 
-(use-package dracula-theme
-  :config(load-theme 'dracula t)
+
+(use-package moody
+  :config
+  (setq x-underline-at-descent-line t)
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode)
   :ensure t)
 
+(global-font-lock-mode 0)
+
 ;; I like emacs transparent
-(set-frame-parameter (selected-frame) 'alpha '(90 90))
-(add-to-list 'default-frame-alist '(alpha 90 90))
+;(set-frame-parameter (selected-frame) 'alpha '(95 95))
+;(add-to-list 'default-frame-alist '(alpha 95 95))
 
 ;; Font
-(add-to-list 'default-frame-alist '(font. "Monospace 13"))
+(add-to-list 'default-frame-alist '(font. "Source Code Pro 11"))
 ;; took from here:  https://emacs.stackexchange.com/q/45895
+
+(prefer-coding-system 'utf-8)
 
 
 (use-package default-text-scale
@@ -28,6 +48,11 @@
 (menu-bar-mode 0)
 
 (setq inhibit-startup-message t)
+
+
+
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative) 
 
 ;(set-window-scroll-bars (minibuffer-window) nil nil)
 
@@ -61,6 +86,7 @@
   (remq 'process-kill-buffer-query-function
    kill-buffer-query-functions))
 ;; mouse scrolls very slowly
+(setq confirm-kill-processes nil)
 (setq scroll-step            1
 scroll-conservatively  10000
 mouse-wheel-scroll-amount '(1 ((shift) . 1))
@@ -81,4 +107,5 @@ mouse-wheel-follow-mouse 't)
 (add-to-list 'load-path "~/.emacs.d/evil")
 (require 'evil)
 (evil-mode 1) 
+
 
