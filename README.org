@@ -1,6 +1,5 @@
 #+TITLE: Emacs Configurations
 * Packages
- I download everthing through melpa
  |----------------------+---------------------+----------------+--------------------|
  | Appearence           | Navigation          | Writing        | Other              |
  |----------------------+---------------------+----------------+--------------------|
@@ -15,9 +14,3 @@
  |                      | dired-sidebar       |                |                    |
  |                      | yasnippet           |                |                    |
  |----------------------+---------------------+----------------+--------------------|
-* [[env.el][Environment, themes, fonts]]
-* [[dired.el][Navigation through files]]
-* [[buffers.el][Controlling windows]]
-* [[programming.el][Editing]]
-* [[org.el][Org-mode]]
-* [[latex.el][Latex]]
