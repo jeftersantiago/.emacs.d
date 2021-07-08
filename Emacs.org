@@ -161,7 +161,6 @@ Add a new line below the current line
 
 
 
-
 * Code
 ** Ivy
 #+begin_src emacs-lisp 
@@ -385,7 +384,6 @@ Add a new line below the current line
       (auto-complete-mode t)))
 #+end_src
 global
-
 
 * Windows
 ** Ace Window
