@@ -46,9 +46,14 @@ Doesn't ask to confirm everytime
 ** Theme and transparency
    Loading theme and setting modeline background color.
 #+begin_src emacs-lisp
-  (use-package dracula-theme 
+  (use-package cherry-blossom-theme 
    :config
-   (load-theme 'dracula t)
+   (load-theme 'cherry-blossom t)
+   :ensure t)
+
+  (use-package almost-mono-themes
+   :config
+   (load-theme 'almost-mono-black t)
    (let ((line (face-attribute 'mode-line :underline)))
      (set-face-attribute 'mode-line          nil :overline   line)
      (set-face-attribute 'mode-line-inactive nil :overline   line)
@@ -66,7 +71,7 @@ Doesn't ask to confirm everytime
 ** Font
    Took from here:  https://emacs.stackexchange.com/q/45895
 #+begin_src emacs-lisp
-  (set-frame-font "Source Code Pro-09:antialias=none")
+  (set-frame-font "Liberation Mono-12:antialias=none")
 #+end_src
 #+begin_src emacs-lisp
   (use-package default-text-scale
@@ -96,8 +101,8 @@ Doesn't ask to confirm everytime
 
 ** Line Number
    #+begin_src emacs-lisp
-     (global-display-line-numbers-mode)
-     (setq display-line-numbers-type 'relative) 
+;     (global-display-line-numbers-mode)
+;     (setq display-line-numbers-type 'relative) 
    #+end_src
 
 ** Font lock
@@ -105,7 +110,7 @@ Doesn't ask to confirm everytime
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-x C-l") 'font-lock-mode)
 #+end_src
-* Navigation       
+* Navigation
 ** Evil Mode
    #+begin_src emacs-lisp
      (add-to-list 'load-path "~/.emacs.d/evil")
@@ -139,7 +144,6 @@ Doesn't ask to confirm everytime
   mouse-wheel-progressive-speed nil
   mouse-wheel-follow-mouse 't)
 #+end_src
-
 ** Inserting new line
 Add a new line below the current line
 #+begin_src emacs-lisp
@@ -150,11 +154,6 @@ Add a new line below the current line
       (newline-and-indent)))
   (global-set-key (kbd "C-o") 'insert-new-line-below)
 #+end_src
-
-
-
-
-
 
 
 
@@ -195,7 +194,6 @@ Add a new line below the current line
        :ensure t
        :config (which-key-mode))
 #+end_src
-
 ** Language specifics
 *** Julia
 #+begin_src emacs-lisp
@@ -203,7 +201,6 @@ Add a new line below the current line
     :ensure t
     :hook ((julia-mode) . jl))
 #+end_src
- 
 * Org-mode
 ** UI 
 #+begin_src emacs-lisp
@@ -222,16 +219,15 @@ Add a new line below the current line
     (setq org-ellipsis "ᐯ")
 #+end_src
 #+begin_src emacs-lisp
-(font-lock-add-keywords
- 'org-mode
- '(("^[[:space:]]*\\(-\\) "
-    (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  (font-lock-add-keywords
+   'org-mode
+   '(("^[[:space:]]*\\(-\\) "
+      (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-; (setq org-src-tab-acts-natively t)
-(setq org-src-window-setup 'current-window)
-(add-to-list 'org-structure-template-alist
-			 '("el" . "src emacs-lisp"))
-
+  ; (setq org-src-tab-acts-natively t)
+  (setq org-src-window-setup 'current-window)
+  (add-to-list 'org-structure-template-alist
+               '("el" . "src emacs-lisp"))
 #+end_src 
 ** Tasks management 
 #+begin_src emacs-lisp
@@ -261,6 +257,7 @@ Add a new line below the current line
 #+end_src
 
 ** Capturing Tasks
+#+begin_src emacs-lisp
 (setq org-capture-templates
       '(("t" "Todo"
          entry
@@ -270,7 +267,6 @@ Add a new line below the current line
 (setq org-outline-path-complete-in-steps nil)
 (define-key global-map "\C-cc" 'org-capture)
 #+end_src
-
 ** Displaying inline images
  The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/nn
 #+begin_src emacs-lisp
@@ -290,13 +286,9 @@ Add a new line below the current line
   (add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
   (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
 #+end_src
-
-
-
-
 * Latex
 #+begin_src emacs-lisp
-      (use-package auctex
+  (use-package auctex
     :ensure t
     :hook ((latex-mode LaTeX-mode) . tex)
     :config
@@ -320,8 +312,8 @@ Add a new line below the current line
   (setq TeX-save-query t)
   (setq-default TeX-master nil)
   (setq TeX-PDF-mode t)
-  ; (add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
-  ; (global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
+                                          ; (add-hook 'LateX-mode-hook (lambda () (latex-preview-pane-mode)))
+                                          ; (global-set-key (kbd "C-x l ") 'latex-preview-pane-mode)
   (global-set-key (kbd "C-x l ") 'pdflatex)
   (add-to-list 'org-latex-packages-alist '("" "listings" nil))
   (setq org-latex-listings t)   
@@ -390,8 +382,11 @@ Add a new line below the current line
     :init
     (progn
       (ac-config-default)
-      (global-auto-complete-mode t)))
+      (auto-complete-mode t)))
 #+end_src
+global
+
+
 * Windows
 ** Ace Window
   #+begin_src emacs-lisp
