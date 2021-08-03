@@ -10,8 +10,5 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-; puts the outputs in a separated file
-(setq custom-file "~/.emacs.d/custom.el")
-
 (org-babel-load-file (expand-file-name "~/.emacs.d/Emacs.org"))
 ;(set-frame-parameter nil 'fullscreen 'fullboth)

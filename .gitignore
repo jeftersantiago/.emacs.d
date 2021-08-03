@@ -1,0 +1,11 @@
+*shell/
+*elpa/
+*evil/
+*games*
+recentf*
+var*
+*dat
+*auto*
+.last-package-update-day*
+custom*
+*tex*
