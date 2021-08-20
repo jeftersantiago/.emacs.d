@@ -46,6 +46,7 @@
 (menu-bar-mode 0)
 (set-fringe-mode 10)        ; Give some breathing room
 (setq inhibit-startup-message t)
+(font-lock-mode 1)
 
 (use-package rainbow-delimiters :ensure t)
 
@@ -57,7 +58,7 @@
 
 (use-package doom-themes
   :config
-  (load-theme 'doom-challenger-deep t)
+  (load-theme 'doom-Iosvkem t)
   :ensure t)
 
 (set-frame-parameter (selected-frame) 'alpha '(95 95))
@@ -87,8 +88,8 @@
   :custom ((doom-modeline-height 15))
   :ensure t)
 
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
+;     (global-display-line-numbers-mode)
+;     (setq display-line-numbers-type 'relative)
 
 (global-set-key (kbd "C-x C-l") 'font-lock-mode)
 
@@ -153,19 +154,6 @@
 (use-package which-key
   :ensure t
   :config (which-key-mode))
-
-(use-package julia-mode)
-;; Snail requires vterm
-(use-package vterm)
-(use-package julia-snail
-  :hook (julia-mode . julia-snail-mode))
-(use-package lsp-julia
-  :ensure t
-  :hook (julia-mode . (lambda ()
-                        (require 'lsp-julia)
-                        (lsp)))
-  :config
-  (setq lsp-julia-default-environment "~/.julia/environments/v1.6"))
 
 (require 'org-tempo)
 (add-to-list 'org-modules 'org-tempo t)
@@ -285,9 +273,8 @@
   (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
   (add-hook 'dired-mode-hook 'font-lock-mode))
 
-(use-package all-the-icons-dired
-  :ensure t
-  :config (all-the-icons-dired-mode))
+(use-package all-the-icons-dired :ensure t)
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
 (use-package dired-open
   :ensure t
@@ -335,7 +322,8 @@ current buffer's, reload dir-locals."
 (use-package auto-complete
   :ensure t
   :init
-  (global-auto-complete-mode))
+  (auto-complete-mode))
+(auto-complete-mode 1)
 
 (use-package ace-window
   :ensure t
