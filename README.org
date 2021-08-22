@@ -73,8 +73,10 @@
      (tool-bar-mode 0)
      (menu-bar-mode 0)
      (set-fringe-mode 10)        ; Give some breathing room
+     (font-lock-mode t)
+
+     (setq initial-scratch-message nil)
      (setq inhibit-startup-message t)
-     (font-lock-mode 1)
    #+end_src
    Makes the parenthesis shine
    #+begin_src emacs-lisp
@@ -91,11 +93,11 @@
 ** Theme and transparency
    Loading theme and setting modeline background color.
    #+begin_src emacs-lisp
-        (use-package doom-themes
-          :config
-          (load-theme 'doom-Iosvkem t)
-          :ensure t)
-   #+end_src
+     (use-package doom-themes
+       :config
+       (load-theme 'doom-Iosvkem t)
+       :ensure t)
+  #+end_src
    Enabling transparency
    #+begin_src emacs-lisp
      (set-frame-parameter (selected-frame) 'alpha '(95 95))
@@ -104,7 +106,7 @@
 ** Font
    Took from here:  https://emacs.stackexchange.com/q/45895
    #+begin_src emacs-lisp
-     (set-frame-font "Source Code Pro-12:antialias=none")
+     (set-frame-font "Noto Sans Mono-12:antialias=none")
    #+end_src
    #+begin_src emacs-lisp
      (use-package default-text-scale
@@ -119,25 +121,16 @@
 ** Modeline
    Nice and simple.
    #+begin_src emacs-lisp
-                                             ; (use-package moody
-                                             ;   :config
-                                             ;   (setq x-underline-at-descent-line t)
-                                             ;   (moody-replace-mode-line-buffer-identification)
-                                             ;   (moody-replace-vc-mode)
-                                             ;   :ensure t)
-
      (use-package all-the-icons :ensure t)
-
      (use-package doom-modeline
        :init (doom-modeline-mode 1)
        :custom ((doom-modeline-height 15))
        :ensure t)
-
    #+end_src
 ** Line Number
    #+begin_src emacs-lisp
-;     (global-display-line-numbers-mode)
-;     (setq display-line-numbers-type 'relative)
+    (global-display-line-numbers-mode)
+    (setq display-line-numbers-type 'relative)
    #+end_src
 ** Font lock
    Disables syntax hilight from startup
@@ -235,10 +228,12 @@
      (require 'org-tempo)
      (add-to-list 'org-modules 'org-tempo t)
      (with-eval-after-load 'org
+     (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
      (add-to-list 'org-structure-template-alist '("jl" . "src julia"))
      (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-     (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
      (add-to-list 'org-structure-template-alist '("py" . "src python")))
+
+     (setq org-startup-folded t)
    #+end_src
    #+begin_src emacs-lisp
      (add-hook 'org-mode-hook 'global-display-line-numbers-mode)
@@ -256,12 +251,12 @@
       '(("^[[:space:]]*\\(-\\) "
          (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-                                             ; (setq org-src-tab-acts-natively t)
+     ; (setq org-src-tab-acts-natively t)
      (setq org-src-window-setup 'current-window)
      (add-to-list 'org-structure-template-alist
                   '("el" . "src emacs-lisp"))
    #+end_src
-  Center org buffers
+   Center org buffers
   #+begin_src emacs-lisp
     (defun efs/org-mode-visual-fill ()
       (setq visual-fill-column-width 100
@@ -324,14 +319,12 @@
 *** Automatically toggle latex fragment
   #+begin_src emacs-lisp
     (use-package org-fragtog :ensure t)
-    (add-hook 'org-mode-hook 'org-fragtog-mode)
+;    (add-hook 'org-mode-hook 'org-fragtog-mode)
 
     (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
   #+end_src
 ** TODO load the preview dir with the images in a choosen location 
-
-
 ** Exporting with org-mode
    Makes UTF-8 symbols appears in buffer I use it for editing Latex
    #+begin_src emacs-lisp

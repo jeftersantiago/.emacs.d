@@ -45,8 +45,10 @@
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (set-fringe-mode 10)        ; Give some breathing room
+(font-lock-mode t)
+
+(setq initial-scratch-message nil)
 (setq inhibit-startup-message t)
-(font-lock-mode 1)
 
 (use-package rainbow-delimiters :ensure t)
 
@@ -64,7 +66,7 @@
 (set-frame-parameter (selected-frame) 'alpha '(95 95))
 (add-to-list 'default-frame-alist '(alpha 95 95))
 
-(set-frame-font "Source Code Pro-12:antialias=none")
+(set-frame-font "Noto Sans Mono-12:antialias=none")
 
 (use-package default-text-scale
   :ensure t
@@ -74,22 +76,14 @@
 
 (prefer-coding-system 'utf-8)
 
-; (use-package moody
-                                        ;   :config
-                                        ;   (setq x-underline-at-descent-line t)
-                                        ;   (moody-replace-mode-line-buffer-identification)
-                                        ;   (moody-replace-vc-mode)
-                                        ;   :ensure t)
-
 (use-package all-the-icons :ensure t)
-
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 15))
   :ensure t)
 
-;     (global-display-line-numbers-mode)
-;     (setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
 
 (global-set-key (kbd "C-x C-l") 'font-lock-mode)
 
@@ -158,10 +152,12 @@
 (require 'org-tempo)
 (add-to-list 'org-modules 'org-tempo t)
 (with-eval-after-load 'org
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("jl" . "src julia"))
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("py" . "src python")))
+
+(setq org-startup-folded t)
 
 (add-hook 'org-mode-hook 'global-display-line-numbers-mode)
 
@@ -176,7 +172,7 @@
  '(("^[[:space:]]*\\(-\\) "
     (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-                                        ; (setq org-src-tab-acts-natively t)
+; (setq org-src-tab-acts-natively t)
 (setq org-src-window-setup 'current-window)
 (add-to-list 'org-structure-template-alist
              '("el" . "src emacs-lisp"))
@@ -231,9 +227,9 @@
 (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
 
 (use-package org-fragtog :ensure t)
-(add-hook 'org-mode-hook 'org-fragtog-mode)
+;    (add-hook 'org-mode-hook 'org-fragtog-mode)
 
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 (add-hook 'org-mode-hook
           (lambda () (org-toggle-pretty-entities)))
