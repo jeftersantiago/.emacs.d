@@ -226,10 +226,21 @@
 (setq-default org-image-actual-width 620)
 (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
 
-(use-package org-fragtog :ensure t)
-;    (add-hook 'org-mode-hook 'org-fragtog-mode)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)))
+(require 'color)
+(set-face-attribute 'org-block nil :background
+                    (color-darken-name
+                     (face-attribute 'default :background) 3))
 
-    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+;(setq org-src-block-faces '(("emacs-lisp" (:background "#000000"))
+;                            ("python" (:background "#000000"))))
+
+(use-package org-fragtog :ensure t)
+(add-hook 'org-mode-hook 'org-fragtog-mode)
+
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 (add-hook 'org-mode-hook
           (lambda () (org-toggle-pretty-entities)))
