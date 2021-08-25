@@ -51,6 +51,7 @@
 (setq inhibit-startup-message t)
 
 (use-package rainbow-delimiters :ensure t)
+(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 (setq confirm-kill-processes nil)
 (setq-default truncate-lines t)
@@ -63,8 +64,8 @@
   (load-theme 'doom-Iosvkem t)
   :ensure t)
 
-(set-frame-parameter (selected-frame) 'alpha '(95 95))
-(add-to-list 'default-frame-alist '(alpha 95 95))
+;     (set-frame-parameter (selected-frame) 'alpha '(95 95))
+;     (add-to-list 'default-frame-alist '(alpha 95 95))
 
 (set-frame-font "Noto Sans Mono-12:antialias=none")
 
@@ -82,10 +83,59 @@
   :custom ((doom-modeline-height 15))
   :ensure t)
 
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
+;    (global-display-line-numbers-mode)
+;    (setq display-line-numbers-type 'relative)
 
-(global-set-key (kbd "C-x C-l") 'font-lock-mode)
+(use-package dired-sidebar
+  :ensure t
+  :config
+  (add-hook 'dired-mode-hook 'font-lock-mode))
+
+(use-package all-the-icons-dired :ensure t)
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+
+(use-package dired-open
+  :ensure t
+  :config
+  (setq dired-open-extensions
+        '(("doc" . "openoffice4")
+          ("docx" . "openoffice4")
+          ("xopp" . "xournalpp")
+          ("gif" . "mirage")
+          ("jpeg" ."mirage")
+          ("jpg" . "mirage")
+          ("png" . "mirage")
+          ("mkv" . "mpv")
+          ("avi" . "mpv")
+          ("mov" . "mpv")
+          ("mp3" . "mpv")
+          ("mp4" . "mpv")
+          ("pdf" . "xreader")
+          ("webm" . "mpv"))))
+
+(use-package dired-hide-dotfiles
+  :ensure t
+  :config
+  (dired-hide-dotfiles-mode)
+  (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
+
+(setq-default dired-listing-switches "-lhvA")
+(add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
+;; Taken from here: https://emacs.stackexchange.com/questions/13080/reloading-directory-local-variables/13096#13096
+(defun my-reload-dir-locals-for-current-buffer ()
+  "reload dir locals for the current buffer"
+  (interactivye)
+  (let ((enable-local-variables :all))
+    (hack-dir-local-variables-non-file-buffer)))
+(defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
+  "For every buffer with the same `default-directory` as the
+current buffer's, reload dir-locals."
+  (interactive)
+  (let ((dir default-directory))
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        (when (equal default-directory dir))
+        (my-reload-dir-locals-for-current-buffer)))))
 
 (add-to-list 'load-path "~/.emacs.d/evil")
 (require 'evil)
@@ -117,14 +167,26 @@
   (let ((oldpos (point)))
     (end-of-line)
     (newline-and-indent)))
-(global-set-key (kbd "C-o") 'insert-new-line-below)
 
-(use-package multi-term
+(use-package ace-window
   :ensure t
-  :config
+  :init
   (progn
-    (global-set-key (kbd "C-x t") 'multi-term)))
-  (setq multi-term-program "/bin/bash")
+   (global-set-key [remap other-window] 'ace-window)
+   (custom-set-faces
+    '(aw-leading-char-face
+      ((t (:inherit ace-jump-face-foreground :height 2.0)))))))
+
+(use-package multi-term :ensure t)
+(setq multi-term-program "/bin/bash")
+
+(global-set-key (kbd "C-x t") 'multi-term)
+(global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
+(global-set-key (kbd "C-x C-l") 'font-lock-mode)
+(global-set-key (kbd "C-c d") 'elcord-mode)
+(global-set-key (kbd "C-c l") 'latex-preview-pane-enable)
+
+(global-set-key (kbd "C-o") 'insert-new-line-below)
 
 (use-package ivy
   :ensure t
@@ -158,8 +220,6 @@
 (add-to-list 'org-structure-template-alist '("py" . "src python")))
 
 (setq org-startup-folded t)
-
-(add-hook 'org-mode-hook 'global-display-line-numbers-mode)
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
@@ -249,82 +309,41 @@
 (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
 
 (use-package auctex
-   :ensure t
-   :hook ((latex-mode LaTeX-mode) . tex)
-   :config
-   (font-lock-mode)
-   (add-to-list 'font-latex-math-environments "dmath"))
-
- (setq TeX-auto-save t)
- (setq TeX-parse-self t)
- (setq-default TeX-master nil)
-
- (defun hrs/mark-done-and-archive ()
-   " Mark the state of an org-mode item as DONE and archive it."
-   (interactive)
-   (org-todo 'done)
-   (org-archive-subtree))
- (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
- (setq org-log-done 'time)
-
-(global-set-key (kbd "C-SPC")
-  (lambda ()
-    "Save the buffer and run `TeX-command-run-all`."
-    (interactive)
-    (let (TeX-save-query) (TeX-save-document (TeX-master-file)))
-    (TeX-command-run-all nil)))
-
-(use-package dired-sidebar
   :ensure t
+  :hook ((latex-mode LaTeX-mode) . tex)
   :config
-  (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
-  (add-hook 'dired-mode-hook 'font-lock-mode))
+  (font-lock-mode)
+  (add-to-list 'font-latex-math-environments "dmath"))
 
-(use-package all-the-icons-dired :ensure t)
-(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+(setq latex-run-command "pdflatex -interaction=nonstopmode")
 
-(use-package dired-open
-  :ensure t
-  :config
-  (setq dired-open-extensions
-        '(("doc" . "openoffice4")
-          ("docx" . "openoffice4")
-          ("xopp" . "xournalpp")
-          ("gif" . "mirage")
-          ("jpeg" ."mirage")
-          ("jpg" . "mirage")
-          ("png" . "mirage")
-          ("mkv" . "mpv")
-          ("avi" . "mpv")
-          ("mov" . "mpv")
-          ("mp3" . "mpv")
-          ("mp4" . "mpv")
-          ("pdf" . "xreader")
-          ("webm" . "mpv"))))
 
-(use-package dired-hide-dotfiles
-  :ensure t
-  :config
-  (dired-hide-dotfiles-mode)
-  (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
-
-(setq-default dired-listing-switches "-lhvA")
-(add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
-;; Taken from here: https://emacs.stackexchange.com/questions/13080/reloading-directory-local-variables/13096#13096
-(defun my-reload-dir-locals-for-current-buffer ()
-  "reload dir locals for the current buffer"
-  (interactivye)
-  (let ((enable-local-variables :all))
-    (hack-dir-local-variables-non-file-buffer)))
-(defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
-  "For every buffer with the same `default-directory` as the
-current buffer's, reload dir-locals."
+(defun hrs/mark-done-and-archive ()
+  " Mark the state of an org-mode item as DONE and archive it."
   (interactive)
-  (let ((dir default-directory))
-    (dolist (buffer (buffer-list))
-      (with-current-buffer buffer
-        (when (equal default-directory dir))
-        (my-reload-dir-locals-for-current-buffer)))))
+  (org-todo 'done)
+  (org-archive-subtree))
+(global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
+(setq org-log-done 'time)
+
+(setq TeX-view-program-selection
+      '((output-pdf "PDF Viewer")))
+(setq TeX-view-program-list
+      '(("PDF Viewer" "xreader %o")))
+
+(eval-after-load "tex"
+  '(add-to-list 'TeX-command-list
+                '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+
+;     (global-set-key (kbd "C-SPC")
+;       (lambda ()
+;         "Save the buffer and run `TeX-command-run-all`."
+;         (interactive)
+;         (let (TeX-save-query) (TeX-save-document (TeX-master-file)))
+;         (TeX-command-run-all nil)))
 
 (use-package auto-complete
   :ensure t
@@ -332,19 +351,9 @@ current buffer's, reload dir-locals."
   (auto-complete-mode))
 (auto-complete-mode 1)
 
-(use-package ace-window
-  :ensure t
-  :init
-  (progn
-    (global-set-key [remap other-window] 'ace-window)
-    (custom-set-faces
-     '(aw-leading-char-face
-       ((t (:inherit ace-jump-face-foreground :height 2.0)))))))
-
 (use-package elcord
   :ensure t
   :config
   (setq elcord-use-major-mode-as-main-icon t)
   (setq elcord-refresh-rate 2)
   :init)
- (global-set-key (kbd "C-c d") 'elcord-mode)

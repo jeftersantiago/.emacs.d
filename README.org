@@ -66,8 +66,9 @@
      (setq auto-save-file-name-transforms
            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
    #+end_src
-* UI Configuration
-** Basics
+* Envoirment
+** UI Configuration
+*** Basics
    #+begin_src emacs-lisp
      (scroll-bar-mode 0)
      (tool-bar-mode 0)
@@ -81,6 +82,7 @@
    Makes the parenthesis shine
    #+begin_src emacs-lisp
      (use-package rainbow-delimiters :ensure t)
+     (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
    #+end_src
    Doesn't ask to confirm everytime
    #+begin_src emacs-lisp
@@ -90,7 +92,7 @@
                                              ;(setq-default cursor-type 'square)
      (defalias 'yes-or-no-p 'y-or-n-p)
    #+end_src
-** Theme and transparency
+*** Theme and transparency
    Loading theme and setting modeline background color.
    #+begin_src emacs-lisp
      (use-package doom-themes
@@ -100,10 +102,10 @@
   #+end_src
    Enabling transparency
    #+begin_src emacs-lisp
-     (set-frame-parameter (selected-frame) 'alpha '(95 95))
-     (add-to-list 'default-frame-alist '(alpha 95 95))
+;     (set-frame-parameter (selected-frame) 'alpha '(95 95))
+;     (add-to-list 'default-frame-alist '(alpha 95 95))
    #+end_src
-** Font
+*** Font
    Took from here:  https://emacs.stackexchange.com/q/45895
    #+begin_src emacs-lisp
      (set-frame-font "Noto Sans Mono-12:antialias=none")
@@ -118,8 +120,8 @@
    #+begin_src emacs-lisp
      (prefer-coding-system 'utf-8)
    #+end_src
-** Modeline
-   Nice and simple.
+*** Modeline
+    Nice and simple.
    #+begin_src emacs-lisp
      (use-package all-the-icons :ensure t)
      (use-package doom-modeline
@@ -127,25 +129,80 @@
        :custom ((doom-modeline-height 15))
        :ensure t)
    #+end_src
-** Line Number
+*** Line Number
    #+begin_src emacs-lisp
-    (global-display-line-numbers-mode)
-    (setq display-line-numbers-type 'relative)
+;    (global-display-line-numbers-mode)
+;    (setq display-line-numbers-type 'relative)
    #+end_src
-** Font lock
-   Disables syntax hilight from startup
+** Dired
+*** sidebar
+  #+begin_src emacs-lisp
+    (use-package dired-sidebar
+      :ensure t
+      :config
+      (add-hook 'dired-mode-hook 'font-lock-mode))
+  #+end_src
+*** icons 
    #+begin_src emacs-lisp
-     (global-set-key (kbd "C-x C-l") 'font-lock-mode)
+     (use-package all-the-icons-dired :ensure t)
+     (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
    #+end_src
-* Navigation
-** Evil Mode
+*** default applications to extensions 
+   #+begin_src emacs-lisp
+     (use-package dired-open
+       :ensure t
+       :config
+       (setq dired-open-extensions
+             '(("doc" . "openoffice4")
+               ("docx" . "openoffice4")
+               ("xopp" . "xournalpp")
+               ("gif" . "mirage")
+               ("jpeg" ."mirage")
+               ("jpg" . "mirage")
+               ("png" . "mirage")
+               ("mkv" . "mpv")
+               ("avi" . "mpv")
+               ("mov" . "mpv")
+               ("mp3" . "mpv")
+               ("mp4" . "mpv")
+               ("pdf" . "xreader")
+               ("webm" . "mpv"))))
+   #+end_src
+*** hide dotfiles and extra information (aka ownership and such)
+   #+begin_src emacs-lisp
+     (use-package dired-hide-dotfiles
+       :ensure t
+       :config
+       (dired-hide-dotfiles-mode)
+       (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
+
+     (setq-default dired-listing-switches "-lhvA")
+     (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
+     ;; Taken from here: https://emacs.stackexchange.com/questions/13080/reloading-directory-local-variables/13096#13096
+     (defun my-reload-dir-locals-for-current-buffer ()
+       "reload dir locals for the current buffer"
+       (interactivye)
+       (let ((enable-local-variables :all))
+         (hack-dir-local-variables-non-file-buffer)))
+     (defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
+       "For every buffer with the same `default-directory` as the
+     current buffer's, reload dir-locals."
+       (interactive)
+       (let ((dir default-directory))
+         (dolist (buffer (buffer-list))
+           (with-current-buffer buffer
+             (when (equal default-directory dir))
+             (my-reload-dir-locals-for-current-buffer)))))
+   #+end_src
+** Navigation
+*** Evil Mode
    #+begin_src emacs-lisp
      (add-to-list 'load-path "~/.emacs.d/evil")
      (require 'evil)
      (evil-mode 1)
    #+end_src
-** Smart Parents
-   Creates pairs of parenthesis in a smart way
+*** Smart Parents
+    Creates pairs of parenthesis in a smart way
    #+begin_src emacs-lisp
      (use-package smartparens
        :ensure t
@@ -158,7 +215,7 @@
      (setq-default indent-tabs-mode nil)
      (setq-default tab-width 4)
    #+end_src
-** Scrolling
+*** Scrolling
    #+begin_src emacs-lisp
      (setq kill-buffer-query-functions
            (remq 'process-kill-buffer-query-function
@@ -171,7 +228,7 @@
            mouse-wheel-progressive-speed nil
            mouse-wheel-follow-mouse 't)
    #+end_src
-** Inserting new line
+*** Inserting new line
    Add a new line below the current line
    #+begin_src emacs-lisp
      (defun insert-new-line-below ()
@@ -179,18 +236,37 @@
        (let ((oldpos (point)))
          (end-of-line)
          (newline-and-indent)))
+   #+end_src
+** Buffers
+  #+begin_src emacs-lisp
+    (use-package ace-window
+      :ensure t
+      :init
+      (progn
+       (global-set-key [remap other-window] 'ace-window)
+       (custom-set-faces
+        '(aw-leading-char-face
+          ((t (:inherit ace-jump-face-foreground :height 2.0)))))))
+  #+end_src
+** Terminal
+  #+begin_src emacs-lisp
+    (use-package multi-term :ensure t)
+    (setq multi-term-program "/bin/bash")
+  #+end_src
+* Key-bindings
+** Modes
+  #+begin_src emacs-lisp 
+    (global-set-key (kbd "C-x t") 'multi-term)
+    (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
+    (global-set-key (kbd "C-x C-l") 'font-lock-mode)
+    (global-set-key (kbd "C-c d") 'elcord-mode)
+    (global-set-key (kbd "C-c l") 'latex-preview-pane-enable)
+  #+end_src
+** Defuns 
+   #+begin_src emacs-lisp
      (global-set-key (kbd "C-o") 'insert-new-line-below)
    #+end_src
-* Terminal
-  #+begin_src emacs-lisp
-    (use-package multi-term
-      :ensure t
-      :config
-      (progn
-        (global-set-key (kbd "C-x t") 'multi-term)))
-      (setq multi-term-program "/bin/bash")
-  #+end_src
-* Code
+* Programming 
 ** Ivy
    #+begin_src emacs-lisp
      (use-package ivy
@@ -235,10 +311,7 @@
 
      (setq org-startup-folded t)
    #+end_src
-   #+begin_src emacs-lisp
-     (add-hook 'org-mode-hook 'global-display-line-numbers-mode)
-   #+end_src
-   #+begin_src emacs-lisp
+  #+begin_src emacs-lisp
      (use-package org-bullets
        :hook (org-mode . org-bullets-mode)
        :custom
@@ -351,95 +424,47 @@
 * Latex
   #+begin_src emacs-lisp
     (use-package auctex
-       :ensure t
-       :hook ((latex-mode LaTeX-mode) . tex)
-       :config
-       (font-lock-mode)
-       (add-to-list 'font-latex-math-environments "dmath"))
+      :ensure t
+      :hook ((latex-mode LaTeX-mode) . tex)
+      :config
+      (font-lock-mode)
+      (add-to-list 'font-latex-math-environments "dmath"))
 
-     (setq TeX-auto-save t)
-     (setq TeX-parse-self t)
-     (setq-default TeX-master nil)
+    (setq TeX-auto-save t)
+    (setq TeX-parse-self t)
+    (setq-default TeX-master nil)
+    (setq latex-run-command "pdflatex -interaction=nonstopmode")
 
-     (defun hrs/mark-done-and-archive ()
-       " Mark the state of an org-mode item as DONE and archive it."
-       (interactive)
-       (org-todo 'done)
-       (org-archive-subtree))
-     (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
-     (setq org-log-done 'time)
+
+    (defun hrs/mark-done-and-archive ()
+      " Mark the state of an org-mode item as DONE and archive it."
+      (interactive)
+      (org-todo 'done)
+      (org-archive-subtree))
+    (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
+    (setq org-log-done 'time)
+
+    (setq TeX-view-program-selection
+          '((output-pdf "PDF Viewer")))
+    (setq TeX-view-program-list
+          '(("PDF Viewer" "xreader %o")))
+
+    (eval-after-load "tex"
+      '(add-to-list 'TeX-command-list
+                    '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+
   #+end_src
 ** Automating compilation 
    #+begin_src emacs-lisp
-     (global-set-key (kbd "C-SPC")
-       (lambda ()
-         "Save the buffer and run `TeX-command-run-all`."
-         (interactive)
-         (let (TeX-save-query) (TeX-save-document (TeX-master-file)))
-         (TeX-command-run-all nil)))
+;     (global-set-key (kbd "C-SPC")
+;       (lambda ()
+;         "Save the buffer and run `TeX-command-run-all`."
+;         (interactive)
+;         (let (TeX-save-query) (TeX-save-document (TeX-master-file)))
+;         (TeX-command-run-all nil)))
    #+end_src   
 
-* Dired
-  #+begin_src emacs-lisp
-    (use-package dired-sidebar
-      :ensure t
-      :config
-      (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
-      (add-hook 'dired-mode-hook 'font-lock-mode))
-  #+end_src
-** icons in the sidebar
-   #+begin_src emacs-lisp
-     (use-package all-the-icons-dired :ensure t)
-     (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-   #+end_src
-** Definying default applications open certain types of file.
-   #+begin_src emacs-lisp
-     (use-package dired-open
-       :ensure t
-       :config
-       (setq dired-open-extensions
-             '(("doc" . "openoffice4")
-               ("docx" . "openoffice4")
-               ("xopp" . "xournalpp")
-               ("gif" . "mirage")
-               ("jpeg" ."mirage")
-               ("jpg" . "mirage")
-               ("png" . "mirage")
-               ("mkv" . "mpv")
-               ("avi" . "mpv")
-               ("mov" . "mpv")
-               ("mp3" . "mpv")
-               ("mp4" . "mpv")
-               ("pdf" . "xreader")
-               ("webm" . "mpv"))))
-   #+end_src
-** Hide dotfiles and extra information (aka ownership and such)
-   #+begin_src emacs-lisp
-     (use-package dired-hide-dotfiles
-       :ensure t
-       :config
-       (dired-hide-dotfiles-mode)
-       (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
-
-     (setq-default dired-listing-switches "-lhvA")
-     (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
-     ;; Taken from here: https://emacs.stackexchange.com/questions/13080/reloading-directory-local-variables/13096#13096
-     (defun my-reload-dir-locals-for-current-buffer ()
-       "reload dir locals for the current buffer"
-       (interactivye)
-       (let ((enable-local-variables :all))
-         (hack-dir-local-variables-non-file-buffer)))
-     (defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
-       "For every buffer with the same `default-directory` as the
-     current buffer's, reload dir-locals."
-       (interactive)
-       (let ((dir default-directory))
-         (dolist (buffer (buffer-list))
-           (with-current-buffer buffer
-             (when (equal default-directory dir))
-             (my-reload-dir-locals-for-current-buffer)))))
-   #+end_src
-
+* Pdf
 * Auto-completation
   #+begin_src emacs-lisp
     (use-package auto-complete
@@ -447,17 +472,6 @@
       :init
       (auto-complete-mode))
     (auto-complete-mode 1)
-  #+end_src
-* Buffers
-  #+begin_src emacs-lisp
-    (use-package ace-window
-      :ensure t
-      :init
-      (progn
-        (global-set-key [remap other-window] 'ace-window)
-        (custom-set-faces
-         '(aw-leading-char-face
-           ((t (:inherit ace-jump-face-foreground :height 2.0)))))))
   #+end_src
 * External
   Elcord
@@ -468,6 +482,5 @@
     (setq elcord-use-major-mode-as-main-icon t)
     (setq elcord-refresh-rate 2)
     :init)
-   (global-set-key (kbd "C-c d") 'elcord-mode)
 #+end_src
 
