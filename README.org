@@ -16,12 +16,18 @@
   #+end_src
 * General config
 ** Personal configs
+*** info
    #+begin_src emacs-lisp
      (setq-default user-full-name "Jefter Santiago")
      (setq-default user-mail-address "jeftersantiago@protonmail.com")
      (load "~/.local/bin/private.el")
    #+end_src
+*** custom file
    Separated file to store generated config from emacs.
+   Puts the outputs in a separated file
+   - Taken from
+     https://www.reddit.com/r/emacs/comments/4x655n/packageselectedpackages_always_appear_after/
+     https://www.reddit.com/r/emacs/comments/53zpv9/how_do_i_get_emacs_to_stop_adding_custom_fields/
    #+begin_src emacs-lisp
      (setq custom-file "~/.emacs.d/custom.el")
    #+end_src
@@ -36,14 +42,6 @@
        :config (setq real-auto-save-interval 10)
        :hook (prog-mode . real-auto-save-mode))
    #+end_src
-** Custom file
-   Puts the outputs in a separated file
-   - Taken from
-     https://www.reddit.com/r/emacs/comments/4x655n/packageselectedpackages_always_appear_after/
-     https://www.reddit.com/r/emacs/comments/53zpv9/how_do_i_get_emacs_to_stop_adding_custom_fields/
-     #+begin_src
- (setq custom-file "~/.emacs.d/custom.el")
-     #+end_src
 ** Automatic package updates
    Automatizating the =M-x auto-package-update-now= command.
    #+begin_src emacs-lisp
@@ -67,46 +65,50 @@
            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
    #+end_src
 * Envoirment
-** UI Configuration
-*** Basics
-   #+begin_src emacs-lisp
-     (scroll-bar-mode 0)
-     (tool-bar-mode 0)
-     (menu-bar-mode 0)
-     (set-fringe-mode 10)        ; Give some breathing room
-     (font-lock-mode t)
+** Appearance 
+*** system default variables
+#+begin_src emacs-lisp
+   (scroll-bar-mode 0)
+   (tool-bar-mode 0)
+   (menu-bar-mode 0)
+   (set-fringe-mode 10)        ; Give some breathing room
+   (font-lock-mode t)
 
-     (setq initial-scratch-message nil)
-     (setq inhibit-startup-message t)
-   #+end_src
-   Makes the parenthesis shine
-   #+begin_src emacs-lisp
-     (use-package rainbow-delimiters :ensure t)
-     (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
-   #+end_src
-   Doesn't ask to confirm everytime
-   #+begin_src emacs-lisp
-     (setq confirm-kill-processes nil)
-     (setq-default truncate-lines t)
-     (setq-default fill-column 80)
-                                             ;(setq-default cursor-type 'square)
-     (defalias 'yes-or-no-p 'y-or-n-p)
-   #+end_src
-*** Theme and transparency
-   Loading theme and setting modeline background color.
-   #+begin_src emacs-lisp
-     (use-package doom-themes
-       :config
-       (load-theme 'doom-Iosvkem t)
-       :ensure t)
-  #+end_src
-   Enabling transparency
-   #+begin_src emacs-lisp
-;     (set-frame-parameter (selected-frame) 'alpha '(95 95))
-;     (add-to-list 'default-frame-alist '(alpha 95 95))
-   #+end_src
-*** Font
-   Took from here:  https://emacs.stackexchange.com/q/45895
+   (setq initial-scratch-message nil)
+   (setq inhibit-startup-message t)
+
+   (setq-default indent-tabs-mode nil)
+   (setq-default tab-width 4)
+   (setq confirm-kill-processes nil)
+   (setq-default truncate-lines t)
+   (setq-default fill-column 80)
+
+   (setq-default cursor-type 'square)
+   (defalias 'yes-or-no-p 'y-or-n-p)
+
+
+#+end_src
+*** rainbow-delimiters
+Makes the parenthesis shine
+#+begin_src emacs-lisp
+  (use-package rainbow-delimiters :ensure t)
+  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+#+end_src
+*** theme and transparency
+    Loading theme and setting modeline background color.
+#+begin_src emacs-lisp
+  (use-package doom-themes
+    :config
+    (load-theme 'doom-Iosvkem t)
+    :ensure t)
+#+end_src
+Enabling transparency
+#+begin_src emacs-lisp
+  ;     (set-frame-parameter (selected-frame) 'alpha '(95 95))
+  ;     (add-to-list 'default-frame-alist '(alpha 95 95))
+#+end_src
+*** font
+    took from here:  https://emacs.stackexchange.com/q/45895
    #+begin_src emacs-lisp
      (set-frame-font "Noto Sans Mono-12:antialias=none")
    #+end_src
@@ -116,11 +118,10 @@
        :hook (after-init . default-text-scale-mode))
      (set-language-environment "UTF-8")
      (global-prettify-symbols-mode t)
-   #+end_src
-   #+begin_src emacs-lisp
+
      (prefer-coding-system 'utf-8)
    #+end_src
-*** Modeline
+*** modeline
     Nice and simple.
    #+begin_src emacs-lisp
      (use-package all-the-icons :ensure t)
@@ -129,92 +130,90 @@
        :custom ((doom-modeline-height 15))
        :ensure t)
    #+end_src
-*** Line Number
+*** line number
    #+begin_src emacs-lisp
-;    (global-display-line-numbers-mode)
-;    (setq display-line-numbers-type 'relative)
+     ;    (global-display-line-numbers-mode)
+     ;    (setq display-line-numbers-type 'relative)
    #+end_src
 ** Dired
 *** sidebar
-  #+begin_src emacs-lisp
-    (use-package dired-sidebar
-      :ensure t
-      :config
-      (add-hook 'dired-mode-hook 'font-lock-mode))
-  #+end_src
+#+begin_src emacs-lisp
+  (use-package dired-sidebar
+    :ensure t
+    :config
+    (add-hook 'dired-mode-hook 'font-lock-mode))
+#+end_src
 *** icons 
-   #+begin_src emacs-lisp
-     (use-package all-the-icons-dired :ensure t)
-     (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package all-the-icons-dired :ensure t)
+  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+#+end_src
 *** default applications to extensions 
-   #+begin_src emacs-lisp
-     (use-package dired-open
-       :ensure t
-       :config
-       (setq dired-open-extensions
-             '(("doc" . "openoffice4")
-               ("docx" . "openoffice4")
-               ("xopp" . "xournalpp")
-               ("gif" . "mirage")
-               ("jpeg" ."mirage")
-               ("jpg" . "mirage")
-               ("png" . "mirage")
-               ("mkv" . "mpv")
-               ("avi" . "mpv")
-               ("mov" . "mpv")
-               ("mp3" . "mpv")
-               ("mp4" . "mpv")
-               ("pdf" . "xreader")
-               ("webm" . "mpv"))))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package dired-open
+    :ensure t
+    :config
+    (setq dired-open-extensions
+          '(("doc" . "openoffice4")
+            ("docx" . "openoffice4")
+            ("xopp" . "xournalpp")
+            ("gif" . "mirage")
+            ("jpeg" ."mirage")
+            ("jpg" . "mirage")
+            ("png" . "mirage")
+            ("mkv" . "mpv")
+            ("avi" . "mpv")
+            ("mov" . "mpv")
+            ("mp3" . "mpv")
+            ("mp4" . "mpv")
+            ("pdf" . "xreader")
+            ("webm" . "mpv"))))
+#+end_src
 *** hide dotfiles and extra information (aka ownership and such)
-   #+begin_src emacs-lisp
-     (use-package dired-hide-dotfiles
-       :ensure t
-       :config
-       (dired-hide-dotfiles-mode)
-       (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
+#+begin_src emacs-lisp
+  (use-package dired-hide-dotfiles
+    :ensure t
+    :config
+    (dired-hide-dotfiles-mode)
+    (define-key dired-mode-map "." 'dired-hide-dotfiles-mode))
 
-     (setq-default dired-listing-switches "-lhvA")
-     (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
-     ;; Taken from here: https://emacs.stackexchange.com/questions/13080/reloading-directory-local-variables/13096#13096
-     (defun my-reload-dir-locals-for-current-buffer ()
-       "reload dir locals for the current buffer"
-       (interactivye)
-       (let ((enable-local-variables :all))
-         (hack-dir-local-variables-non-file-buffer)))
-     (defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
-       "For every buffer with the same `default-directory` as the
-     current buffer's, reload dir-locals."
-       (interactive)
-       (let ((dir default-directory))
-         (dolist (buffer (buffer-list))
-           (with-current-buffer buffer
-             (when (equal default-directory dir))
-             (my-reload-dir-locals-for-current-buffer)))))
-   #+end_src
+  (setq-default dired-listing-switches "-lhvA")
+  (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
+  ;; Taken from here: https://emacs.stackexchange.com/questions/13080/reloading-directory-local-variables/13096#13096
+  (defun my-reload-dir-locals-for-current-buffer ()
+    "reload dir locals for the current buffer"
+    (interactivye)
+    (let ((enable-local-variables :all))
+      (hack-dir-local-variables-non-file-buffer)))
+  (defun my-reload-dir-locals-for-all-buffer-in-this-directory ()
+    "For every buffer with the same `default-directory` as the
+  current buffer's, reload dir-locals."
+    (interactive)
+    (let ((dir default-directory))
+      (dolist (buffer (buffer-list))
+        (with-current-buffer buffer
+          (when (equal default-directory dir))
+          (my-reload-dir-locals-for-current-buffer)))))
+#+end_src
 ** Navigation
 *** Evil Mode
-   #+begin_src emacs-lisp
-     (add-to-list 'load-path "~/.emacs.d/evil")
-     (require 'evil)
-     (evil-mode 1)
-   #+end_src
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/evil")
+  (require 'evil)
+  (evil-mode 1)
+#+end_src
 *** Smart Parents
     Creates pairs of parenthesis in a smart way
-   #+begin_src emacs-lisp
-     (use-package smartparens
-       :ensure t
-       :config
-       (sp-use-paredit-bindings)
-       (add-hook 'prog-mode-hook #'smartparens-mode)
-       (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
-   #+end_src
-   #+begin_src emacs-lisp
-     (setq-default indent-tabs-mode nil)
-     (setq-default tab-width 4)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :ensure t
+    :config
+    (sp-use-paredit-bindings)
+    (add-hook 'prog-mode-hook #'smartparens-mode)
+    (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+#+end_src
+#+begin_src emacs-lisp
+#+end_src
 *** Scrolling
    #+begin_src emacs-lisp
      (setq kill-buffer-query-functions
@@ -255,226 +254,214 @@
   #+end_src
 * Key-bindings
 ** Modes
-  #+begin_src emacs-lisp 
-    (global-set-key (kbd "C-x t") 'multi-term)
-    (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
-    (global-set-key (kbd "C-x C-l") 'font-lock-mode)
-    (global-set-key (kbd "C-c d") 'elcord-mode)
-    (global-set-key (kbd "C-c l") 'latex-preview-pane-enable)
-  #+end_src
-** Defuns 
-   #+begin_src emacs-lisp
-     (global-set-key (kbd "C-o") 'insert-new-line-below)
-   #+end_src
+#+begin_src emacs-lisp 
+  (global-set-key (kbd "C-x t") 'multi-term)
+  (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
+  (global-set-key (kbd "C-x C-l") 'font-lock-mode)
+  (global-set-key (kbd "C-c d") 'elcord-mode)
+
+  (global-set-key (kbd "C-o") 'insert-new-line-below)
+#+end_src
 * Programming 
 ** Ivy
-   #+begin_src emacs-lisp
-     (use-package ivy
-       :ensure t
-       :config(ivy-mode 1))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package ivy
+    :ensure t
+    :config(ivy-mode 1))
+#+end_src
 ** Swiper
-   #+begin_src emacs-lisp
-     (use-package swiper
-       :ensure t
-       :config
-       (progn
-         (ivy-mode 1)
-         (setq ivy-use-virtual-buffers t)
-         (global-set-key "\C-s" 'swiper)))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package swiper
+    :ensure t
+    :config
+    (progn
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (global-set-key "\C-s" 'swiper)))
+#+end_src
 ** Try
-   #+begin_src emacs-lisp
-     (use-package try
-       :ensure t
-       :config
-       (progn  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
-     (setq ivy-use-virtual-buffers t)
-     (setq ivy-display-style 'fancy)
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package try
+    :ensure t
+    :config
+    (progn  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-display-style 'fancy)
+#+end_src
 ** Which-key
-   #+begin_src emacs-lisp
-     (use-package which-key
-       :ensure t
-       :config (which-key-mode))
-   #+end_src
+#+begin_src emacs-lisp
+  (use-package which-key
+    :ensure t
+    :config (which-key-mode))
+#+end_src
 * Org-mode
-** UI
-   #+begin_src emacs-lisp
-     (require 'org-tempo)
-     (add-to-list 'org-modules 'org-tempo t)
-     (with-eval-after-load 'org
-     (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-     (add-to-list 'org-structure-template-alist '("jl" . "src julia"))
-     (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-     (add-to-list 'org-structure-template-alist '("py" . "src python")))
+** general config
+*** variables
+#+begin_src emacs-lisp
+  (setq org-startup-folded t)
+  (setq org-src-tab-acts-natively t)
+  (setq org-src-window-setup 'current-window)
 
-     (setq org-startup-folded t)
-   #+end_src
-  #+begin_src emacs-lisp
-     (use-package org-bullets
-       :hook (org-mode . org-bullets-mode)
-       :custom
-       (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
-     (setq org-ellipsis "ᐯ")
-   #+end_src
-   #+begin_src emacs-lisp
-     (font-lock-add-keywords
-      'org-mode
-      '(("^[[:space:]]*\\(-\\) "
-         (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+  (setq visual-fill-column-width 100 visual-fill-column-center-text t)
 
-     ; (setq org-src-tab-acts-natively t)
-     (setq org-src-window-setup 'current-window)
-     (add-to-list 'org-structure-template-alist
-                  '("el" . "src emacs-lisp"))
-   #+end_src
-   Center org buffers
-  #+begin_src emacs-lisp
-    (defun efs/org-mode-visual-fill ()
-      (setq visual-fill-column-width 100
-            visual-fill-column-center-text t)
-      (visual-fill-column-mode 1))
+  (setq-default fill-column 79)
+  (setq org-refile-use-outline-path t)
+  (setq org-outline-path-complete-in-steps nil)
 
-    (use-package visual-fill-column
-      :ensure t
-      :hook (org-mode . efs/org-mode-visual-fill))
+  (setq-default org-image-actual-width 620)
+#+end_src 
+*** structure templates
+#+begin_src emacs-lisp
+  (require 'org-tempo)
+  (add-to-list 'org-modules 'org-tempo t)
 
-  #+end_src
-** Tasks management
-   #+begin_src emacs-lisp
-     (add-hook 'org-mode-hook 'auto-fill-mode)
-     (setq-default fill-column 79)
-     (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
-           org-log-into-drawer t)
+  (with-eval-after-load 'org
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("jl" . "src julia"))
+  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python")))
+#+end_src
+*** org-bullets
+#+begin_src emacs-lisp
+  (use-package org-bullets
+    :hook (org-mode . org-bullets-mode)
+    :custom
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+  (setq org-ellipsis "ᐯ")
 
-     (defun org-file-path (filename)
-       " Return the absolute address of an org file, give its relative name"
-       (concat (file-name-as-directory org-directory) filename))
+  (font-lock-add-keywords
+   'org-mode
+   '(("^[[:space:]]*\\(-\\) "
+      (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+#+end_src
+*** center org buffers
+#+begin_src emacs-lisp
+  (defun efs/org-mode-visual-fill ()
+    (visual-fill-column-mode 1))
 
-     (setq org-index-file (org-file-path "todo.org"))
-     (setq org-archive-location
-           (concat (org-file-path "done.org") "::* From %s"))
+  (use-package visual-fill-column
+    :ensure t
+    :hook (org-mode . efs/org-mode-visual-fill))
+#+end_src
+** tasks management
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook 'auto-fill-mode)
+  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
+        org-log-into-drawer t)
 
-     ;; copy the content out of the archive.org file and yank in the inbox.org
-     (setq org-agenda-files (list org-index-file))
-                                             ; mark  a todo as done and move it to an appropriate place in the archive.
-     (defun hrs/mark-done-and-archive ()
-       " Mark the state of an org-mode item as DONE and archive it."
-       (interactive)
-       (org-todo 'done)
-       (org-archive-subtree))
-     (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
-     (setq org-log-done 'time)
-   #+end_src
-** Capturing Tasks
-   #+begin_src emacs-lisp
-     (setq org-capture-templates
-           '(("t" "Todo"
-              entry
-              (file+headline org-index-file "Inbox")
-              "* TODO %?\n")))
-     (setq org-refile-use-outline-path t)
-     (setq org-outline-path-complete-in-steps nil)
-     (define-key global-map "\C-cc" 'org-capture)
-   #+end_src
-** Displaying inline images
+  (defun org-file-path (filename)
+    ;; return the absolute address of an org file, give its relative name
+    (concat (file-name-as-directory org-directory) filename))
+
+  (setq org-index-file (org-file-path "todo.org"))
+  (setq org-archive-location
+        (concat (org-file-path "done.org") "::* From %s"))
+
+  ;; copy the content out of the archive.org file and yank in the inbox.org
+  (setq org-agenda-files (list org-index-file))
+  ;; mark  a todo as done and move it to an appropriate place in the archive.
+  (defun hrs/mark-done-and-archive ()
+    ;; mark the state of an org-mode item as DONE and archive it.
+    (interactive)
+    (org-todo 'done)
+    (org-archive-subtree))
+  (setq org-log-done 'time)
+#+end_src
+** capturing Tasks
+#+begin_src emacs-lisp
+  (setq org-capture-templates
+        '(("t" "Todo"
+           entry
+           (file+headline org-index-file "Inbox")
+           "* TODO %?\n")))
+
+  (defun my-org-capture-place-template-dont-delete-windows (oldfun args)
+    (cl-letf (((symbol-function 'delete-other-windows) 'ignore))
+      (apply oldfun args)))
+
+  (with-eval-after-load "org-capture"
+    (advice-add 'org-capture-place-template :around 'my-org-capture-place-template-dont-delete-windows))
+#+end_src
+** displaying inline images
    The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/nn
-   #+begin_src emacs-lisp
-     (defun my/fix-inline-images ()
-       (when org-inline-image-overlays
-         (org-redisplay-inline-images)))
-     (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
-     (setq-default org-image-actual-width 620)
-     (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
-   #+end_src
-** Code
-   #+begin_src emacs-lisp
-     (org-babel-do-load-languages
-      'org-babel-load-languages
-      '((python . t)))
-     (require 'color)
-     (set-face-attribute 'org-block nil :background
-                         (color-darken-name
-                          (face-attribute 'default :background) 3))
-
-     ;(setq org-src-block-faces '(("emacs-lisp" (:background "#000000"))
-     ;                            ("python" (:background "#000000"))))
-
-   #+end_src
-** Latex
-*** Latex Preview Fragments 
-  #+begin_src emacs-lisp
-    (use-package org-fragtog :ensure t)
-    (add-hook 'org-mode-hook 'org-fragtog-mode)
-
-    (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
-
-  #+end_src
-** TODO load the preview dir with the images in a choosen location 
-** Exporting with org-mode
+#+begin_src emacs-lisp
+  (defun my/fix-inline-images ()
+    (when org-inline-image-overlays
+      (org-redisplay-inline-images)))
+  (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
+#+end_src
+** code
+#+begin_src emacs-lisp
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)))
+  (require 'color)
+  (set-face-attribute 'org-block nil :background
+                      (color-darken-name
+                       (face-attribute 'default :background) 3))
+#+end_src
+** latex
+*** preview fragments
+**** TODO fix this
+#+begin_src emacs-lisp
+  (use-package org-fragtog :ensure t)
+  (add-hook 'org-mode-hook 'org-fragtog-mode)
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+#+end_src
+** exporting
    Makes UTF-8 symbols appears in buffer I use it for editing Latex
-   #+begin_src emacs-lisp
-     (add-hook 'org-mode-hook
-               (lambda () (org-toggle-pretty-entities)))
-     ;; Opening pdfs
-     (add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
-     (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
-   #+end_src
+#+begin_src emacs-lisp
+  (add-hook 'org-mode-hook
+            (lambda () (org-toggle-pretty-entities)))
+  ;; Opening pdfs
+  (add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
+#+end_src
+** key-bindings in org-mode
+#+begin_src emacs-lisp
+  (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
+  (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
+  (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
+
+  (define-key global-map "\C-cc" 'org-capture)
+#+end_src
 * Latex
-  #+begin_src emacs-lisp
-    (use-package auctex
-      :ensure t
-      :hook ((latex-mode LaTeX-mode) . tex)
-      :config
-      (font-lock-mode)
-      (add-to-list 'font-latex-math-environments "dmath"))
+** auctex
+#+begin_src emacs-lisp
+  (use-package auctex
+    :ensure t
+    :hook ((latex-mode LaTeX-mode) . tex)
+    :config
+    (add-to-list 'font-latex-math-environments "dmath"))
 
-    (setq TeX-auto-save t)
-    (setq TeX-parse-self t)
-    (setq-default TeX-master nil)
-    (setq latex-run-command "pdflatex -interaction=nonstopmode")
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil)
+#+end_src
+** compile 
+   Compile the pdf with =pdflatex= and open in the xreader pdf reader. 
+#+begin_src emacs-lisp
+  (setq latex-run-command "pdflatex -interaction=nonstopmode")
 
+  (setq TeX-view-program-selection
+        '((output-pdf "PDF Viewer")))
 
-    (defun hrs/mark-done-and-archive ()
-      " Mark the state of an org-mode item as DONE and archive it."
-      (interactive)
-      (org-todo 'done)
-      (org-archive-subtree))
-    (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
-    (setq org-log-done 'time)
+  (setq TeX-view-program-list
+        '(("PDF Viewer" "xreader %o")))
 
-    (setq TeX-view-program-selection
-          '((output-pdf "PDF Viewer")))
-    (setq TeX-view-program-list
-          '(("PDF Viewer" "xreader %o")))
-
-    (eval-after-load "tex"
-      '(add-to-list 'TeX-command-list
-                    '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
-
-  #+end_src
-** Automating compilation 
-   #+begin_src emacs-lisp
-;     (global-set-key (kbd "C-SPC")
-;       (lambda ()
-;         "Save the buffer and run `TeX-command-run-all`."
-;         (interactive)
-;         (let (TeX-save-query) (TeX-save-document (TeX-master-file)))
-;         (TeX-command-run-all nil)))
-   #+end_src   
-
-* Pdf
+  (eval-after-load "tex"
+    '(add-to-list 'TeX-command-list
+                  '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+#+end_src   
 * Auto-completation
-  #+begin_src emacs-lisp
-    (use-package auto-complete
-      :ensure t
-      :init
-      (auto-complete-mode))
-    (auto-complete-mode 1)
-  #+end_src
+#+begin_src emacs-lisp
+  (use-package auto-complete
+    :ensure t
+    :init
+    (auto-complete-mode))
+  (auto-complete-mode 1)
+#+end_src
 * External
-  Elcord
+**  Elcord
 #+begin_src emacs-lisp
   (use-package elcord
     :ensure t

@@ -211,15 +211,26 @@ current buffer's, reload dir-locals."
   :ensure t
   :config (which-key-mode))
 
+(setq org-startup-folded t)
+(setq org-src-tab-acts-natively t)
+(setq org-src-window-setup 'current-window)
+
+(setq visual-fill-column-width 100 visual-fill-column-center-text t)
+
+(setq-default fill-column 79)
+(setq org-refile-use-outline-path t)
+(setq org-outline-path-complete-in-steps nil)
+
+(setq-default org-image-actual-width 620)
+
 (require 'org-tempo)
 (add-to-list 'org-modules 'org-tempo t)
+
 (with-eval-after-load 'org
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("jl" . "src julia"))
 (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
 (add-to-list 'org-structure-template-alist '("py" . "src python")))
-
-(setq org-startup-folded t)
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
@@ -232,14 +243,7 @@ current buffer's, reload dir-locals."
  '(("^[[:space:]]*\\(-\\) "
     (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-; (setq org-src-tab-acts-natively t)
-(setq org-src-window-setup 'current-window)
-(add-to-list 'org-structure-template-alist
-             '("el" . "src emacs-lisp"))
-
 (defun efs/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
-        visual-fill-column-center-text t)
   (visual-fill-column-mode 1))
 
 (use-package visual-fill-column
@@ -247,12 +251,11 @@ current buffer's, reload dir-locals."
   :hook (org-mode . efs/org-mode-visual-fill))
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
-(setq-default fill-column 79)
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
       org-log-into-drawer t)
 
 (defun org-file-path (filename)
-  " Return the absolute address of an org file, give its relative name"
+  ;; return the absolute address of an org file, give its relative name
   (concat (file-name-as-directory org-directory) filename))
 
 (setq org-index-file (org-file-path "todo.org"))
@@ -261,13 +264,12 @@ current buffer's, reload dir-locals."
 
 ;; copy the content out of the archive.org file and yank in the inbox.org
 (setq org-agenda-files (list org-index-file))
-                                        ; mark  a todo as done and move it to an appropriate place in the archive.
+;; mark  a todo as done and move it to an appropriate place in the archive.
 (defun hrs/mark-done-and-archive ()
-  " Mark the state of an org-mode item as DONE and archive it."
+  ;; mark the state of an org-mode item as DONE and archive it.
   (interactive)
   (org-todo 'done)
   (org-archive-subtree))
-(global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
 (setq org-log-done 'time)
 
 (setq org-capture-templates
@@ -275,16 +277,18 @@ current buffer's, reload dir-locals."
          entry
          (file+headline org-index-file "Inbox")
          "* TODO %?\n")))
-(setq org-refile-use-outline-path t)
-(setq org-outline-path-complete-in-steps nil)
-(define-key global-map "\C-cc" 'org-capture)
+
+(defun my-org-capture-place-template-dont-delete-windows (oldfun args)
+  (cl-letf (((symbol-function 'delete-other-windows) 'ignore))
+    (apply oldfun args)))
+
+(with-eval-after-load "org-capture"
+  (advice-add 'org-capture-place-template :around 'my-org-capture-place-template-dont-delete-windows))
 
 (defun my/fix-inline-images ()
   (when org-inline-image-overlays
     (org-redisplay-inline-images)))
 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
-(setq-default org-image-actual-width 620)
-(global-set-key (kbd "C-c i") 'org-toggle-inline-images)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -294,56 +298,42 @@ current buffer's, reload dir-locals."
                     (color-darken-name
                      (face-attribute 'default :background) 3))
 
-;(setq org-src-block-faces '(("emacs-lisp" (:background "#000000"))
-;                            ("python" (:background "#000000"))))
-
 (use-package org-fragtog :ensure t)
 (add-hook 'org-mode-hook 'org-fragtog-mode)
-
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 (add-hook 'org-mode-hook
           (lambda () (org-toggle-pretty-entities)))
 ;; Opening pdfs
 (add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
+
+(global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
+(global-set-key (kbd "C-c i") 'org-toggle-inline-images)
 (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
+
+(define-key global-map "\C-cc" 'org-capture)
 
 (use-package auctex
   :ensure t
   :hook ((latex-mode LaTeX-mode) . tex)
   :config
-  (font-lock-mode)
   (add-to-list 'font-latex-math-environments "dmath"))
 
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
+
 (setq latex-run-command "pdflatex -interaction=nonstopmode")
-
-
-(defun hrs/mark-done-and-archive ()
-  " Mark the state of an org-mode item as DONE and archive it."
-  (interactive)
-  (org-todo 'done)
-  (org-archive-subtree))
-(global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
-(setq org-log-done 'time)
 
 (setq TeX-view-program-selection
       '((output-pdf "PDF Viewer")))
+
 (setq TeX-view-program-list
       '(("PDF Viewer" "xreader %o")))
 
 (eval-after-load "tex"
   '(add-to-list 'TeX-command-list
                 '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
-
-;     (global-set-key (kbd "C-SPC")
-;       (lambda ()
-;         "Save the buffer and run `TeX-command-run-all`."
-;         (interactive)
-;         (let (TeX-save-query) (TeX-save-document (TeX-master-file)))
-;         (TeX-command-run-all nil)))
 
 (use-package auto-complete
   :ensure t
