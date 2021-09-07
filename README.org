@@ -20,7 +20,7 @@
    #+begin_src emacs-lisp
      (setq-default user-full-name "Jefter Santiago")
      (setq-default user-mail-address "jeftersantiago@protonmail.com")
-     (load "~/.local/bin/private.el")
+     (load "~/Dropbox/private-configs/private.el")
    #+end_src
 *** custom file
    Separated file to store generated config from emacs.
@@ -68,23 +68,23 @@
 ** Appearance 
 *** system default variables
 #+begin_src emacs-lisp
-   (scroll-bar-mode 0)
-   (tool-bar-mode 0)
-   (menu-bar-mode 0)
-   (set-fringe-mode 10)        ; Give some breathing room
-   (font-lock-mode t)
+    (scroll-bar-mode 0)
+    (tool-bar-mode 0)
+    (menu-bar-mode 0)
+    (fringe-mode 2)
+    (font-lock-mode t)
 
-   (setq initial-scratch-message nil)
-   (setq inhibit-startup-message t)
+    (setq initial-scratch-message nil)
+    (setq inhibit-startup-message t)
 
-   (setq-default indent-tabs-mode nil)
-   (setq-default tab-width 4)
-   (setq confirm-kill-processes nil)
-   (setq-default truncate-lines t)
-   (setq-default fill-column 80)
+    (setq-default indent-tabs-mode nil)
+    (setq-default tab-width 4)
+    (setq confirm-kill-processes nil)
+    (setq-default truncate-lines t)
+    (setq-default fill-column 80)
 
-   (setq-default cursor-type 'square)
-   (defalias 'yes-or-no-p 'y-or-n-p)
+    (setq-default cursor-type 'square)
+    (defalias 'yes-or-no-p 'y-or-n-p)
 
 
 #+end_src
@@ -95,17 +95,25 @@ Makes the parenthesis shine
   (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 #+end_src
 *** theme and transparency
-    Loading theme and setting modeline background color.
+**** theme
+     Loading theme and setting modeline background color.
 #+begin_src emacs-lisp
+; (use-package doom-themes
+;   :config
+;  (load-theme 'doom-dracula t)
+;   :ensure t)
   (use-package doom-themes
     :config
-    (load-theme 'doom-Iosvkem t)
+   (load-theme 'doom-acario-light t)
     :ensure t)
+
+
 #+end_src
-Enabling transparency
+**** transparency
+     Enabling transparency
 #+begin_src emacs-lisp
-  ;     (set-frame-parameter (selected-frame) 'alpha '(95 95))
-  ;     (add-to-list 'default-frame-alist '(alpha 95 95))
+  (set-frame-parameter (selected-frame) 'alpha '(99 99))
+  (add-to-list 'default-frame-alist '(alpha 99 99))
 #+end_src
 *** font
     took from here:  https://emacs.stackexchange.com/q/45895
@@ -131,10 +139,10 @@ Enabling transparency
        :ensure t)
    #+end_src
 *** line number
-   #+begin_src emacs-lisp
-     ;    (global-display-line-numbers-mode)
-     ;    (setq display-line-numbers-type 'relative)
-   #+end_src
+#+begin_src emacs-lisp
+; (global-display-line-numbers-mode)
+; (setq display-line-numbers-type 'relative)
+#+end_src
 ** Dired
 *** sidebar
 #+begin_src emacs-lisp
@@ -282,17 +290,17 @@ Enabling transparency
 ** Try
 #+begin_src emacs-lisp
   (use-package try
-    :ensure t
-    :config
-    (progn  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-display-style 'fancy)
+   :ensure t
+   :config
+   (progn  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
+ (setq ivy-use-virtual-buffers t)
+ (setq ivy-display-style 'fancy)
 #+end_src
 ** Which-key
 #+begin_src emacs-lisp
-  (use-package which-key
-    :ensure t
-    :config (which-key-mode))
+ (use-package which-key
+   :ensure t
+   :config (which-key-mode))
 #+end_src
 * Org-mode
 ** general config
@@ -336,12 +344,12 @@ Enabling transparency
 #+end_src
 *** center org buffers
 #+begin_src emacs-lisp
-  (defun efs/org-mode-visual-fill ()
-    (visual-fill-column-mode 1))
+;  (defun efs/org-mode-visual-fill ()
+;    (visual-fill-column-mode 1))
 
-  (use-package visual-fill-column
-    :ensure t
-    :hook (org-mode . efs/org-mode-visual-fill))
+;  (use-package visual-fill-column
+;    :ensure t
+;    :hook (org-mode . efs/org-mode-visual-fill))
 #+end_src
 ** tasks management
 #+begin_src emacs-lisp
@@ -353,9 +361,9 @@ Enabling transparency
     ;; return the absolute address of an org file, give its relative name
     (concat (file-name-as-directory org-directory) filename))
 
-  (setq org-index-file (org-file-path "todo.org"))
+  (setq org-index-file (org-file-path "TODOs.org"))
   (setq org-archive-location
-        (concat (org-file-path "done.org") "::* From %s"))
+        (concat (org-file-path "DONE.org") "::* From %s"))
 
   ;; copy the content out of the archive.org file and yank in the inbox.org
   (setq org-agenda-files (list org-index-file))
@@ -402,11 +410,10 @@ Enabling transparency
 #+end_src
 ** latex
 *** preview fragments
-**** TODO fix this
 #+begin_src emacs-lisp
-  (use-package org-fragtog :ensure t)
-  (add-hook 'org-mode-hook 'org-fragtog-mode)
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+;  (use-package org-fragtog :ensure t)
+;  (add-hook 'org-mode-hook 'org-fragtog-mode)
+;  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 #+end_src
 ** exporting
    Makes UTF-8 symbols appears in buffer I use it for editing Latex
@@ -424,6 +431,20 @@ Enabling transparency
 
   (define-key global-map "\C-cc" 'org-capture)
 #+end_src
+** latex
+   preview latex fragments
+   #+begin_src emacs-lisp
+
+     (use-package org-fragtog :ensure t)
+     (add-hook 'org-mode-hook 'org-fragtog-mode)
+
+     ; this is the only way to really work (idk y)
+     (setq org-latex-create-formula-image-program 'dvisvgm)
+
+     ; adjusting the size
+     (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+
+   #+end_src
 * Latex
 ** auctex
 #+begin_src emacs-lisp
@@ -432,6 +453,12 @@ Enabling transparency
     :hook ((latex-mode LaTeX-mode) . tex)
     :config
     (add-to-list 'font-latex-math-environments "dmath"))
+  (add-hook 'LaTeX-mode-hook 'TeX-mode)
+
+  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+
 
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
@@ -440,17 +467,20 @@ Enabling transparency
 ** compile 
    Compile the pdf with =pdflatex= and open in the xreader pdf reader. 
 #+begin_src emacs-lisp
-  (setq latex-run-command "pdflatex -interaction=nonstopmode")
+  ;  (setq latex-run-command "pdflatex -interaction=nonstopmode")
 
-  (setq TeX-view-program-selection
-        '((output-pdf "PDF Viewer")))
+    (setq TeX-view-program-selection
+          '((output-pdf "PDF Viewer")))
 
-  (setq TeX-view-program-list
-        '(("PDF Viewer" "xreader %o")))
+    (setq TeX-view-program-list
+          '(("PDF Viewer" "xreader %o")))
 
-  (eval-after-load "tex"
-    '(add-to-list 'TeX-command-list
-                  '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+    (eval-after-load "tex"
+      '(add-to-list 'TeX-command-list
+                    '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+
+
+
 #+end_src   
 * Auto-completation
 #+begin_src emacs-lisp
@@ -467,6 +497,7 @@ Enabling transparency
     :ensure t
     :config
     (setq elcord-use-major-mode-as-main-icon t)
+    (setq elcord-display-buffer-detail 'nil)
     (setq elcord-refresh-rate 2)
     :init)
 #+end_src

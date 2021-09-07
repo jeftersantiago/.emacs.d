@@ -12,7 +12,7 @@
 
 (setq-default user-full-name "Jefter Santiago")
 (setq-default user-mail-address "jeftersantiago@protonmail.com")
-(load "~/.local/bin/private.el")
+(load "~/Dropbox/private-configs/private.el")
 
 (setq custom-file "~/.emacs.d/custom.el")
 
@@ -44,28 +44,35 @@
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
 (menu-bar-mode 0)
-(set-fringe-mode 10)        ; Give some breathing room
+(fringe-mode 2)
 (font-lock-mode t)
 
 (setq initial-scratch-message nil)
 (setq inhibit-startup-message t)
 
-(use-package rainbow-delimiters :ensure t)
-(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
-
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
 (setq confirm-kill-processes nil)
 (setq-default truncate-lines t)
 (setq-default fill-column 80)
-                                        ;(setq-default cursor-type 'square)
+
+(setq-default cursor-type 'square)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(use-package doom-themes
-  :config
-  (load-theme 'doom-Iosvkem t)
-  :ensure t)
+(use-package rainbow-delimiters :ensure t)
+(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-;     (set-frame-parameter (selected-frame) 'alpha '(95 95))
-;     (add-to-list 'default-frame-alist '(alpha 95 95))
+; (use-package doom-themes
+;   :config
+;  (load-theme 'doom-dracula t)
+;   :ensure t)
+  (use-package doom-themes
+    :config
+   (load-theme 'doom-acario-light t)
+    :ensure t)
+
+(set-frame-parameter (selected-frame) 'alpha '(99 99))
+(add-to-list 'default-frame-alist '(alpha 99 99))
 
 (set-frame-font "Noto Sans Mono-12:antialias=none")
 
@@ -83,8 +90,8 @@
   :custom ((doom-modeline-height 15))
   :ensure t)
 
-;    (global-display-line-numbers-mode)
-;    (setq display-line-numbers-type 'relative)
+; (global-display-line-numbers-mode)
+; (setq display-line-numbers-type 'relative)
 
 (use-package dired-sidebar
   :ensure t
@@ -148,8 +155,7 @@ current buffer's, reload dir-locals."
   (add-hook 'prog-mode-hook #'smartparens-mode)
   (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
 
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
+
 
 (setq kill-buffer-query-functions
       (remq 'process-kill-buffer-query-function
@@ -184,7 +190,6 @@ current buffer's, reload dir-locals."
 (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
 (global-set-key (kbd "C-x C-l") 'font-lock-mode)
 (global-set-key (kbd "C-c d") 'elcord-mode)
-(global-set-key (kbd "C-c l") 'latex-preview-pane-enable)
 
 (global-set-key (kbd "C-o") 'insert-new-line-below)
 
@@ -243,12 +248,12 @@ current buffer's, reload dir-locals."
  '(("^[[:space:]]*\\(-\\) "
     (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-(defun efs/org-mode-visual-fill ()
-  (visual-fill-column-mode 1))
+;  (defun efs/org-mode-visual-fill ()
+;    (visual-fill-column-mode 1))
 
-(use-package visual-fill-column
-  :ensure t
-  :hook (org-mode . efs/org-mode-visual-fill))
+;  (use-package visual-fill-column
+;    :ensure t
+;    :hook (org-mode . efs/org-mode-visual-fill))
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
@@ -258,9 +263,9 @@ current buffer's, reload dir-locals."
   ;; return the absolute address of an org file, give its relative name
   (concat (file-name-as-directory org-directory) filename))
 
-(setq org-index-file (org-file-path "todo.org"))
+(setq org-index-file (org-file-path "TODOs.org"))
 (setq org-archive-location
-      (concat (org-file-path "done.org") "::* From %s"))
+      (concat (org-file-path "DONE.org") "::* From %s"))
 
 ;; copy the content out of the archive.org file and yank in the inbox.org
 (setq org-agenda-files (list org-index-file))
@@ -298,9 +303,9 @@ current buffer's, reload dir-locals."
                     (color-darken-name
                      (face-attribute 'default :background) 3))
 
-(use-package org-fragtog :ensure t)
-(add-hook 'org-mode-hook 'org-fragtog-mode)
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+;  (use-package org-fragtog :ensure t)
+;  (add-hook 'org-mode-hook 'org-fragtog-mode)
+;  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 (add-hook 'org-mode-hook
           (lambda () (org-toggle-pretty-entities)))
@@ -313,27 +318,39 @@ current buffer's, reload dir-locals."
 
 (define-key global-map "\C-cc" 'org-capture)
 
+(use-package org-fragtog :ensure t)
+
+(add-hook 'org-mode-hook 'org-fragtog-mode)
+(setq org-latex-create-formula-image-program 'dvisvgm)
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+
 (use-package auctex
   :ensure t
   :hook ((latex-mode LaTeX-mode) . tex)
   :config
   (add-to-list 'font-latex-math-environments "dmath"))
+(add-hook 'LaTeX-mode-hook 'TeX-mode)
+
+(add-hook 'LaTeX-mode-hook 'visual-line-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+
 
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
 
-(setq latex-run-command "pdflatex -interaction=nonstopmode")
+;  (setq latex-run-command "pdflatex -interaction=nonstopmode")
 
-(setq TeX-view-program-selection
-      '((output-pdf "PDF Viewer")))
+  (setq TeX-view-program-selection
+        '((output-pdf "PDF Viewer")))
 
-(setq TeX-view-program-list
-      '(("PDF Viewer" "xreader %o")))
+  (setq TeX-view-program-list
+        '(("PDF Viewer" "xreader %o")))
 
-(eval-after-load "tex"
-  '(add-to-list 'TeX-command-list
-                '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+  (eval-after-load "tex"
+    '(add-to-list 'TeX-command-list
+                  '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
 
 (use-package auto-complete
   :ensure t
@@ -345,5 +362,6 @@ current buffer's, reload dir-locals."
   :ensure t
   :config
   (setq elcord-use-major-mode-as-main-icon t)
+  (setq elcord-display-buffer-detail 'nil)
   (setq elcord-refresh-rate 2)
   :init)
