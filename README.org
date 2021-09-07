@@ -413,23 +413,23 @@ Makes the parenthesis shine
    Makes UTF-8 symbols appears in buffer I use it for editing Latex
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook
-            (lambda () (org-toggle-pretty-entities)))
+    (lambda () (org-toggle-pretty-entities)))
   ;; Opening pdfs
-  (add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
+  ;;(add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
 #+end_src
-** key-bindings in org-mode
+** Key-bindings in org-mode
 #+begin_src emacs-lisp
   (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
   (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
   (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
-
   (define-key global-map "\C-cc" 'org-capture)
 #+end_src
 ** Org LaTeX
    Preview Latex fragments
+   \\
    [[images/latex-preview-example.gif]]
    #+begin_src emacs-lisp
-
+     ; load the fragments automatically
      (use-package org-fragtog :ensure t)
      (add-hook 'org-mode-hook 'org-fragtog-mode)
 
@@ -438,7 +438,6 @@ Makes the parenthesis shine
 
      ; adjusting the size
      (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
-
    #+end_src
 * LaTeX
 ** auctex
