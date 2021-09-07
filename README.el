@@ -294,6 +294,7 @@ current buffer's, reload dir-locals."
   (when org-inline-image-overlays
     (org-redisplay-inline-images)))
 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
+(add-hook 'org-mode-hook 'org-toggle-inline-images)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -302,10 +303,6 @@ current buffer's, reload dir-locals."
 (set-face-attribute 'org-block nil :background
                     (color-darken-name
                      (face-attribute 'default :background) 3))
-
-;  (use-package org-fragtog :ensure t)
-;  (add-hook 'org-mode-hook 'org-fragtog-mode)
-;  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 (add-hook 'org-mode-hook
           (lambda () (org-toggle-pretty-entities)))
@@ -319,10 +316,13 @@ current buffer's, reload dir-locals."
 (define-key global-map "\C-cc" 'org-capture)
 
 (use-package org-fragtog :ensure t)
-
 (add-hook 'org-mode-hook 'org-fragtog-mode)
+
+; this is the only way to really work (idk y)
 (setq org-latex-create-formula-image-program 'dvisvgm)
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+
+; adjusting the size
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
 (use-package auctex
   :ensure t

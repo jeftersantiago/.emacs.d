@@ -397,6 +397,7 @@ Makes the parenthesis shine
     (when org-inline-image-overlays
       (org-redisplay-inline-images)))
   (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
+  (add-hook 'org-mode-hook 'org-toggle-inline-images)
 #+end_src
 ** code
 #+begin_src emacs-lisp
@@ -407,13 +408,6 @@ Makes the parenthesis shine
   (set-face-attribute 'org-block nil :background
                       (color-darken-name
                        (face-attribute 'default :background) 3))
-#+end_src
-** latex
-*** preview fragments
-#+begin_src emacs-lisp
-;  (use-package org-fragtog :ensure t)
-;  (add-hook 'org-mode-hook 'org-fragtog-mode)
-;  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 #+end_src
 ** exporting
    Makes UTF-8 symbols appears in buffer I use it for editing Latex
@@ -431,8 +425,9 @@ Makes the parenthesis shine
 
   (define-key global-map "\C-cc" 'org-capture)
 #+end_src
-** latex
-   preview latex fragments
+** Org LaTeX
+   Preview Latex fragments
+   [[images/latex-preview-example.gif]]
    #+begin_src emacs-lisp
 
      (use-package org-fragtog :ensure t)
@@ -442,10 +437,10 @@ Makes the parenthesis shine
      (setq org-latex-create-formula-image-program 'dvisvgm)
 
      ; adjusting the size
-     (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
    #+end_src
-* Latex
+* LaTeX
 ** auctex
 #+begin_src emacs-lisp
   (use-package auctex
