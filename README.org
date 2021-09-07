@@ -460,9 +460,10 @@ Makes the parenthesis shine
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
 #+end_src
-[[./images/latex-compile-example.gif]]
 ** compile 
    Compile the pdf with =pdflatex= and open in the xreader pdf reader. 
+   
+   [[./images/latex-compile-example.gif]]
 #+begin_src emacs-lisp
   ;  (setq latex-run-command "pdflatex -interaction=nonstopmode")
 
