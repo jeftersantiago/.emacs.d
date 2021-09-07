@@ -427,7 +427,8 @@ Makes the parenthesis shine
 ** Org LaTeX
    Preview Latex fragments
    \\
-   [[images/latex-preview-example.gif]]
+   #+attr_org: :width 100
+   [[./images/latex-preview-example.gif]]
    #+begin_src emacs-lisp
      ; load the fragments automatically
      (use-package org-fragtog :ensure t)
