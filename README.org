@@ -426,6 +426,7 @@ Makes the parenthesis shine
 #+end_src
 ** Org LaTeX
    Preview Latex fragments
+
    
    [[./images/latex-preview-example.gif]]
 
