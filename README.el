@@ -305,16 +305,16 @@ current buffer's, reload dir-locals."
                      (face-attribute 'default :background) 3))
 
 (add-hook 'org-mode-hook
-          (lambda () (org-toggle-pretty-entities)))
+  (lambda () (org-toggle-pretty-entities)))
 ;; Opening pdfs
-(add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
+;;(add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
 
 (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
 (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
 (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
-
 (define-key global-map "\C-cc" 'org-capture)
 
+; load the fragments automatically
 (use-package org-fragtog :ensure t)
 (add-hook 'org-mode-hook 'org-fragtog-mode)
 

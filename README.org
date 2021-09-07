@@ -426,9 +426,9 @@ Makes the parenthesis shine
 #+end_src
 ** Org LaTeX
    Preview Latex fragments
-   \\
-   #+attr_org: :width 100
+   
    [[./images/latex-preview-example.gif]]
+
    #+begin_src emacs-lisp
      ; load the fragments automatically
      (use-package org-fragtog :ensure t)
@@ -459,6 +459,7 @@ Makes the parenthesis shine
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
 #+end_src
+[[./images/latex-compile-example.gif]]
 ** compile 
    Compile the pdf with =pdflatex= and open in the xreader pdf reader. 
 #+begin_src emacs-lisp
@@ -473,9 +474,6 @@ Makes the parenthesis shine
     (eval-after-load "tex"
       '(add-to-list 'TeX-command-list
                     '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
-
-
-
 #+end_src   
 * Auto-completation
 #+begin_src emacs-lisp
