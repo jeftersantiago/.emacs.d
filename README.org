@@ -426,7 +426,8 @@ Makes the parenthesis shine
 #+end_src
 ** Org LaTeX
    Preview Latex fragments
-   \\
+
+
    #+attr_org: :width 100
    [[./images/latex-preview-example.gif]]
    #+begin_src emacs-lisp
