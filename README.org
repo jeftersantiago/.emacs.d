@@ -16,15 +16,15 @@
   #+end_src
 * General config
 ** Personal configs
-*** info
+*** Info
    #+begin_src emacs-lisp
      (setq-default user-full-name "Jefter Santiago")
      (setq-default user-mail-address "jeftersantiago@protonmail.com")
      (load "~/Dropbox/private-configs/private.el")
    #+end_src
-*** custom file
-   Separated file to store generated config from emacs.
-   Puts the outputs in a separated file
+*** Custom file
+    Separated file to store generated config from emacs.
+    Puts the outputs in a separated file
    - Taken from
      https://www.reddit.com/r/emacs/comments/4x655n/packageselectedpackages_always_appear_after/
      https://www.reddit.com/r/emacs/comments/53zpv9/how_do_i_get_emacs_to_stop_adding_custom_fields/
@@ -66,7 +66,7 @@
    #+end_src
 * Envoirment
 ** Appearance 
-*** system default variables
+*** System default variables
 #+begin_src emacs-lisp
     (scroll-bar-mode 0)
     (tool-bar-mode 0)
@@ -85,40 +85,32 @@
 
     (setq-default cursor-type 'square)
     (defalias 'yes-or-no-p 'y-or-n-p)
-
-
 #+end_src
-*** rainbow-delimiters
+*** Rainbow-delimiters
 Makes the parenthesis shine
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters :ensure t)
   (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 #+end_src
-*** theme and transparency
-**** theme
+*** Theme and transparency
+**** Theme
      Loading theme and setting modeline background color.
 #+begin_src emacs-lisp
-; (use-package doom-themes
-;   :config
-;  (load-theme 'doom-dracula t)
-;   :ensure t)
-  (use-package doom-themes
+  (use-package modus-themes 
     :config
-   (load-theme 'doom-acario-light t)
+   (load-theme 'modus-operandi t)
     :ensure t)
-
-
 #+end_src
-**** transparency
+**** Transparency
      Enabling transparency
 #+begin_src emacs-lisp
   (set-frame-parameter (selected-frame) 'alpha '(99 99))
   (add-to-list 'default-frame-alist '(alpha 99 99))
 #+end_src
-*** font
-    took from here:  https://emacs.stackexchange.com/q/45895
+*** Font
+    Took from here:  https://emacs.stackexchange.com/q/45895
    #+begin_src emacs-lisp
-     (set-frame-font "Noto Sans Mono-12:antialias=none")
+     (set-frame-font "Roboto-12:antialias=true")
    #+end_src
    #+begin_src emacs-lisp
      (use-package default-text-scale
@@ -129,7 +121,7 @@ Makes the parenthesis shine
 
      (prefer-coding-system 'utf-8)
    #+end_src
-*** modeline
+*** Modeline
     Nice and simple.
    #+begin_src emacs-lisp
      (use-package all-the-icons :ensure t)
@@ -138,25 +130,25 @@ Makes the parenthesis shine
        :custom ((doom-modeline-height 15))
        :ensure t)
    #+end_src
-*** line number
+*** Line number
 #+begin_src emacs-lisp
-; (global-display-line-numbers-mode)
-; (setq display-line-numbers-type 'relative)
+  ; (global-display-line-numbers-mode)
+  ; (setq display-line-numbers-type 'relative)
 #+end_src
 ** Dired
-*** sidebar
+*** Sidebar
 #+begin_src emacs-lisp
   (use-package dired-sidebar
     :ensure t
     :config
     (add-hook 'dired-mode-hook 'font-lock-mode))
 #+end_src
-*** icons 
+*** Icons 
 #+begin_src emacs-lisp
   (use-package all-the-icons-dired :ensure t)
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 #+end_src
-*** default applications to extensions 
+*** Default applications to extensions 
 #+begin_src emacs-lisp
   (use-package dired-open
     :ensure t
@@ -177,7 +169,7 @@ Makes the parenthesis shine
             ("pdf" . "xreader")
             ("webm" . "mpv"))))
 #+end_src
-*** hide dotfiles and extra information (aka ownership and such)
+*** Hide dotfiles and extra information (aka ownership and such)
 #+begin_src emacs-lisp
   (use-package dired-hide-dotfiles
     :ensure t
@@ -303,8 +295,8 @@ Makes the parenthesis shine
    :config (which-key-mode))
 #+end_src
 * Org-mode
-** general config
-*** variables
+** General config
+*** Variables
 #+begin_src emacs-lisp
   (setq org-startup-folded t)
   (setq org-src-tab-acts-natively t)
@@ -318,7 +310,7 @@ Makes the parenthesis shine
 
   (setq-default org-image-actual-width 620)
 #+end_src 
-*** structure templates
+*** Structure templates
 #+begin_src emacs-lisp
   (require 'org-tempo)
   (add-to-list 'org-modules 'org-tempo t)
@@ -329,7 +321,7 @@ Makes the parenthesis shine
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
 #+end_src
-*** org-bullets
+*** Org-bullets
 #+begin_src emacs-lisp
   (use-package org-bullets
     :hook (org-mode . org-bullets-mode)
@@ -342,16 +334,16 @@ Makes the parenthesis shine
    '(("^[[:space:]]*\\(-\\) "
       (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 #+end_src
-*** center org buffers
+*** Center org buffers
 #+begin_src emacs-lisp
-;  (defun efs/org-mode-visual-fill ()
-;    (visual-fill-column-mode 1))
+  (defun efs/org-mode-visual-fill ()
+    (visual-fill-column-mode 1))
 
-;  (use-package visual-fill-column
-;    :ensure t
-;    :hook (org-mode . efs/org-mode-visual-fill))
+  (use-package visual-fill-column
+    :ensure t
+    :hook (org-mode . efs/org-mode-visual-fill))
 #+end_src
-** tasks management
+** Tasks management
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
@@ -375,7 +367,7 @@ Makes the parenthesis shine
     (org-archive-subtree))
   (setq org-log-done 'time)
 #+end_src
-** capturing Tasks
+** Capturing Tasks
 #+begin_src emacs-lisp
   (setq org-capture-templates
         '(("t" "Todo"
@@ -390,7 +382,7 @@ Makes the parenthesis shine
   (with-eval-after-load "org-capture"
     (advice-add 'org-capture-place-template :around 'my-org-capture-place-template-dont-delete-windows))
 #+end_src
-** displaying inline images
+** Displaying inline images
    The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/nn
 #+begin_src emacs-lisp
   (defun my/fix-inline-images ()
@@ -399,7 +391,7 @@ Makes the parenthesis shine
   (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
   (add-hook 'org-mode-hook 'org-toggle-inline-images)
 #+end_src
-** code
+** Code
 #+begin_src emacs-lisp
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -409,7 +401,7 @@ Makes the parenthesis shine
                       (color-darken-name
                        (face-attribute 'default :background) 3))
 #+end_src
-** exporting
+** Exporting
    Makes UTF-8 symbols appears in buffer I use it for editing Latex
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook
@@ -442,7 +434,7 @@ Makes the parenthesis shine
      (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
    #+end_src
 * LaTeX
-** auctex
+** Auctex
 #+begin_src emacs-lisp
   (use-package auctex
     :ensure t
@@ -455,12 +447,11 @@ Makes the parenthesis shine
   (add-hook 'LaTeX-mode-hook 'flyspell-mode)
   (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
-
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)
   (setq-default TeX-master nil)
 #+end_src
-** compile 
+** Compile 
    Compile the pdf with =pdflatex= and open in the xreader pdf reader. 
    
    [[./images/latex-compile-example.gif]]

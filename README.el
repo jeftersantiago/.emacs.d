@@ -64,17 +64,17 @@
 
 ; (use-package doom-themes
 ;   :config
-;  (load-theme 'doom-dracula t)
+;   (load-theme 'doom-Iosvkem t)
 ;   :ensure t)
-  (use-package doom-themes
+  (use-package modus-themes 
     :config
-   (load-theme 'doom-acario-light t)
+   (load-theme 'modus-operandi t)
     :ensure t)
 
 (set-frame-parameter (selected-frame) 'alpha '(99 99))
 (add-to-list 'default-frame-alist '(alpha 99 99))
 
-(set-frame-font "Noto Sans Mono-12:antialias=none")
+(set-frame-font "Roboto-12:antialias=true")
 
 (use-package default-text-scale
   :ensure t
@@ -334,7 +334,6 @@ current buffer's, reload dir-locals."
 (add-hook 'LaTeX-mode-hook 'visual-line-mode)
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-
 
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
