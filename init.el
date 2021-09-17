@@ -10,6 +10,11 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+
+(require 'use-package)
+(setq use-package-always-ensure t)
+
+
 (org-babel-load-file (expand-file-name "~/.emacs.d/README.org"))
 
-;(set-frame-parameter nil 'fullscreen 'fullboth)
+

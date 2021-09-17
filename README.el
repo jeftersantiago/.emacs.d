@@ -42,56 +42,55 @@
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 (scroll-bar-mode 0)
-(tool-bar-mode 0)
-(menu-bar-mode 0)
-(fringe-mode 2)
-(font-lock-mode t)
+    (tool-bar-mode 0)
+    (menu-bar-mode 0)
+    (fringe-mode 0)
+    (font-lock-mode t)
 
-(setq initial-scratch-message nil)
-(setq inhibit-startup-message t)
+   (setq initial-scratch-message nil)
+;   (setq inhibit-startup-message t)
 
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq confirm-kill-processes nil)
-(setq-default truncate-lines t)
-(setq-default fill-column 80)
+    (setq-default indent-tabs-mode nil)
+    (setq-default tab-width 4)
+    (setq confirm-kill-processes nil)
+    (setq-default truncate-lines t)
+    (setq-default fill-column 80)
 
-(setq-default cursor-type 'square)
-(defalias 'yes-or-no-p 'y-or-n-p)
+    (setq-default cursor-type 'square)
+    (defalias 'yes-or-no-p 'y-or-n-p)
 
-(use-package rainbow-delimiters :ensure t)
-(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
-
-; (use-package doom-themes
-;   :config
-;   (load-theme 'doom-Iosvkem t)
-;   :ensure t)
-  (use-package modus-themes 
-    :config
-   (load-theme 'modus-operandi t)
+(use-package rainbow-delimiters
+    :hook (prog-mode . rainbow-delimiters-mode)
     :ensure t)
+;  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-(set-frame-parameter (selected-frame) 'alpha '(99 99))
-(add-to-list 'default-frame-alist '(alpha 99 99))
+;  (use-package doom-themes 
+;   :config
+;  (load-theme 'doom-challenger-deep t)
+;    :ensure t)
+(use-package doom-themes
+  :init (load-theme 'doom-palenight t))
 
-(set-frame-font "Roboto-12:antialias=true")
+(set-frame-parameter (selected-frame) 'alpha '(95 95))
+(add-to-list 'default-frame-alist '(alpha 95 95))
+
+(set-frame-font "Monospace-12:antialias=true")
 
 (use-package default-text-scale
   :ensure t
   :hook (after-init . default-text-scale-mode))
 (set-language-environment "UTF-8")
 (global-prettify-symbols-mode t)
-
 (prefer-coding-system 'utf-8)
 
 (use-package all-the-icons :ensure t)
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 15))
+  :custom ((doom-modeline-height 35))
   :ensure t)
 
-; (global-display-line-numbers-mode)
-; (setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode)
+ (setq display-line-numbers-type 'relative)
 
 (use-package dired-sidebar
   :ensure t
@@ -190,31 +189,7 @@ current buffer's, reload dir-locals."
 (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
 (global-set-key (kbd "C-x C-l") 'font-lock-mode)
 (global-set-key (kbd "C-c d") 'elcord-mode)
-
 (global-set-key (kbd "C-o") 'insert-new-line-below)
-
-(use-package ivy
-  :ensure t
-  :config(ivy-mode 1))
-
-(use-package swiper
-  :ensure t
-  :config
-  (progn
-    (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t)
-    (global-set-key "\C-s" 'swiper)))
-
-(use-package try
-  :ensure t
-  :config
-  (progn  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
-(setq ivy-use-virtual-buffers t)
-(setq ivy-display-style 'fancy)
-
-(use-package which-key
-  :ensure t
-  :config (which-key-mode))
 
 (setq org-startup-folded t)
 (setq org-src-tab-acts-natively t)
@@ -248,12 +223,12 @@ current buffer's, reload dir-locals."
  '(("^[[:space:]]*\\(-\\) "
     (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-;  (defun efs/org-mode-visual-fill ()
-;    (visual-fill-column-mode 1))
+; (defun efs/org-mode-visual-fill ()
+;   (visual-fill-column-mode 1))
 
-;  (use-package visual-fill-column
-;    :ensure t
-;    :hook (org-mode . efs/org-mode-visual-fill))
+; (use-package visual-fill-column
+;   :ensure t
+;   :hook (org-mode . efs/org-mode-visual-fill))
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
@@ -307,7 +282,7 @@ current buffer's, reload dir-locals."
 (add-hook 'org-mode-hook
   (lambda () (org-toggle-pretty-entities)))
 ;; Opening pdfs
-;;(add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
+(add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
 
 (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
 (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
@@ -351,6 +326,31 @@ current buffer's, reload dir-locals."
     '(add-to-list 'TeX-command-list
                   '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
 
+(use-package ivy
+  :diminish
+  :bind (("C-s" . swiper))
+         :config
+         (ivy-mode 1))
+
+(use-package swiper
+  :ensure t
+  :config
+  (progn
+    (ivy-mode 1)
+    (setq ivy-use-virtual-buffers t)
+    (global-set-key "\C-s" 'swiper)))
+
+(use-package try
+  :ensure t
+  :config
+  (progn  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
+(setq ivy-use-virtual-buffers t)
+(setq ivy-display-style 'fancy)
+
+(use-package which-key
+  :ensure t
+  :config (which-key-mode))
+
 (use-package auto-complete
   :ensure t
   :init
@@ -358,9 +358,9 @@ current buffer's, reload dir-locals."
 (auto-complete-mode 1)
 
 (use-package elcord
-  :ensure t
-  :config
-  (setq elcord-use-major-mode-as-main-icon t)
-  (setq elcord-display-buffer-detail 'nil)
-  (setq elcord-refresh-rate 2)
-  :init)
+    :ensure t
+    :config
+    (setq elcord-use-major-mode-as-main-icon t)
+;    (setq elcord-display-buffer-detail 'nil)
+    (setq elcord-refresh-rate 2)
+    :init)
