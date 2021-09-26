@@ -42,34 +42,31 @@
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 (scroll-bar-mode 0)
-    (tool-bar-mode 0)
-    (menu-bar-mode 0)
-    (fringe-mode 0)
-    (font-lock-mode t)
+(tool-bar-mode 0)
+(menu-bar-mode 0)
+(fringe-mode 2)
+(font-lock-mode t)
 
-   (setq initial-scratch-message nil)
-;   (setq inhibit-startup-message t)
+(setq initial-scratch-message nil)
+(setq inhibit-startup-message t)
 
-    (setq-default indent-tabs-mode nil)
-    (setq-default tab-width 4)
-    (setq confirm-kill-processes nil)
-    (setq-default truncate-lines t)
-    (setq-default fill-column 80)
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq confirm-kill-processes nil)
+(setq-default truncate-lines t)
+(setq-default fill-column 80)
 
-    (setq-default cursor-type 'square)
-    (defalias 'yes-or-no-p 'y-or-n-p)
+(setq-default cursor-type 'square)
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode)
     :ensure t)
 ;  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-;  (use-package doom-themes 
-;   :config
-;  (load-theme 'doom-challenger-deep t)
-;    :ensure t)
 (use-package doom-themes
-  :init (load-theme 'doom-palenight t))
+       :init (load-theme 'doom-Iosvkem t))
+;      (set-background-color "black")
 
 (set-frame-parameter (selected-frame) 'alpha '(95 95))
 (add-to-list 'default-frame-alist '(alpha 95 95))
@@ -86,11 +83,11 @@
 (use-package all-the-icons :ensure t)
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 35))
+  :custom ((doom-modeline-height 25))
   :ensure t)
 
-(global-display-line-numbers-mode)
- (setq display-line-numbers-type 'relative)
+;(global-display-line-numbers-mode)
+;(setq display-line-numbers-type 'relative)
 
 (use-package dired-sidebar
   :ensure t
@@ -299,33 +296,6 @@ current buffer's, reload dir-locals."
 ; adjusting the size
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
-(use-package auctex
-  :ensure t
-  :hook ((latex-mode LaTeX-mode) . tex)
-  :config
-  (add-to-list 'font-latex-math-environments "dmath"))
-(add-hook 'LaTeX-mode-hook 'TeX-mode)
-
-(add-hook 'LaTeX-mode-hook 'visual-line-mode)
-(add-hook 'LaTeX-mode-hook 'flyspell-mode)
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-
-(setq TeX-auto-save t)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
-
-;  (setq latex-run-command "pdflatex -interaction=nonstopmode")
-
-  (setq TeX-view-program-selection
-        '((output-pdf "PDF Viewer")))
-
-  (setq TeX-view-program-list
-        '(("PDF Viewer" "xreader %o")))
-
-  (eval-after-load "tex"
-    '(add-to-list 'TeX-command-list
-                  '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
-
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper))
@@ -356,11 +326,3 @@ current buffer's, reload dir-locals."
   :init
   (auto-complete-mode))
 (auto-complete-mode 1)
-
-(use-package elcord
-    :ensure t
-    :config
-    (setq elcord-use-major-mode-as-main-icon t)
-;    (setq elcord-display-buffer-detail 'nil)
-    (setq elcord-refresh-rate 2)
-    :init)

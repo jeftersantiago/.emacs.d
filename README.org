@@ -25,9 +25,9 @@
 *** Custom file
     Separated file to store generated config from emacs.
     Puts the outputs in a separated file
-   - Taken from
-     https://www.reddit.com/r/emacs/comments/4x655n/packageselectedpackages_always_appear_after/
-     https://www.reddit.com/r/emacs/comments/53zpv9/how_do_i_get_emacs_to_stop_adding_custom_fields/
+    Taken from
+    - https://www.reddit.com/r/emacs/comments/4x655n/packageselectedpackages_always_appear_after/
+    - https://www.reddit.com/r/emacs/comments/53zpv9/how_do_i_get_emacs_to_stop_adding_custom_fields/
    #+begin_src emacs-lisp
      (setq custom-file "~/.emacs.d/custom.el")
    #+end_src
@@ -68,23 +68,23 @@
 ** Appearance 
 *** System default variables
 #+begin_src emacs-lisp
-      (scroll-bar-mode 0)
-      (tool-bar-mode 0)
-      (menu-bar-mode 0)
-      (fringe-mode 0)
-      (font-lock-mode t)
+  (scroll-bar-mode 0)
+  (tool-bar-mode 0)
+  (menu-bar-mode 0)
+  (fringe-mode 2)
+  (font-lock-mode t)
 
-     (setq initial-scratch-message nil)
-  ;   (setq inhibit-startup-message t)
+  (setq initial-scratch-message nil)
+  (setq inhibit-startup-message t)
 
-      (setq-default indent-tabs-mode nil)
-      (setq-default tab-width 4)
-      (setq confirm-kill-processes nil)
-      (setq-default truncate-lines t)
-      (setq-default fill-column 80)
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 4)
+  (setq confirm-kill-processes nil)
+  (setq-default truncate-lines t)
+  (setq-default fill-column 80)
 
-      (setq-default cursor-type 'square)
-      (defalias 'yes-or-no-p 'y-or-n-p)
+  (setq-default cursor-type 'square)
+  (defalias 'yes-or-no-p 'y-or-n-p)
 #+end_src
 *** Rainbow-delimiters
     Makes the parenthesis shine
@@ -98,12 +98,9 @@
 **** Theme
      Loading theme and setting modeline background color.
 #+begin_src emacs-lisp
-  ;  (use-package doom-themes 
-  ;   :config
-  ;  (load-theme 'doom-challenger-deep t)
-  ;    :ensure t)
-  (use-package doom-themes
-    :init (load-theme 'doom-palenight t))
+      (use-package doom-themes
+       :init (load-theme 'doom-Iosvkem t))
+;      (set-background-color "black")
 #+end_src
 **** Transparency
      Enabling transparency
@@ -130,13 +127,13 @@
      (use-package all-the-icons :ensure t)
      (use-package doom-modeline
        :init (doom-modeline-mode 1)
-       :custom ((doom-modeline-height 35))
+       :custom ((doom-modeline-height 25))
        :ensure t)
    #+end_src
 *** Line number
 #+begin_src emacs-lisp
-(global-display-line-numbers-mode)
- (setq display-line-numbers-type 'relative)
+;(global-display-line-numbers-mode)
+;(setq display-line-numbers-type 'relative)
 #+end_src
 ** Dired
 *** Sidebar
@@ -402,41 +399,6 @@
      ; adjusting the size
      (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
    #+end_src
-* LaTeX
-** Auctex
-#+begin_src emacs-lisp
-  (use-package auctex
-    :ensure t
-    :hook ((latex-mode LaTeX-mode) . tex)
-    :config
-    (add-to-list 'font-latex-math-environments "dmath"))
-  (add-hook 'LaTeX-mode-hook 'TeX-mode)
-
-  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-  (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
-#+end_src
-** Compile 
-   Compile the pdf with =pdflatex= and open in the xreader pdf reader. 
-   
-   [[./images/latex-compile-example.gif]]
-#+begin_src emacs-lisp
-  ;  (setq latex-run-command "pdflatex -interaction=nonstopmode")
-
-    (setq TeX-view-program-selection
-          '((output-pdf "PDF Viewer")))
-
-    (setq TeX-view-program-list
-          '(("PDF Viewer" "xreader %o")))
-
-    (eval-after-load "tex"
-      '(add-to-list 'TeX-command-list
-                    '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
-#+end_src   
 * Programming 
 ** Ivy
 #+begin_src emacs-lisp
@@ -479,15 +441,3 @@
     (auto-complete-mode))
   (auto-complete-mode 1)
 #+end_src
-* External
-**  Elcord
-#+begin_src emacs-lisp
-  (use-package elcord
-    :ensure t
-    :config
-    (setq elcord-use-major-mode-as-main-icon t)
-;    (setq elcord-display-buffer-detail 'nil)
-    (setq elcord-refresh-rate 2)
-    :init)
-#+end_src
-

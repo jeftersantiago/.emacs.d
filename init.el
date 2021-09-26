@@ -18,3 +18,8 @@
 (org-babel-load-file (expand-file-name "~/.emacs.d/README.org"))
 
 
+
+(load-file "~/.emacs.d/external/discord.el")
+(load-file "~/.emacs.d/latex/latex.el")
+
+
