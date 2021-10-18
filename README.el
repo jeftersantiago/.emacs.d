@@ -44,7 +44,7 @@
 (scroll-bar-mode 0)
 (tool-bar-mode 0)
 (menu-bar-mode 0)
-(fringe-mode 2)
+(fringe-mode 0)
 (font-lock-mode t)
 
 (setq initial-scratch-message nil)
@@ -66,10 +66,10 @@
 
 (use-package doom-themes
        :init (load-theme 'doom-Iosvkem t))
-;      (set-background-color "black")
+;     (set-background-color "black")
 
-(set-frame-parameter (selected-frame) 'alpha '(95 95))
-(add-to-list 'default-frame-alist '(alpha 95 95))
+(set-frame-parameter (selected-frame) 'alpha '(92 92))
+(add-to-list 'default-frame-alist '(alpha 92 92))
 
 (set-frame-font "Monospace-12:antialias=true")
 
@@ -86,8 +86,8 @@
   :custom ((doom-modeline-height 25))
   :ensure t)
 
-;(global-display-line-numbers-mode)
-;(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
 
 (use-package dired-sidebar
   :ensure t
@@ -141,7 +141,7 @@ current buffer's, reload dir-locals."
         (my-reload-dir-locals-for-current-buffer)))))
 
 (add-to-list 'load-path "~/.emacs.d/evil")
-(require 'evil)
+ (require 'evil)
 (evil-mode 1)
 
 (use-package smartparens
@@ -296,6 +296,14 @@ current buffer's, reload dir-locals."
 ; adjusting the size
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
+;      (add-hook 'org-mode-hook
+;        (lambda () (texfrag-mode))
+
+      (add-to-list 'org-latex-packages-alist
+                   '("" "tikz" t))
+      (eval-after-load "preview"
+        '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t))
+
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper))
@@ -321,8 +329,41 @@ current buffer's, reload dir-locals."
   :ensure t
   :config (which-key-mode))
 
+(use-package auctex
+  :ensure t
+  :hook ((latex-mode LaTeX-mode) . tex)
+  :config
+  (add-to-list 'font-latex-math-environments "dmath"))
+(add-hook 'LaTeX-mode-hook 'TeX-mode)
+
+(add-hook 'LaTeX-mode-hook 'visual-line-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+
+(setq TeX-auto-save t)
+(setq TeX-parse-self t)
+(setq-default TeX-master nil)
+
+(setq TeX-view-program-selection
+      '((output-pdf "PDF Viewer")))
+
+(setq TeX-view-program-list
+      '(("PDF Viewer" "xreader %o")))
+
+(eval-after-load "tex"
+  '(add-to-list 'TeX-command-list
+                '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+
 (use-package auto-complete
   :ensure t
   :init
   (auto-complete-mode))
 (auto-complete-mode 1)
+
+(use-package elcord
+  :ensure t
+  :config
+  (setq elcord-use-major-mode-as-main-icon t)
+  (setq elcord-display-buffer-detail 'nil)
+  (setq elcord-refresh-rate 2)
+  :init)
