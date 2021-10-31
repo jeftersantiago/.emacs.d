@@ -114,7 +114,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
  (add-to-list 'default-frame-alist '(alpha 98 98))
 #+end_src
 *** Font
-    Took from here:  https://emacs.stackexchange.com/q/45895
+    Taken from here:  https://emacs.stackexchange.com/q/45895
    #+begin_src emacs-lisp
      (set-frame-font "Monospace-12:antialias=true")
    #+end_src
@@ -511,7 +511,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
       ))
 #+end_src
 * Company
-  Token from [[https://cestlaz.github.io/posts/using-emacs-45-company/]]
+  Taken from [[https://cestlaz.github.io/posts/using-emacs-45-company/]]
   #+begin_src emacs-lisp
     (use-package company
       :ensure t

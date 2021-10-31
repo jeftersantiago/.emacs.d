@@ -42,9 +42,6 @@
 (fringe-mode 0)
 (font-lock-mode t)
 
-(setq frame-resize-pixelwise t)
-
-
 (setq initial-scratch-message nil)
 (setq inhibit-startup-message t)
 
@@ -56,6 +53,8 @@
 
 (setq-default cursor-type 'square)
 (defalias 'yes-or-no-p 'y-or-n-p)
+
+(setq frame-resize-pixelwise t)
 
 (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode)
