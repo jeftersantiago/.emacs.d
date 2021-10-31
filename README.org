@@ -1,4 +1,5 @@
 #+TITLE: Emacs configurations
+#+AUTHOR: Jefter Santiago
 * Startup performance
   Taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org
   #+begin_src emacs-lisp
@@ -36,11 +37,6 @@
      (setq-default backup-inhibited t)
      (setq-default create-lockfiles nil)
      (setq-default make-backup-files nil)
-     (use-package real-auto-save
-       :ensure t
-       :demand t
-       :config (setq real-auto-save-interval 10)
-       :hook (prog-mode . real-auto-save-mode))
    #+end_src
 ** Automatic package updates
    Automatizating the =M-x auto-package-update-now= command.
@@ -98,15 +94,19 @@
 **** Theme
      Loading theme and setting modeline background color.
 #+begin_src emacs-lisp
-      (use-package doom-themes
-       :init (load-theme 'doom-Iosvkem t))
-;     (set-background-color "black")
+;       (use-package doom-themes
+;          :init (load-theme 'doom-challenger-deep t))
+
+         (use-package spacemacs-theme
+           :defer t
+           :init (load-theme 'spacemacs-dark t))
+  ;(set-background-color "black")
 #+end_src
 **** Transparency
      Enabling transparency
 #+begin_src emacs-lisp
- (set-frame-parameter (selected-frame) 'alpha '(92 92))
- (add-to-list 'default-frame-alist '(alpha 92 92))
+ (set-frame-parameter (selected-frame) 'alpha '(98 98))
+ (add-to-list 'default-frame-alist '(alpha 98 98))
 #+end_src
 *** Font
     Took from here:  https://emacs.stackexchange.com/q/45895
@@ -369,6 +369,10 @@
                        (face-attribute 'default :background) 3))
 #+end_src
 ** Exporting
+   #+begin_src emacs-lisp
+     (setq org-latex-pdf-process (list
+        "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
+   #+end_src
    Makes UTF-8 symbols appears in buffer I use it for editing Latex
 #+begin_src emacs-lisp
   (add-hook 'org-mode-hook
@@ -409,8 +413,7 @@
         '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t))
 
     #+end_src
-* Programming 
-** Ivy
+* Ivy
 #+begin_src emacs-lisp
   (use-package ivy
     :diminish
@@ -418,7 +421,7 @@
            :config
            (ivy-mode 1))
 #+end_src
-** Swiper
+* Swiper
 #+begin_src emacs-lisp
   (use-package swiper
     :ensure t
@@ -428,21 +431,35 @@
       (setq ivy-use-virtual-buffers t)
       (global-set-key "\C-s" 'swiper)))
 #+end_src
-** Try
+* Try
 #+begin_src emacs-lisp
-  (use-package try
-   :ensure t
-   :config
-   (progn  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
- (setq ivy-use-virtual-buffers t)
- (setq ivy-display-style 'fancy)
+   (use-package try
+    :ensure t
+    :config
+    (progn  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-display-style 'fancy)
 #+end_src
-** Which-key
+* Which-key
 #+begin_src emacs-lisp
  (use-package which-key
    :ensure t
    :config (which-key-mode))
 #+end_src
+* Yasnippet
+  #+begin_src emacs-lisp
+    (use-package yasnippet
+      :ensure t
+      :init
+      (yas-global-mode 1))
+  #+end_src
+* Flycheck
+  #+begin_src emacs-lisp
+    (use-package flycheck
+      :ensure t
+      :init
+      (global-flycheck-mode t))
+  #+end_src  
 * Latex
   #+begin_src emacs-lisp
     (use-package auctex
@@ -456,7 +473,7 @@
     (add-hook 'LaTeX-mode-hook 'flyspell-mode)
     (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
-    (setq TeX-auto-save t)
+    (setq TeX-auto-save nil)
     (setq TeX-parse-self t)
     (setq-default TeX-master nil)
 
@@ -467,18 +484,63 @@
           '(("PDF Viewer" "xreader %o")))
 
     (eval-after-load "tex"
-      '(add-to-list 'TeX-command-list
-                    '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+                '(add-to-list 'TeX-command-list
+                              '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
 
   #+end_src
+* Julia
+#+begin_src emacs-lisp
+  (use-package julia-mode
+    :ensure t
+    :init)
+(require 'julia-mode)
+#+end_src
 * Auto-completation
 #+begin_src emacs-lisp
   (use-package auto-complete
     :ensure t
     :init
-    (auto-complete-mode))
-  (auto-complete-mode 1)
+    (progn
+      (ac-config-default)
+      (global-auto-complete-mode t)
+      ))
 #+end_src
+* Company
+  Token from [[https://cestlaz.github.io/posts/using-emacs-45-company/]]
+  #+begin_src emacs-lisp
+    (use-package company
+      :ensure t
+      :config
+      (setq company-idle-delay 0)
+      (setq company-minimum-prefix-length 3)
+      )
+
+    (global-company-mode t)
+    (use-package company-irony
+      :ensure t
+      :config
+      (add-to-list 'company-backends 'company-irony))
+    (use-package irony
+      :ensure t
+      :config
+      (add-hook 'c++-mode-hook 'irony-mode)
+      (add-hook 'c-mode-hook 'irony-mode)
+      (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options)
+      )
+
+    (use-package irony-eldoc
+      :ensure t
+      :config
+      (add-hook 'irony-mode-hook #'irony-eldoc))
+
+    (use-package jedi
+      :ensure t
+      :init
+      (add-hook 'python-mode-hook 'jedi:setup)
+      (add-hook 'python-mode-hook 'jedi:ac-setup))
+
+  #+end_src
+
 * External
   #+begin_src emacs-lisp
     (use-package elcord
@@ -489,4 +551,17 @@
       (setq elcord-refresh-rate 2)
       :init)
   #+end_src
+  
+
+
+
+
+
+
+
+
+
+
+
+
   

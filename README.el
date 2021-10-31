@@ -19,11 +19,6 @@
 (setq-default backup-inhibited t)
 (setq-default create-lockfiles nil)
 (setq-default make-backup-files nil)
-(use-package real-auto-save
-  :ensure t
-  :demand t
-  :config (setq real-auto-save-interval 10)
-  :hook (prog-mode . real-auto-save-mode))
 
 (use-package auto-package-update
   :ensure t
@@ -64,12 +59,16 @@
     :ensure t)
 ;  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-(use-package doom-themes
-       :init (load-theme 'doom-Iosvkem t))
-;     (set-background-color "black")
+;       (use-package doom-themes
+;          :init (load-theme 'doom-challenger-deep t))
 
-(set-frame-parameter (selected-frame) 'alpha '(92 92))
-(add-to-list 'default-frame-alist '(alpha 92 92))
+         (use-package spacemacs-theme
+           :defer t
+           :init (load-theme 'spacemacs-dark t))
+  ;(set-background-color "black")
+
+(set-frame-parameter (selected-frame) 'alpha '(98 98))
+(add-to-list 'default-frame-alist '(alpha 98 98))
 
 (set-frame-font "Monospace-12:antialias=true")
 
@@ -276,6 +275,9 @@ current buffer's, reload dir-locals."
                     (color-darken-name
                      (face-attribute 'default :background) 3))
 
+(setq org-latex-pdf-process (list
+   "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
+
 (add-hook 'org-mode-hook
   (lambda () (org-toggle-pretty-entities)))
 ;; Opening pdfs
@@ -329,6 +331,16 @@ current buffer's, reload dir-locals."
   :ensure t
   :config (which-key-mode))
 
+(use-package yasnippet
+  :ensure t
+  :init
+  (yas-global-mode 1))
+
+(use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode t))
+
 (use-package auctex
   :ensure t
   :hook ((latex-mode LaTeX-mode) . tex)
@@ -340,7 +352,7 @@ current buffer's, reload dir-locals."
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
-(setq TeX-auto-save t)
+(setq TeX-auto-save nil)
 (setq TeX-parse-self t)
 (setq-default TeX-master nil)
 
@@ -351,14 +363,52 @@ current buffer's, reload dir-locals."
       '(("PDF Viewer" "xreader %o")))
 
 (eval-after-load "tex"
-  '(add-to-list 'TeX-command-list
-                '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+            '(add-to-list 'TeX-command-list
+                          '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+
+(use-package julia-mode
+    :ensure t
+    :init)
+(require 'julia-mode)
 
 (use-package auto-complete
   :ensure t
   :init
-  (auto-complete-mode))
-(auto-complete-mode 1)
+  (progn
+    (ac-config-default)
+    (global-auto-complete-mode t)
+    ))
+
+(use-package company
+  :ensure t
+  :config
+  (setq company-idle-delay 0)
+  (setq company-minimum-prefix-length 3)
+  )
+
+(global-company-mode t)
+(use-package company-irony
+  :ensure t
+  :config
+  (add-to-list 'company-backends 'company-irony))
+(use-package irony
+  :ensure t
+  :config
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options)
+  )
+
+(use-package irony-eldoc
+  :ensure t
+  :config
+  (add-hook 'irony-mode-hook #'irony-eldoc))
+
+(use-package jedi
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (add-hook 'python-mode-hook 'jedi:ac-setup))
 
 (use-package elcord
   :ensure t
