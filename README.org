@@ -70,9 +70,6 @@
   (fringe-mode 0)
   (font-lock-mode t)
 
-  (setq frame-resize-pixelwise t)
-
-
   (setq initial-scratch-message nil)
   (setq inhibit-startup-message t)
 
@@ -84,6 +81,11 @@
 
   (setq-default cursor-type 'square)
   (defalias 'yes-or-no-p 'y-or-n-p)
+#+end_src
+Emacs window covering entire screen.
+Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/177]]
+#+begin_src emacs-lisp
+  (setq frame-resize-pixelwise t)
 #+end_src
 *** Rainbow-delimiters
     Makes the parenthesis shine
