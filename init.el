@@ -1,3 +1,4 @@
+(setq frame-inhibit-implied-resize t)
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)

@@ -42,6 +42,9 @@
 (fringe-mode 0)
 (font-lock-mode t)
 
+(setq frame-resize-pixelwise t)
+
+
 (setq initial-scratch-message nil)
 (setq inhibit-startup-message t)
 
