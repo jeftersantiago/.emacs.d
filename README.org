@@ -60,9 +60,8 @@
      (setq auto-save-file-name-transforms
            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
    #+end_src
-* Envoirment
-** Appearance 
-*** System default variables
+* Appearance 
+** System default variables
 #+begin_src emacs-lisp
   (scroll-bar-mode 0)
   (tool-bar-mode 0)
@@ -87,7 +86,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
 #+begin_src emacs-lisp
   (setq frame-resize-pixelwise t)
 #+end_src
-*** Rainbow-delimiters
+** Rainbow-delimiters
     Makes the parenthesis shine
 #+begin_src emacs-lisp
     (use-package rainbow-delimiters
@@ -95,8 +94,8 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
       :ensure t)
   ;  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 #+end_src
-*** Theme and transparency
-**** Theme
+** Theme and transparency
+*** Theme
      Loading theme and setting modeline background color.
 #+begin_src emacs-lisp
 ;       (use-package doom-themes
@@ -107,14 +106,14 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
            :init (load-theme 'spacemacs-dark t))
   ;(set-background-color "black")
 #+end_src
-**** Transparency
+*** Transparency
      Enabling transparency
 #+begin_src emacs-lisp
  (set-frame-parameter (selected-frame) 'alpha '(98 98))
  (add-to-list 'default-frame-alist '(alpha 98 98))
 #+end_src
-*** Font
-    Taken from here:  https://emacs.stackexchange.com/q/45895
+** Font
+   Taken from here:  https://emacs.stackexchange.com/q/45895
    #+begin_src emacs-lisp
      (set-frame-font "Monospace-12:antialias=true")
    #+end_src
@@ -125,8 +124,10 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
      (set-language-environment "UTF-8")
      (global-prettify-symbols-mode t)
      (prefer-coding-system 'utf-8)
+
+     (global-set-key (kbd "C-x C-l") 'font-lock-mode)
    #+end_src
-*** Modeline
+** Modeline
     Nice and simple.
    #+begin_src emacs-lisp
      (use-package all-the-icons :ensure t)
@@ -135,25 +136,26 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
        :custom ((doom-modeline-height 25))
        :ensure t)
    #+end_src
-*** Line number
+** Line number
 #+begin_src emacs-lisp
 (global-display-line-numbers-mode)
 (setq display-line-numbers-type 'relative)
 #+end_src
-** Dired
-*** Sidebar
+* Dired
+** Sidebar
 #+begin_src emacs-lisp
-  (use-package dired-sidebar
-    :ensure t
-    :config
-    (add-hook 'dired-mode-hook 'font-lock-mode))
+; (use-package dired-sidebar
+;   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+;   :ensure t
+;   :commands (dired-sidebar-toggle-sidebar)
+;   :init)
 #+end_src
-*** Icons 
+** Icons 
 #+begin_src emacs-lisp
   (use-package all-the-icons-dired :ensure t)
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 #+end_src
-*** Default applications to extensions 
+** Default applications to extensions 
 #+begin_src emacs-lisp
   (use-package dired-open
     :ensure t
@@ -174,7 +176,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
             ("pdf" . "xreader")
             ("webm" . "mpv"))))
 #+end_src
-*** Hide dotfiles and extra information (aka ownership and such)
+** Hide dotfiles and extra information (aka ownership and such)
 #+begin_src emacs-lisp
   (use-package dired-hide-dotfiles
     :ensure t
@@ -200,26 +202,19 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
           (when (equal default-directory dir))
           (my-reload-dir-locals-for-current-buffer)))))
 #+end_src
-** Navigation
-*** Evil Mode
-#+begin_src emacs-lisp
-  (add-to-list 'load-path "~/.emacs.d/evil")
-  (require 'evil)
- (evil-mode 1)
-#+end_src
-*** Smart Parents
-    Creates pairs of parenthesis in a smart way
-#+begin_src emacs-lisp
-  (use-package smartparens
-    :ensure t
-    :config
-    (sp-use-paredit-bindings)
-    (add-hook 'prog-mode-hook #'smartparens-mode)
-    (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
-#+end_src
-#+begin_src emacs-lisp
-#+end_src
-*** Scrolling
+* Navigation
+** Inserting new line
+    Add a new line below the current line
+   #+begin_src emacs-lisp
+     (defun insert-new-line-below ()
+       (interactive)
+       (let ((oldpos (point)))
+         (end-of-line)
+         (newline-and-indent)))
+
+  (global-set-key (kbd "C-o") 'insert-new-line-below)
+   #+end_src
+** Scrolling
    #+begin_src emacs-lisp
      (setq kill-buffer-query-functions
            (remq 'process-kill-buffer-query-function
@@ -232,16 +227,25 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
            mouse-wheel-progressive-speed nil
            mouse-wheel-follow-mouse 't)
    #+end_src
-*** Inserting new line
-   Add a new line below the current line
-   #+begin_src emacs-lisp
-     (defun insert-new-line-below ()
-       (interactive)
-       (let ((oldpos (point)))
-         (end-of-line)
-         (newline-and-indent)))
-   #+end_src
-** Buffers
+* Evil Mode
+#+begin_src emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/evil")
+  (require 'evil)
+ (evil-mode 1)
+#+end_src
+* Smartparents
+  Creates pairs of parenthesis in a smart way
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :ensure t
+    :config
+    (sp-use-paredit-bindings)
+    (add-hook 'prog-mode-hook #'smartparens-mode)
+    (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+#+end_src
+#+begin_src emacs-lisp
+#+end_src
+* Ace-window
   #+begin_src emacs-lisp
     (use-package ace-window
       :ensure t
@@ -252,20 +256,14 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
         '(aw-leading-char-face
           ((t (:inherit ace-jump-face-foreground :height 2.0)))))))
   #+end_src
-** Terminal
+* Terminal
   #+begin_src emacs-lisp
     (use-package multi-term :ensure t)
     (setq multi-term-program "/bin/bash")
+
+    (global-set-key (kbd "C-x t") 'multi-term)
   #+end_src
 * Key-bindings
-** Modes
-#+begin_src emacs-lisp 
-  (global-set-key (kbd "C-x t") 'multi-term)
-  (global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
-  (global-set-key (kbd "C-x C-l") 'font-lock-mode)
-  (global-set-key (kbd "C-c d") 'elcord-mode)
-  (global-set-key (kbd "C-o") 'insert-new-line-below)
-#+end_src
 * Org-mode
 ** General config
 *** Variables
@@ -555,6 +553,8 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
       (setq elcord-display-buffer-detail 'nil)
       (setq elcord-refresh-rate 2)
       :init)
+
+  (global-set-key (kbd "C-c d") 'elcord-mode)
   #+end_src
   
 

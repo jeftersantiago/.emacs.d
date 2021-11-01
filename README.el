@@ -81,19 +81,22 @@
 (global-prettify-symbols-mode t)
 (prefer-coding-system 'utf-8)
 
+(global-set-key (kbd "C-x C-l") 'font-lock-mode)
+
 (use-package all-the-icons :ensure t)
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 25))
   :ensure t)
 
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
+;(global-display-line-numbers-mode)
+;(setq display-line-numbers-type 'relative)
 
 (use-package dired-sidebar
+  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
   :ensure t
-  :config
-  (add-hook 'dired-mode-hook 'font-lock-mode))
+  :commands (dired-sidebar-toggle-sidebar)
+  :init)
 
 (use-package all-the-icons-dired :ensure t)
 (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
@@ -141,18 +144,13 @@ current buffer's, reload dir-locals."
         (when (equal default-directory dir))
         (my-reload-dir-locals-for-current-buffer)))))
 
-(add-to-list 'load-path "~/.emacs.d/evil")
- (require 'evil)
-(evil-mode 1)
+(defun insert-new-line-below ()
+     (interactive)
+     (let ((oldpos (point)))
+       (end-of-line)
+       (newline-and-indent)))
 
-(use-package smartparens
-  :ensure t
-  :config
-  (sp-use-paredit-bindings)
-  (add-hook 'prog-mode-hook #'smartparens-mode)
-  (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
-
-
+(global-set-key (kbd "C-o") 'insert-new-line-below)
 
 (setq kill-buffer-query-functions
       (remq 'process-kill-buffer-query-function
@@ -165,11 +163,18 @@ current buffer's, reload dir-locals."
       mouse-wheel-progressive-speed nil
       mouse-wheel-follow-mouse 't)
 
-(defun insert-new-line-below ()
-  (interactive)
-  (let ((oldpos (point)))
-    (end-of-line)
-    (newline-and-indent)))
+(add-to-list 'load-path "~/.emacs.d/evil")
+ (require 'evil)
+(evil-mode 1)
+
+(use-package smartparens
+  :ensure t
+  :config
+  (sp-use-paredit-bindings)
+  (add-hook 'prog-mode-hook #'smartparens-mode)
+  (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
+
+
 
 (use-package ace-window
   :ensure t
@@ -184,10 +189,6 @@ current buffer's, reload dir-locals."
 (setq multi-term-program "/bin/bash")
 
 (global-set-key (kbd "C-x t") 'multi-term)
-(global-set-key (kbd "C-x C-n") 'dired-sidebar-toggle-sidebar)
-(global-set-key (kbd "C-x C-l") 'font-lock-mode)
-(global-set-key (kbd "C-c d") 'elcord-mode)
-(global-set-key (kbd "C-o") 'insert-new-line-below)
 
 (setq org-startup-folded t)
 (setq org-src-tab-acts-natively t)
@@ -413,9 +414,11 @@ current buffer's, reload dir-locals."
   (add-hook 'python-mode-hook 'jedi:ac-setup))
 
 (use-package elcord
-  :ensure t
-  :config
-  (setq elcord-use-major-mode-as-main-icon t)
-  (setq elcord-display-buffer-detail 'nil)
-  (setq elcord-refresh-rate 2)
-  :init)
+    :ensure t
+    :config
+    (setq elcord-use-major-mode-as-main-icon t)
+    (setq elcord-display-buffer-detail 'nil)
+    (setq elcord-refresh-rate 2)
+    :init)
+
+(global-set-key (kbd "C-c d") 'elcord-mode)
