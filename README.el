@@ -299,6 +299,17 @@ current buffer's, reload dir-locals."
       (eval-after-load "preview"
         '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t))
 
+(use-package org-ref
+  :disabled t
+  :config
+  (setq reftex-default-bibliography "~/bibliography2/references.bib")
+  (setq org-ref-default-bibliography "~/bibliography2/references.bib")
+  (setq org-ref-bibliography-notes "~/bibliography2/notes.org")
+  (setq org-ref-pdf-directory "~/bibliography2/pdfs")
+  (setq bibtex-completion-bibliography "~/bibliography2/references.bib")
+  (setq bibtex-completion-library-path "~/bibliography2/pdfs")
+  (setq bibtex-completion-notes-path "~/bibliography2/notes"))
+
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
@@ -369,39 +380,127 @@ current buffer's, reload dir-locals."
             '(add-to-list 'TeX-command-list
                           '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
 
-(defun efs/lsp-mode-setup ()
-      (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-      (lsp-headerline-breadcrumb-mode))
+(add-to-list 'load-path "~/.emacs.d/lsp/lsp-latex.el")
+     (require 'lsp-latex)
+     ;; "texlab" must be located at a directory contained in `exec-path'.
+     ;; If you want to put "texlab" somewhere else,
+     ;; you can specify the path to "texlab" as follows:
+     ;; (setq lsp-latex-texlab-executable "/path/to/texlab")
 
-    (use-package lsp-mode
-      :ensure t
-      :commands (lsp lsp-deferred)
-      :hook (lsp-mode . efs/lsp-mode-setup)
-      :init
-      (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-      :config
-      (lsp-enable-which-key-integration t))
+     (with-eval-after-load "tex-mode"
+      (add-hook 'tex-mode-hook 'lsp)
+      (add-hook 'latex-mode-hook 'lsp))
+
+
+     ;; For bibtex
+;    (with-eval-after-load "bibtex"
+;     (add-hook 'bibtex-mode-hook 'lsp))
+
+(defun efs/lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
+
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . efs/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))
 
 
 (use-package lsp-ivy
-      :ensure t
-      :after lsp)
+  :ensure t
+  :after lsp)
 
 (use-package lsp-treemacs
   :ensure t
   :after lsp)
 
-(use-package julia-mode
+
+(use-package lsp-mode
+  :commands lsp
+  :hook ((fortran-mode f90-mode sh-mode) . lsp)
+  :config
+  (setq lsp-auto-guess-root t)
+  (setq lsp-enable-snippet nil)
+  (setq lsp-file-watch-threshold 500000)
+  (setq lsp-headerline-breadcrumb-enable nil)
+  (setq lsp-modeline-diagnostics-enable nil)
+  (setq lsp-prefer-flymake nil)
+  (setq lsp-rust-clippy-preference "on"))
+
+(use-package eglot
+  :ensure t)
+(add-hook 'LaTeX-mode-hook 'eglot-ensure)
+
+;; function decides whether .h file is C or C++ header, sets C++ by
+;; default because there's more chance of there being a .h without a
+;; .cc than a .h without a .c (ie. for C++ template files)
+(defun ejb/c-c++-header ()
+  "Sets either c-mode or c++-mode, whichever is appropriate for
+the header, based upon the associated source code file."
+  (interactive)
+  (let ((c-filename (concat (substring (buffer-file-name) 0 -1) "c")))
+    (if (file-exists-p c-filename)
+        (c-mode)
+      (c++-mode))))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . ejb/c-c++-header))
+
+(defun ejb/c-c++-toggle ()
+  "Toggles a buffer between c-mode and c++-mode."
+  (interactive)
+  (cond ((string= major-mode "c-mode")
+         (c++-mode))
+        ((string= major-mode "c++-mode")
+         (c-mode))))
+
+(setq c-basic-offset 4)
+(setq c-default-style
+      '((java-mode . "java")
+        (awk-mode . "awk")
+        (other . "k&r")))
+(setq c-doc-comment-style
+      '((c-mode . javadoc)
+        (java-mode . javadoc)
+        (pike-mode . autodoc)))
+
+(defconst my-cc-style
+  '("cc-mode"
+    (c-offsets-alist . ((innamespace . [0])))))
+
+(c-add-style "my-cc-mode" my-cc-style)
+
+(use-package ccls
   :ensure t
-  :init)
+  :after lsp-mode
+  :hook ((c-mode c++-mode) . lsp))
+
+(use-package clang-format
+  :ensure t
+  :bind (("C-M-<tab>" . clang-format-region)))
+
+(use-package astyle
+  :ensure t
+  :when (executable-find "astyle"))
+
+(use-package julia-mode :ensure t)
+;; Snail requires vterm
+(use-package vterm
+  :ensure t
+  :config
+  (setq vterm-always-compile-module t))
+
+(use-package julia-snail
+  :hook (julia-mode . julia-snail-mode))
 
 (use-package lsp-julia
-    :ensure t
-    :hook ('julia-mode-hook . lsp-deferred)
-    :config
-    (setq lsp-julia-default-environment "~/.julia/environments/v1.6/"))
-
-(add-hook 'julia-mode-hook #'lsp-mode)
+  :hook (julia-mode . (lambda ()
+                        (require 'lsp-julia)
+                        (lsp)))
+  :config
+  (setq lsp-julia-default-environment "~/.julia/environments/v1.6"))
 
 (use-package python-mode
   :ensure t
