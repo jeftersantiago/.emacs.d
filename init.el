@@ -18,3 +18,4 @@
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/README.org"))
 (put 'dired-find-alternate-file 'disabled nil)
+(put 'set-goal-column 'disabled nil)

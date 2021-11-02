@@ -299,16 +299,16 @@ current buffer's, reload dir-locals."
       (eval-after-load "preview"
         '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t))
 
-(use-package org-ref
-  :disabled t
-  :config
-  (setq reftex-default-bibliography "~/bibliography2/references.bib")
-  (setq org-ref-default-bibliography "~/bibliography2/references.bib")
-  (setq org-ref-bibliography-notes "~/bibliography2/notes.org")
-  (setq org-ref-pdf-directory "~/bibliography2/pdfs")
-  (setq bibtex-completion-bibliography "~/bibliography2/references.bib")
-  (setq bibtex-completion-library-path "~/bibliography2/pdfs")
-  (setq bibtex-completion-notes-path "~/bibliography2/notes"))
+;    (use-package org-ref
+;      :disabled t
+;      :config
+;      (setq reftex-default-bibliography "~/bibliography2/references.bib")
+;      (setq org-ref-default-bibliography "~/bibliography2/references.bib")
+;      (setq org-ref-bibliography-notes "~/bibliography2/notes.org")
+;      (setq org-ref-pdf-directory "~/bibliography2/pdfs")
+;      (setq bibtex-completion-bibliography "~/bibliography2/references.bib")
+;      (setq bibtex-completion-library-path "~/bibliography2/pdfs")
+;      (setq bibtex-completion-notes-path "~/bibliography2/notes"))
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -389,39 +389,41 @@ current buffer's, reload dir-locals."
                           '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
 
 (defun efs/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
+   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+   (lsp-headerline-breadcrumb-mode))
 
-(use-package lsp-mode
-  :ensure t
-  :commands (lsp lsp-deferred)
-  :hook (lsp-mode . efs/lsp-mode-setup)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :config
-  (lsp-enable-which-key-integration t))
-
-
-(use-package lsp-ivy
-  :ensure t
-  :after lsp)
-
-(use-package lsp-treemacs
-  :ensure t
-  :after lsp)
+ (use-package lsp-mode
+   :ensure t
+   :commands (lsp lsp-deferred)
+   :hook (lsp-mode . efs/lsp-mode-setup)
+   :init
+   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+   :config
+   (lsp-enable-which-key-integration t))
 
 
-(use-package lsp-mode
-  :commands lsp
-  :hook ((fortran-mode f90-mode sh-mode) . lsp)
-  :config
-  (setq lsp-auto-guess-root t)
-  (setq lsp-enable-snippet nil)
-  (setq lsp-file-watch-threshold 500000)
-  (setq lsp-headerline-breadcrumb-enable nil)
-  (setq lsp-modeline-diagnostics-enable nil)
-  (setq lsp-prefer-flymake nil)
-  (setq lsp-rust-clippy-preference "on"))
+ (use-package lsp-ivy
+   :ensure t
+   :after lsp)
+
+ (use-package lsp-treemacs
+   :bind (("C-x C-n" . lsp-treemacs-symbols))
+   :ensure t
+   :after lsp)
+ (global-set-key (kbd "C-x C-n") 'lsp-treemacs-symbols)
+(add-hook 'lsp-mode 'lsp-treemacs-symbols)
+
+ (use-package lsp-mode
+   :commands lsp
+   :hook ((fortran-mode f90-mode sh-mode) . lsp)
+   :config
+   (setq lsp-auto-guess-root t)
+   (setq lsp-enable-snippet nil)
+   (setq lsp-file-watch-threshold 500000)
+   (setq lsp-headerline-breadcrumb-enable nil)
+   (setq lsp-modeline-diagnostics-enable nil)
+   (setq lsp-prefer-flymake nil)
+   (setq lsp-rust-clippy-preference "on"))
 
 (use-package eglot
   :ensure t)
