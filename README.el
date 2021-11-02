@@ -61,12 +61,12 @@
     :ensure t)
 ;  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-;       (use-package doom-themes
-;          :init (load-theme 'doom-challenger-deep t))
+(use-package doom-themes
+          :init (load-theme 'doom-Iosvkem t))
 
-         (use-package spacemacs-theme
-           :defer t
-           :init (load-theme 'spacemacs-dark t))
+;        (use-package spacemacs-theme
+;          :defer t
+;          :init (load-theme 'spacemacs-dark t))
   ;(set-background-color "black")
 
 (set-frame-parameter (selected-frame) 'alpha '(98 98))
@@ -89,14 +89,14 @@
   :custom ((doom-modeline-height 25))
   :ensure t)
 
-;(global-display-line-numbers-mode)
-;(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
 
-(use-package dired-sidebar
-  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
-  :ensure t
-  :commands (dired-sidebar-toggle-sidebar)
-  :init)
+; (use-package dired-sidebar
+;   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+;   :ensure t
+;   :commands (dired-sidebar-toggle-sidebar)
+;   :init)
 
 (use-package all-the-icons-dired :ensure t)
 (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
@@ -164,7 +164,7 @@ current buffer's, reload dir-locals."
       mouse-wheel-follow-mouse 't)
 
 (add-to-list 'load-path "~/.emacs.d/evil")
- (require 'evil)
+(require 'evil)
 (evil-mode 1)
 
 (use-package smartparens
@@ -187,7 +187,6 @@ current buffer's, reload dir-locals."
 
 (use-package multi-term :ensure t)
 (setq multi-term-program "/bin/bash")
-
 (global-set-key (kbd "C-x t") 'multi-term)
 
 (setq org-startup-folded t)
@@ -201,15 +200,6 @@ current buffer's, reload dir-locals."
 (setq org-outline-path-complete-in-steps nil)
 
 (setq-default org-image-actual-width 620)
-
-(require 'org-tempo)
-(add-to-list 'org-modules 'org-tempo t)
-
-(with-eval-after-load 'org
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("jl" . "src julia"))
-(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("py" . "src python")))
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
@@ -309,11 +299,21 @@ current buffer's, reload dir-locals."
       (eval-after-load "preview"
         '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t))
 
-(use-package ivy
-  :diminish
-  :bind (("C-s" . swiper))
-         :config
-         (ivy-mode 1))
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (python . t)
+   ))
+(setq org-confirm-babel-evaluate t)
+
+(require 'org-tempo)
+(add-to-list 'org-modules 'org-tempo t)
+
+(with-eval-after-load 'org
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("jl" . "src julia"))
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("py" . "src python")))
 
 (use-package swiper
   :ensure t
@@ -369,10 +369,44 @@ current buffer's, reload dir-locals."
             '(add-to-list 'TeX-command-list
                           '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
 
+(defun efs/lsp-mode-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
+
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . efs/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))
+
+(use-package lsp-ivy
+  :ensure t
+  :after lsp)
+
 (use-package julia-mode
+  :ensure t
+  :init)
+
+(use-package lsp-julia
     :ensure t
-    :init)
-(require 'julia-mode)
+    :hook ('julia-mode-hook . lsp-deferred)
+    :config
+    (setq lsp-julia-default-environment "~/.julia/environments/v1.6/"))
+
+(add-hook 'julia-mode-hook #'lsp-mode)
+
+(use-package python-mode
+  :ensure t
+  :hook (python-mode . lsp-deferred))
+
+(use-package jedi
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (add-hook 'python-mode-hook 'jedi:ac-setup))
 
 (use-package auto-complete
   :ensure t
@@ -386,32 +420,26 @@ current buffer's, reload dir-locals."
   :ensure t
   :config
   (setq company-idle-delay 0)
-  (setq company-minimum-prefix-length 3)
-  )
+  (setq company-minimum-prefix-length 3))
 
 (global-company-mode t)
+
 (use-package company-irony
   :ensure t
   :config
   (add-to-list 'company-backends 'company-irony))
+
 (use-package irony
   :ensure t
   :config
   (add-hook 'c++-mode-hook 'irony-mode)
   (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options)
-  )
+  (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options))
 
 (use-package irony-eldoc
   :ensure t
   :config
   (add-hook 'irony-mode-hook #'irony-eldoc))
-
-(use-package jedi
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (add-hook 'python-mode-hook 'jedi:ac-setup))
 
 (use-package elcord
     :ensure t
