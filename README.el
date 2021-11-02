@@ -356,19 +356,27 @@ current buffer's, reload dir-locals."
   (global-flycheck-mode t))
 
 (use-package auctex
-  :ensure t
-  :hook ((latex-mode LaTeX-mode) . tex)
+  :hook ((latex-mode LaTeX-mode) . lsp)
   :config
-  (add-to-list 'font-latex-math-environments "dmath"))
-(add-hook 'LaTeX-mode-hook 'TeX-mode)
+  (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
+  (texmathp-compile)
+  :init
+  (setq-default TeX-master 'shared)
+  ;; nil is the default; this remains here as a reminder that setting it to
+  ;; true makes emacs hang on every save when enabled.
+  (setq TeX-auto-save nil)
+  (setq TeX-parse-self t))
+
+(setq-default TeX-master nil)
+(use-package auctex-latexmk
+  :config
+  (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+  :init
+  (auctex-latexmk-setup))
 
 (add-hook 'LaTeX-mode-hook 'visual-line-mode)
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
-
-(setq TeX-auto-save nil)
-(setq TeX-parse-self t)
-(setq-default TeX-master nil)
 
 (setq TeX-view-program-selection
       '((output-pdf "PDF Viewer")))
@@ -379,22 +387,6 @@ current buffer's, reload dir-locals."
 (eval-after-load "tex"
             '(add-to-list 'TeX-command-list
                           '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
-
-(add-to-list 'load-path "~/.emacs.d/lsp/lsp-latex.el")
-     (require 'lsp-latex)
-     ;; "texlab" must be located at a directory contained in `exec-path'.
-     ;; If you want to put "texlab" somewhere else,
-     ;; you can specify the path to "texlab" as follows:
-     ;; (setq lsp-latex-texlab-executable "/path/to/texlab")
-
-     (with-eval-after-load "tex-mode"
-      (add-hook 'tex-mode-hook 'lsp)
-      (add-hook 'latex-mode-hook 'lsp))
-
-
-     ;; For bibtex
-;    (with-eval-after-load "bibtex"
-;     (add-hook 'bibtex-mode-hook 'lsp))
 
 (defun efs/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
