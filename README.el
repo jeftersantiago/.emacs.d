@@ -417,29 +417,33 @@ current buffer's, reload dir-locals."
     ))
 
 (use-package company
-  :ensure t
-  :config
-  (setq company-idle-delay 0)
-  (setq company-minimum-prefix-length 3))
+   :ensure t
+   :config
+   (setq company-idle-delay 0)
+   (setq company-minimum-prefix-length 1)
+   :init (global-company-mode t))
 
-(global-company-mode t)
-
-(use-package company-irony
+(use-package company-box
   :ensure t
-  :config
-  (add-to-list 'company-backends 'company-irony))
+  :hook (global-company-mode . company-box))
 
-(use-package irony
-  :ensure t
-  :config
-  (add-hook 'c++-mode-hook 'irony-mode)
-  (add-hook 'c-mode-hook 'irony-mode)
-  (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options))
 
-(use-package irony-eldoc
-  :ensure t
-  :config
-  (add-hook 'irony-mode-hook #'irony-eldoc))
+ (use-package company-irony
+   :ensure t
+   :config
+   (add-to-list 'company-backends 'company-irony))
+
+ (use-package irony
+   :ensure t
+   :config
+   (add-hook 'c++-mode-hook 'irony-mode)
+   (add-hook 'c-mode-hook 'irony-mode)
+   (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options))
+
+ (use-package irony-eldoc
+   :ensure t
+   :config
+   (add-hook 'irony-mode-hook #'irony-eldoc))
 
 (use-package elcord
     :ensure t

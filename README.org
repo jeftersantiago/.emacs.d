@@ -563,9 +563,13 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
       :ensure t
       :config
       (setq company-idle-delay 0)
-      (setq company-minimum-prefix-length 3))
+      (setq company-minimum-prefix-length 1)
+      :init (global-company-mode t))
 
-    (global-company-mode t)
+   (use-package company-box
+     :ensure t
+     :hook (global-company-mode . company-box))
+
 
     (use-package company-irony
       :ensure t
