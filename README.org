@@ -268,6 +268,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
 ** General config
 *** Variables
 #+begin_src emacs-lisp
+
   (setq org-startup-folded t)
   (setq org-src-tab-acts-natively t)
   (setq org-src-window-setup 'current-window)
@@ -326,7 +327,8 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
     (org-archive-subtree))
   (setq org-log-done 'time)
 #+end_src
-** Capturing Tasks
+** Org capture templates 
+*** capture tasks
 #+begin_src emacs-lisp
   (setq org-capture-templates
         '(("t" "Todo"
@@ -380,20 +382,26 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
   (define-key global-map "\C-cc" 'org-capture)
 #+end_src
 ** Org LaTeX
-   Preview Latex fragments
+*** Preview Latex fragments
    [[./images/latex-preview-example.gif]]
 
    #+begin_src emacs-lisp
-     ; load the fragments automatically
+      ; load the latex fragments automatically
      (use-package org-fragtog :ensure t)
      (add-hook 'org-mode-hook 'org-fragtog-mode)
 
      ; this is the only way to really work (idk y)
      (setq org-latex-create-formula-image-program 'dvisvgm)
 
-     ; adjusting the size
+                                             ; adjusting the size
      (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+
+     (setq org-latex-caption-above nil)
    #+end_src
+*** bibtex
+    #+begin_src emacs-lisp
+      (setq org-latex-to-pdf-process (list "latexmk -pdf %f"))
+    #+end_src
 *** Tikz
 #+begin_src emacs-lisp
 ;      (add-hook 'org-mode-hook
@@ -409,17 +417,40 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
    Org references in bibtex
    Found in: https://github.com/berquist/dotfiles/blob/main/dotfiles/emacs.d/config.org
    #+begin_src emacs-lisp
-;    (use-package org-ref
-;      :disabled t
-;      :config
-;      (setq reftex-default-bibliography "~/bibliography2/references.bib")
-;      (setq org-ref-default-bibliography "~/bibliography2/references.bib")
-;      (setq org-ref-bibliography-notes "~/bibliography2/notes.org")
-;      (setq org-ref-pdf-directory "~/bibliography2/pdfs")
-;      (setq bibtex-completion-bibliography "~/bibliography2/references.bib")
-;      (setq bibtex-completion-library-path "~/bibliography2/pdfs")
-;      (setq bibtex-completion-notes-path "~/bibliography2/notes"))
+     ;    (use-package org-ref
+     ;      :disabled t
+     ;      :config
+     ;      (setq reftex-default-bibliography "~/bibliography2/references.bib")
+     ;      (setq org-ref-default-bibliography "~/bibliography2/references.bib")
+     ;      (setq org-ref-bibliography-notes "~/bibliography2/notes.org")
+     ;      (setq org-ref-pdf-directory "~/bibliography2/pdfs")
+     ;      (setq bibtex-completion-bibliography "~/bibliography2/references.bib")
+     ;      (setq bibtex-completion-library-path "~/bibliography2/pdfs")
+     ;      (setq bibtex-completion-notes-path "~/bibliography2/notes"))
    #+end_src
+* Org-roam
+  #+begin_src emacs-lisp
+;   (use-package org-roam
+;     :ensure t
+;     :custom
+;     (org-roam-v2-ack t)
+;     (org-roam-directory (file-truename "~/orgRoam/"))
+;     :bind (("C-c n l" . org-roam-buffer-toggle)
+;            ("C-c n f" . org-roam-node-find)
+;            ("C-c n g" . org-roam-graph)
+;            ("C-c n i" . org-roam-node-insert)
+;            ("C-c n c" . org-roam-capture)
+;            ;; Dailies
+;            ("C-c n j" . org-roam-dailies-capture-today))
+;     :config
+;     (org-roam-db-autosync-mode)
+;     ;; If using org-roam-protocol
+;     (require 'org-roam-protocol))
+
+;   (setq org-roam-v2-ack t)
+;   (setq org-roam-directory "~/orgRoam/")
+
+  #+end_src 
 * Org-babel
 ** Loading org-babel
    #+begin_src emacs-lisp

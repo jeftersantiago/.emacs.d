@@ -281,15 +281,19 @@ current buffer's, reload dir-locals."
 (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
 (define-key global-map "\C-cc" 'org-capture)
 
-; load the fragments automatically
+; load the latex fragments automatically
 (use-package org-fragtog :ensure t)
 (add-hook 'org-mode-hook 'org-fragtog-mode)
 
 ; this is the only way to really work (idk y)
 (setq org-latex-create-formula-image-program 'dvisvgm)
 
-; adjusting the size
+                                        ; adjusting the size
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+
+(setq org-latex-caption-above nil)
+
+(setq org-latex-to-pdf-process (list "latexmk -pdf %f"))
 
 ;      (add-hook 'org-mode-hook
 ;        (lambda () (texfrag-mode))
@@ -309,6 +313,26 @@ current buffer's, reload dir-locals."
 ;      (setq bibtex-completion-bibliography "~/bibliography2/references.bib")
 ;      (setq bibtex-completion-library-path "~/bibliography2/pdfs")
 ;      (setq bibtex-completion-notes-path "~/bibliography2/notes"))
+
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-v2-ack t)
+  (org-roam-directory (file-truename "~/orgRoam/"))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture)
+         ;; Dailies
+         ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
+
+(setq org-roam-v2-ack t)
+(setq org-roam-directory "~/orgRoam/")
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -389,41 +413,39 @@ current buffer's, reload dir-locals."
                           '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
 
 (defun efs/lsp-mode-setup ()
-   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-   (lsp-headerline-breadcrumb-mode))
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
 
- (use-package lsp-mode
-   :ensure t
-   :commands (lsp lsp-deferred)
-   :hook (lsp-mode . efs/lsp-mode-setup)
-   :init
-   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-   :config
-   (lsp-enable-which-key-integration t))
+(use-package lsp-mode
+  :ensure t
+  :commands (lsp lsp-deferred)
+  :hook (lsp-mode . efs/lsp-mode-setup)
+  :init
+  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  :config
+  (lsp-enable-which-key-integration t))
 
 
- (use-package lsp-ivy
-   :ensure t
-   :after lsp)
+(use-package lsp-ivy
+  :ensure t
+  :after lsp)
 
- (use-package lsp-treemacs
-   :bind (("C-x C-n" . lsp-treemacs-symbols))
-   :ensure t
-   :after lsp)
- (global-set-key (kbd "C-x C-n") 'lsp-treemacs-symbols)
-(add-hook 'lsp-mode 'lsp-treemacs-symbols)
+(use-package lsp-treemacs
+  :ensure t
+  :after lsp)
+(global-set-key (kbd "C-x C-n") 'lsp-treemacs-symbols)
 
- (use-package lsp-mode
-   :commands lsp
-   :hook ((fortran-mode f90-mode sh-mode) . lsp)
-   :config
-   (setq lsp-auto-guess-root t)
-   (setq lsp-enable-snippet nil)
-   (setq lsp-file-watch-threshold 500000)
-   (setq lsp-headerline-breadcrumb-enable nil)
-   (setq lsp-modeline-diagnostics-enable nil)
-   (setq lsp-prefer-flymake nil)
-   (setq lsp-rust-clippy-preference "on"))
+(use-package lsp-mode
+  :commands lsp
+  :hook ((fortran-mode f90-mode sh-mode) . lsp)
+  :config
+  (setq lsp-auto-guess-root t)
+  (setq lsp-enable-snippet nil)
+  (setq lsp-file-watch-threshold 500000)
+  (setq lsp-headerline-breadcrumb-enable nil)
+  (setq lsp-modeline-diagnostics-enable nil)
+  (setq lsp-prefer-flymake nil)
+  (setq lsp-rust-clippy-preference "on"))
 
 (use-package eglot
   :ensure t)
