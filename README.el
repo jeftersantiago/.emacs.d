@@ -62,11 +62,11 @@
 ;  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 (use-package doom-themes
-          :init (load-theme 'doom-Iosvkem t))
+         :init (load-theme 'doom-Iosvkem t))
 
-;        (use-package spacemacs-theme
-;          :defer t
-;          :init (load-theme 'spacemacs-dark t))
+;       (use-package spacemacs-theme
+;         :defer t
+;         :init (load-theme 'spacemacs-dark t))
   ;(set-background-color "black")
 
 (set-frame-parameter (selected-frame) 'alpha '(98 98))
@@ -241,18 +241,18 @@ current buffer's, reload dir-locals."
   (org-archive-subtree))
 (setq org-log-done 'time)
 
-(setq org-capture-templates
-      '(("t" "Todo"
-         entry
-         (file+headline org-index-file "Inbox")
-         "* TODO %?\n")))
+; (setq org-capture-templates
+;       '(("t" "Todo"
+;          entry
+;          (file+headline org-index-file "Inbox")
+;          "* TODO %?\n")))
 
-(defun my-org-capture-place-template-dont-delete-windows (oldfun args)
-  (cl-letf (((symbol-function 'delete-other-windows) 'ignore))
-    (apply oldfun args)))
+; (defun my-org-capture-place-template-dont-delete-windows (oldfun args)
+;   (cl-letf (((symbol-function 'delete-other-windows) 'ignore))
+;     (apply oldfun args)))
 
-(with-eval-after-load "org-capture"
-  (advice-add 'org-capture-place-template :around 'my-org-capture-place-template-dont-delete-windows))
+; (with-eval-after-load "org-capture"
+;   (advice-add 'org-capture-place-template :around 'my-org-capture-place-template-dont-delete-windows))
 
 (defun my/fix-inline-images ()
   (when org-inline-image-overlays
@@ -282,16 +282,16 @@ current buffer's, reload dir-locals."
 (define-key global-map "\C-cc" 'org-capture)
 
 ; load the latex fragments automatically
-(use-package org-fragtog :ensure t)
-(add-hook 'org-mode-hook 'org-fragtog-mode)
+     (use-package org-fragtog :ensure t)
+     (add-hook 'org-mode-hook 'org-fragtog-mode)
 
-; this is the only way to really work (idk y)
-(setq org-latex-create-formula-image-program 'dvisvgm)
+     ; this is the only way to really work (idk y)
+     (setq org-latex-create-formula-image-program 'dvisvgm)
 
-                                        ; adjusting the size
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+                                             ; adjusting the size
+     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
-(setq org-latex-caption-above nil)
+;     (setq org-latex-caption-above nil)
 
 (setq org-latex-to-pdf-process (list "latexmk -pdf %f"))
 
@@ -318,7 +318,8 @@ current buffer's, reload dir-locals."
   :ensure t
   :custom
   (org-roam-v2-ack t)
-  (org-roam-directory (file-truename "~/orgRoam/"))
+  (org-roam-completion-everywhere t)
+  (org-roam-directory (file-truename "~/Dropbox/notes/"))
   :bind (("C-c n l" . org-roam-buffer-toggle)
          ("C-c n f" . org-roam-node-find)
          ("C-c n g" . org-roam-graph)
@@ -332,7 +333,12 @@ current buffer's, reload dir-locals."
   (require 'org-roam-protocol))
 
 (setq org-roam-v2-ack t)
-(setq org-roam-directory "~/orgRoam/")
+
+(use-package websocket
+  :ensure t)
+(use-package simple-httpd :ensure t)
+(add-to-list 'load-path "~/.emacs.d/org-roam-ui")
+(load-library "org-roam-ui")
 
 (org-babel-do-load-languages
  'org-babel-load-languages
