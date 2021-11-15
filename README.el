@@ -62,11 +62,11 @@
 ;  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 (use-package doom-themes
-        :init (load-theme 'doom-Iosvkem t))
+       :init (load-theme 'doom-dracula t))
 
-;     (use-package spacemacs-theme
-;       :defer t
-;       :init (load-theme 'spacemacs-dark t))
+;    (use-package spacemacs-theme
+;      :defer t
+;      :init (load-theme 'spacemacs-dark t))
 ;     (set-background-color "black")
 
 (set-frame-parameter (selected-frame) 'alpha '(98 98))
@@ -302,6 +302,15 @@ current buffer's, reload dir-locals."
 
 ;     (setq org-latex-caption-above nil)
 
+(setq enable-local-variables :safe)
+(defun latex-image-directory ()
+  "Return directory name to save Latex preview images in."
+  (let ((file-name (file-name-nondirectory (buffer-file-name))))
+    (concat
+     (file-name-as-directory "~/teste/")
+     (file-name-as-directory
+      (file-name-sans-extension file-name)))))
+
 (setq org-latex-to-pdf-process (list "latexmk -pdf %f"))
 
 ;      (add-hook 'org-mode-hook
@@ -336,15 +345,15 @@ current buffer's, reload dir-locals."
       :unnarrowed t)
      ("p" "Notes on physics" plain
       "#+setupfile:~/Dropbox/headers/physics.org \n* %?"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+      :if-new (file+head "${slug}.org" "#+title: ${title}\n")
       :unnarrowed t)
    ("m" "Notes on mathematics" plain
     "#+setupfile:~/Dropbox/headers/math.org \n* %?"
-    :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+    :if-new (file+head "${slug}.org" "#+title: ${title}\n")
     :unnarrowed t)
   ("c" "Notes on computing" plain
    "#+setupfile:~/Dropbox/headers/computing.org \n* %?"
-   :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+   :if-new (file+head "${slug}.org" "#+title: ${title}\n")
    :unnarrowed t)))
 :bind (("C-c n l" . org-roam-buffer-toggle)
        ("C-c n f" . org-roam-node-find)
