@@ -413,20 +413,6 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
    #+end_src
 **** justify latex preview fragments
      Found this solution in there: https://emacs.stackexchange.com/questions/45212/org-mode-storing-latex-preview-files-in-a-separate-directory
-**** fragment files in one directory
-     #+begin_src emacs-lisp
-       (defun latex-image-directory ()
-         "Return directory name to save Latex preview images in."
-         (let ((file-name (file-name-nondirectory (buffer-file-name))))
-           (concat
-            (file-name-as-directory "~/.local/cache/emacs-latex-preview/")
-            (file-name-as-directory
-             (file-name-sans-extension file-name)))))
-#+end_src
-     Avoiding being prompted every time when opening the file.
-     #+begin_src emacs-lisp
-  (setq enable-local-variables :safe)
-#+end_src
 *** bibtex
     #+begin_src emacs-lisp
       (setq org-latex-to-pdf-process (list "latexmk -pdf %f"))
@@ -475,7 +461,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
           :if-new (file+head "${slug}.org" "#+title: ${title}\n")
           :unnarrowed t)
        ("m" "Notes on mathematics" plain
-        "#+setupfile:~/Dropbox/headers/math.org \n* %?"
+        "#+setupfile:~/Dropbox/headers/mathematics.org \n* %?"
         :if-new (file+head "${slug}.org" "#+title: ${title}\n")
         :unnarrowed t)
       ("c" "Notes on computing" plain

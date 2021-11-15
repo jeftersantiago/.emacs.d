@@ -302,12 +302,13 @@ current buffer's, reload dir-locals."
 
 ;     (setq org-latex-caption-above nil)
 
-(setq enable-local-variables :safe)
+(setq enable-local-variables :all)
+
 (defun latex-image-directory ()
   "Return directory name to save Latex preview images in."
   (let ((file-name (file-name-nondirectory (buffer-file-name))))
     (concat
-     (file-name-as-directory "~/teste/")
+     (file-name-as-directory "~/.local/cache/emacs-latex-preview/")
      (file-name-as-directory
       (file-name-sans-extension file-name)))))
 
@@ -348,7 +349,7 @@ current buffer's, reload dir-locals."
       :if-new (file+head "${slug}.org" "#+title: ${title}\n")
       :unnarrowed t)
    ("m" "Notes on mathematics" plain
-    "#+setupfile:~/Dropbox/headers/math.org \n* %?"
+    "#+setupfile:~/Dropbox/headers/mathematics.org \n* %?"
     :if-new (file+head "${slug}.org" "#+title: ${title}\n")
     :unnarrowed t)
   ("c" "Notes on computing" plain
