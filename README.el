@@ -57,20 +57,20 @@
 (setq frame-resize-pixelwise t)
 
 (use-package rainbow-delimiters
-    :hook (prog-mode . rainbow-delimiters-mode)
-    :ensure t)
-;  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+  :hook (prog-mode . rainbow-delimiters-mode)
+  :ensure t)
+(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 (use-package doom-themes
-       :init (load-theme 'doom-dracula t))
+       :init (load-theme 'doom-Iosvkem t))
 
 ;    (use-package spacemacs-theme
-;      :defer t
-;      :init (load-theme 'spacemacs-dark t))
+;     :defer t
+;     :init (load-theme 'spacemacs-light t))
 ;     (set-background-color "black")
 
-(set-frame-parameter (selected-frame) 'alpha '(98 98))
-(add-to-list 'default-frame-alist '(alpha 98 98))
+; (set-frame-parameter (selected-frame) 'alpha '(98 98))
+; (add-to-list 'default-frame-alist '(alpha 98 98))
 
 (set-frame-font "Monospace-12:antialias=true")
 
@@ -89,8 +89,32 @@
   :custom ((doom-modeline-height 25))
   :ensure t)
 
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
+;(global-display-line-numbers-mode)
+;(setq display-line-numbers-type 'relative)
+
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  (when (file-directory-p "~/Projects/")
+    (setq projectile-project-search-path '("~/Projects/"))))
+(setq projectile-switch-projects-action #'projectile-dired)
+
+(use-package dashboard
+  :ensure t
+  :init
+  (progn
+    (setq dashboard-show-shortcuts nil)
+    (setq dashboard-center-content t)
+    (setq dashboard-banner-logo-title "EMACS")
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-startup-banner "~/.emacs.d/images/emacs-logo.png")
+    )
+  :config
+  (dashboard-setup-startup-hook))
 
 ; (use-package dired-sidebar
 ;   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
@@ -241,18 +265,10 @@ current buffer's, reload dir-locals."
   (org-archive-subtree))
 (setq org-log-done 'time)
 
-; (setq org-capture-templates
-;       '(("t" "Todo"
-;          entry
-;          (file+headline org-index-file "Inbox")
-;          "* TODO %?\n")))
 
-; (defun my-org-capture-place-template-dont-delete-windows (oldfun args)
-;   (cl-letf (((symbol-function 'delete-other-windows) 'ignore))
-;     (apply oldfun args)))
 
-; (with-eval-after-load "org-capture"
-;   (advice-add 'org-capture-place-template :around 'my-org-capture-place-template-dont-delete-windows))
+(add-to-list 'org-structure-template-alist
+             '("g" . "\frac{d ?}{d }"))
 
 (defun my/fix-inline-images ()
   (when org-inline-image-overlays
@@ -298,19 +314,9 @@ current buffer's, reload dir-locals."
      (setq org-latex-create-formula-image-program 'dvisvgm)
 
                                              ; adjusting the size
-     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.7))
 
 ;     (setq org-latex-caption-above nil)
-
-(setq enable-local-variables :all)
-
-(defun latex-image-directory ()
-  "Return directory name to save Latex preview images in."
-  (let ((file-name (file-name-nondirectory (buffer-file-name))))
-    (concat
-     (file-name-as-directory "~/.local/cache/emacs-latex-preview/")
-     (file-name-as-directory
-      (file-name-sans-extension file-name)))))
 
 (setq org-latex-to-pdf-process (list "latexmk -pdf %f"))
 
@@ -333,6 +339,22 @@ current buffer's, reload dir-locals."
 ;      (setq bibtex-completion-library-path "~/bibliography2/pdfs")
 ;      (setq bibtex-completion-notes-path "~/bibliography2/notes"))
 
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((emacs-lisp . t)
+   (python . t)
+   ))
+(setq org-confirm-babel-evaluate t)
+
+(require 'org-tempo)
+(add-to-list 'org-modules 'org-tempo t)
+
+(with-eval-after-load 'org
+(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+(add-to-list 'org-structure-template-alist '("jl" . "src julia"))
+(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+(add-to-list 'org-structure-template-alist '("py" . "src python")))
+
 (use-package org-roam
   :ensure t
   :custom
@@ -345,15 +367,15 @@ current buffer's, reload dir-locals."
       :if-new (file+head "${slug}.org" "#+title: ${title}\n")
       :unnarrowed t)
      ("p" "Notes on physics" plain
-      "#+setupfile:~/Dropbox/headers/physics.org \n* %?"
+      "#+setupfile:~/Dropbox/Templates/physics.org \n* %?"
       :if-new (file+head "${slug}.org" "#+title: ${title}\n")
       :unnarrowed t)
    ("m" "Notes on mathematics" plain
-    "#+setupfile:~/Dropbox/headers/mathematics.org \n* %?"
+    "#+setupfile:~/Dropbox/Templates/mathematics.org \n* %?"
     :if-new (file+head "${slug}.org" "#+title: ${title}\n")
     :unnarrowed t)
   ("c" "Notes on computing" plain
-   "#+setupfile:~/Dropbox/headers/computing.org \n* %?"
+   "#+setupfile:~/Dropbox/Templates/computing.org \n* %?"
    :if-new (file+head "${slug}.org" "#+title: ${title}\n")
    :unnarrowed t)))
 :bind (("C-c n l" . org-roam-buffer-toggle)
@@ -375,22 +397,6 @@ current buffer's, reload dir-locals."
 (use-package simple-httpd :ensure t)
 (add-to-list 'load-path "~/.emacs.d/org-roam-ui")
 (load-library "org-roam-ui")
-
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (python . t)
-   ))
-(setq org-confirm-babel-evaluate t)
-
-(require 'org-tempo)
-(add-to-list 'org-modules 'org-tempo t)
-
-(with-eval-after-load 'org
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("jl" . "src julia"))
-(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("py" . "src python")))
 
 (use-package swiper
   :ensure t
@@ -674,6 +680,8 @@ the header, based upon the associated source code file."
   :init
   (add-hook 'python-mode-hook 'jedi:setup)
   (add-hook 'python-mode-hook 'jedi:ac-setup))
+
+
 
 (use-package auto-complete
   :ensure t

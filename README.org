@@ -27,8 +27,9 @@
    #+end_src
 *** Custom file
     Separated file to store generated config from emacs.
-    Puts the outputs in a separated file
-    Taken from
+    Puts the outputs in a separated file.
+
+    Taken from:
     - https://www.reddit.com/r/emacs/comments/4x655n/packageselectedpackages_always_appear_after/
     - https://www.reddit.com/r/emacs/comments/53zpv9/how_do_i_get_emacs_to_stop_adding_custom_fields/
    #+begin_src emacs-lisp
@@ -94,25 +95,25 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
     (use-package rainbow-delimiters
       :hook (prog-mode . rainbow-delimiters-mode)
       :ensure t)
-  ;  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+    (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 #+end_src
 ** Theme and transparency
 *** Theme
     Loading theme and setting modeline background color.
 #+begin_src emacs-lisp
     (use-package doom-themes
-       :init (load-theme 'doom-dracula t))
+       :init (load-theme 'doom-Iosvkem t))
 
 ;    (use-package spacemacs-theme
-;      :defer t
-;      :init (load-theme 'spacemacs-dark t))
+;     :defer t
+;     :init (load-theme 'spacemacs-light t))
 ;     (set-background-color "black")
 #+end_src
 *** Transparency
      Enabling transparency
 #+begin_src emacs-lisp
- (set-frame-parameter (selected-frame) 'alpha '(98 98))
- (add-to-list 'default-frame-alist '(alpha 98 98))
+; (set-frame-parameter (selected-frame) 'alpha '(98 98))
+; (add-to-list 'default-frame-alist '(alpha 98 98))
 #+end_src
 ** Font
    Taken from here:  https://emacs.stackexchange.com/q/45895
@@ -140,9 +141,26 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
    #+end_src
 ** Line number
 #+begin_src emacs-lisp
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
+;(global-display-line-numbers-mode)
+;(setq display-line-numbers-type 'relative)
 #+end_src
+* dashboard
+  #+begin_src emacs-lisp
+    (use-package dashboard
+      :ensure t
+      :init
+      (progn
+        (setq dashboard-show-shortcuts nil)
+        (setq dashboard-center-content t)
+        (setq dashboard-banner-logo-title "EMACS")
+        (setq dashboard-set-file-icons t)
+        (setq dashboard-set-heading-icons t)
+        (setq dashboard-startup-banner "~/.emacs.d/images/emacs-logo.png")
+        )
+      :config
+      (dashboard-setup-startup-hook))
+
+  #+end_src
 * Dired
 ** Sidebar
 #+begin_src emacs-lisp
@@ -230,10 +248,11 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
            mouse-wheel-follow-mouse 't)
    #+end_src
 * Evil Mode
+  Yes, i use vim too.
 #+begin_src emacs-lisp
-  (add-to-list 'load-path "~/.emacs.d/evil")
-  (require 'evil)
-  (evil-mode 1)
+ (add-to-list 'load-path "~/.emacs.d/evil")
+ (require 'evil)
+ (evil-mode 1)
 #+end_src
 * Smartparents
   Creates pairs of parenthesis in a smart way
@@ -328,20 +347,14 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
   (setq org-log-done 'time)
 #+end_src
 ** Org capture templates 
-   this is breaking org-roam
+   this breaks org-roam
 #+begin_src emacs-lisp
-; (setq org-capture-templates
-;       '(("t" "Todo"
-;          entry
-;          (file+headline org-index-file "Inbox")
-;          "* TODO %?\n")))
+#+end_src
+#+begin_src emacs-lisp
 
-; (defun my-org-capture-place-template-dont-delete-windows (oldfun args)
-;   (cl-letf (((symbol-function 'delete-other-windows) 'ignore))
-;     (apply oldfun args)))
+  (add-to-list 'org-structure-template-alist
+               '("g" . "\frac{d ?}{d }"))
 
-; (with-eval-after-load "org-capture"
-;   (advice-add 'org-capture-place-template :around 'my-org-capture-place-template-dont-delete-windows))
 #+end_src
 ** Displaying inline images
    The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/nn
@@ -398,6 +411,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
 *** Preview Latex fragments
 **** org-fragtog loading latex fragments
      [[./images/latex-preview-example.gif]]
+    - TODO [ ] Still want a way to store all images generated in one place.
    #+begin_src emacs-lisp
       ; load the latex fragments automatically
      (use-package org-fragtog :ensure t)
@@ -407,12 +421,10 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
      (setq org-latex-create-formula-image-program 'dvisvgm)
 
                                              ; adjusting the size
-     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.7))
 
 ;     (setq org-latex-caption-above nil)
    #+end_src
-**** justify latex preview fragments
-     Found this solution in there: https://emacs.stackexchange.com/questions/45212/org-mode-storing-latex-preview-files-in-a-separate-directory
 *** bibtex
     #+begin_src emacs-lisp
       (setq org-latex-to-pdf-process (list "latexmk -pdf %f"))
@@ -443,6 +455,27 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
      ;      (setq bibtex-completion-library-path "~/bibliography2/pdfs")
      ;      (setq bibtex-completion-notes-path "~/bibliography2/notes"))
    #+end_src
+* Org-babel
+** Loading org-babel
+   #+begin_src emacs-lisp
+     (org-babel-do-load-languages
+      'org-babel-load-languages
+      '((emacs-lisp . t)
+        (python . t)
+        ))
+     (setq org-confirm-babel-evaluate t)
+   #+end_src
+** Structure templates
+#+begin_src emacs-lisp
+  (require 'org-tempo)
+  (add-to-list 'org-modules 'org-tempo t)
+
+  (with-eval-after-load 'org
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("jl" . "src julia"))
+  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python")))
+#+end_src
 * Org-roam
   #+begin_src emacs-lisp
     (use-package org-roam
@@ -457,15 +490,15 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
           :if-new (file+head "${slug}.org" "#+title: ${title}\n")
           :unnarrowed t)
          ("p" "Notes on physics" plain
-          "#+setupfile:~/Dropbox/headers/physics.org \n* %?"
+          "#+setupfile:~/Dropbox/Templates/physics.org \n* %?"
           :if-new (file+head "${slug}.org" "#+title: ${title}\n")
           :unnarrowed t)
        ("m" "Notes on mathematics" plain
-        "#+setupfile:~/Dropbox/headers/mathematics.org \n* %?"
+        "#+setupfile:~/Dropbox/Templates/mathematics.org \n* %?"
         :if-new (file+head "${slug}.org" "#+title: ${title}\n")
         :unnarrowed t)
       ("c" "Notes on computing" plain
-       "#+setupfile:~/Dropbox/headers/computing.org \n* %?"
+       "#+setupfile:~/Dropbox/Templates/computing.org \n* %?"
        :if-new (file+head "${slug}.org" "#+title: ${title}\n")
        :unnarrowed t)))
     :bind (("C-c n l" . org-roam-buffer-toggle)
@@ -490,27 +523,6 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
     (add-to-list 'load-path "~/.emacs.d/org-roam-ui")
     (load-library "org-roam-ui")
   #+end_src
-* Org-babel
-** Loading org-babel
-   #+begin_src emacs-lisp
-     (org-babel-do-load-languages
-      'org-babel-load-languages
-      '((emacs-lisp . t)
-        (python . t)
-        ))
-     (setq org-confirm-babel-evaluate t)
-   #+end_src
-** Structure templates
-#+begin_src emacs-lisp
-  (require 'org-tempo)
-  (add-to-list 'org-modules 'org-tempo t)
-
-  (with-eval-after-load 'org
-  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-  (add-to-list 'org-structure-template-alist '("jl" . "src julia"))
-  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-  (add-to-list 'org-structure-template-alist '("py" . "src python")))
-#+end_src
 * Swiper
 #+begin_src emacs-lisp
   (use-package swiper
@@ -550,10 +562,17 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
       :init
       (global-flycheck-mode t))
   #+end_src  
-* magit
+* projectile
   #+begin_src emacs-lisp
-;   (use-package magit
-;     :ensure t)
+    (use-package projectile
+      :diminish projectile-mode
+      :config (projectile-mode)
+      :bind-keymap
+      ("C-c p" . projectile-command-map)
+      :init
+      (when (file-directory-p "~/Projects/")
+        (setq projectile-project-search-path '("~/Projects/"))))
+    (setq projectile-switch-projects-action #'projectile-dired)
   #+end_src
 * treemacs
   #+begin_src emacs-lisp
@@ -835,6 +854,10 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
       :init
       (add-hook 'python-mode-hook 'jedi:setup)
       (add-hook 'python-mode-hook 'jedi:ac-setup))
+  #+end_src
+* Gnuplot
+  #+begin_src emacs-lisp
+
   #+end_src
 * Auto-completation
 #+begin_src emacs-lisp

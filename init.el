@@ -15,8 +15,12 @@
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+(defconst banner-title "E M A C S")
+
+
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/README.org"))
 
 (put 'dired-find-alternate-file 'disabled nil)
 (put 'set-goal-column 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
