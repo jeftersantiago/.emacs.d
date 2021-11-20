@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: small-equation 
+# key:  $$ 
+# --
+
+$$ $0 $$

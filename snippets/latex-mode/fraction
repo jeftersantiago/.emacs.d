@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: fraction 
+# key:  fr 
+# --
+
+\frac{${1}}{${2}}
+
