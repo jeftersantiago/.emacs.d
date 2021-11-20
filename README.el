@@ -89,25 +89,15 @@
   :custom ((doom-modeline-height 25))
   :ensure t)
 
-;(global-display-line-numbers-mode)
-;(setq display-line-numbers-type 'relative)
-
-(use-package projectile
-  :diminish projectile-mode
-  :config (projectile-mode)
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  (when (file-directory-p "~/Projects/")
-    (setq projectile-project-search-path '("~/Projects/"))))
-(setq projectile-switch-projects-action #'projectile-dired)
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
 
 (use-package dashboard
   :ensure t
   :init
   (progn
     (setq dashboard-show-shortcuts nil)
-    (setq dashboard-center-content t)
+    (setq dashboard-center-content nil)
     (setq dashboard-banner-logo-title "EMACS")
     (setq dashboard-set-file-icons t)
     (setq dashboard-set-heading-icons t)
@@ -419,7 +409,8 @@ current buffer's, reload dir-locals."
 
 (use-package yasnippet
   :ensure t
-  :init
+  :config
+  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
   (yas-global-mode 1))
 
 (use-package flycheck
@@ -427,8 +418,15 @@ current buffer's, reload dir-locals."
   :init
   (global-flycheck-mode t))
 
-;   (use-package magit
-;     :ensure t)
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  (when (file-directory-p "~/Projects/")
+    (setq projectile-project-search-path '("~/Projects/"))))
+(setq projectile-switch-projects-action #'projectile-dired)
 
 (use-package treemacs
   :ensure t

@@ -141,17 +141,17 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
    #+end_src
 ** Line number
 #+begin_src emacs-lisp
-;(global-display-line-numbers-mode)
-;(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
 #+end_src
-* dashboard
+* Dashboard
   #+begin_src emacs-lisp
     (use-package dashboard
       :ensure t
       :init
       (progn
         (setq dashboard-show-shortcuts nil)
-        (setq dashboard-center-content t)
+        (setq dashboard-center-content nil)
         (setq dashboard-banner-logo-title "EMACS")
         (setq dashboard-set-file-icons t)
         (setq dashboard-set-heading-icons t)
@@ -159,7 +159,6 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
         )
       :config
       (dashboard-setup-startup-hook))
-
   #+end_src
 * Dired
 ** Sidebar
@@ -475,6 +474,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
   (add-to-list 'org-structure-template-alist '("jl" . "src julia"))
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
+
 #+end_src
 * Org-roam
   #+begin_src emacs-lisp
@@ -550,10 +550,13 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
 #+end_src
 * Yasnippet
   #+begin_src emacs-lisp
+
     (use-package yasnippet
       :ensure t
-      :init
+      :config
+      (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
       (yas-global-mode 1))
+
   #+end_src
 * Flycheck
   #+begin_src emacs-lisp
