@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: wrap-image 
+# key:  wrap-image 
+# --
+
+#+attr_latex: :float wrap :width 0.${1}\textwidth :placement {${2}}{{${3}}\textwidth}

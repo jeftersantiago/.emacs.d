@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: report-template 
+# key:  report 
+# --
+
+#+title: *\Huge{Prática ${number}}* @@latex:\\\ \\\@@ \Huge{${title}}
+#+author: *\Lage{Jefter Santiago Mares}* @@latex:\\\@@ n$^{\circ}$:12559016
+#+options: toc:2  date:nil
+
+#+begin_latex $0
+\begin{figure}[t!]
+    \includegraphics[height 0.2\textwidth]{${image-path}}
+\end{figure}
+#+end_latex
+
+#+include: ~/Dropbox/Templates/report.org
+
+

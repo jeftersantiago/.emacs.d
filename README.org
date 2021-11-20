@@ -141,8 +141,8 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
    #+end_src
 ** Line number
 #+begin_src emacs-lisp
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
+;(global-display-line-numbers-mode)
+;(setq display-line-numbers-type 'relative)
 #+end_src
 * Dashboard
   #+begin_src emacs-lisp
@@ -298,6 +298,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
   (setq org-outline-path-complete-in-steps nil)
 
   (setq-default org-image-actual-width 620)
+  (setq org-latex-prefer-user-labels t)
 #+end_src 
 *** Org-bullets
 #+begin_src emacs-lisp
@@ -420,14 +421,23 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
      (setq org-latex-create-formula-image-program 'dvisvgm)
 
                                              ; adjusting the size
-     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.7))
+     (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 ;     (setq org-latex-caption-above nil)
    #+end_src
 *** bibtex
     #+begin_src emacs-lisp
-      (setq org-latex-to-pdf-process (list "latexmk -pdf %f"))
+      (setq org-latex-to-pdf-process (list "latexmk -pvc -pdf %f"))
     #+end_src
+*** minted
+    #+begin_src emacs-lisp
+
+      (setq org-latex-listings 'minted)
+      (setq org-latex-minted-options
+            '(("frame" "") ("linenos=true")))
+
+    #+end_src
+
 *** Tikz
 #+begin_src emacs-lisp
 ;      (add-hook 'org-mode-hook
@@ -718,8 +728,8 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
         '(("PDF Viewer" "xreader %o")))
 
   (eval-after-load "tex"
-              '(add-to-list 'TeX-command-list
-                            '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+    '(add-to-list 'TeX-command-list
+                  '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
 
   #+end_src
 * lsp-mode

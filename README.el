@@ -89,8 +89,8 @@
   :custom ((doom-modeline-height 25))
   :ensure t)
 
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
+;(global-display-line-numbers-mode)
+;(setq display-line-numbers-type 'relative)
 
 (use-package dashboard
   :ensure t
@@ -214,6 +214,7 @@ current buffer's, reload dir-locals."
 (setq org-outline-path-complete-in-steps nil)
 
 (setq-default org-image-actual-width 620)
+(setq org-latex-prefer-user-labels t)
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
@@ -304,11 +305,15 @@ current buffer's, reload dir-locals."
      (setq org-latex-create-formula-image-program 'dvisvgm)
 
                                              ; adjusting the size
-     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.7))
+     (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
 
 ;     (setq org-latex-caption-above nil)
 
-(setq org-latex-to-pdf-process (list "latexmk -pdf %f"))
+(setq org-latex-to-pdf-process (list "latexmk -pvc -pdf %f"))
+
+(setq org-latex-listings 'minted)
+(setq org-latex-minted-options
+      '(("frame" "") ("linenos=true")))
 
 ;      (add-hook 'org-mode-hook
 ;        (lambda () (texfrag-mode))
@@ -560,43 +565,43 @@ current buffer's, reload dir-locals."
       '(("PDF Viewer" "xreader %o")))
 
 (eval-after-load "tex"
-            '(add-to-list 'TeX-command-list
-                          '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+  '(add-to-list 'TeX-command-list
+                '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
 
 (defun efs/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
+      (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+      (lsp-headerline-breadcrumb-mode))
 
-(use-package lsp-mode
-  :ensure t
-  :commands (lsp lsp-deferred)
-  :hook (lsp-mode . efs/lsp-mode-setup)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :config
-  (lsp-enable-which-key-integration t))
+    (use-package lsp-mode
+      :ensure t
+      :commands (lsp lsp-deferred)
+;      :hook (lsp-mode . efs/lsp-mode-setup)
+      :init
+      (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+      :config
+      (lsp-enable-which-key-integration t))
 
 
-(use-package lsp-ivy
-  :ensure t
-  :after lsp)
+    (use-package lsp-ivy
+      :ensure t
+      :after lsp)
 
-(use-package lsp-treemacs
-  :ensure t
-  :after lsp)
-(global-set-key (kbd "C-x C-n") 'lsp-treemacs-symbols)
+    (use-package lsp-treemacs
+      :ensure t
+      :after lsp)
+    (global-set-key (kbd "C-x C-n") 'lsp-treemacs-symbols)
 
-(use-package lsp-mode
-  :commands lsp
-  :hook ((fortran-mode f90-mode sh-mode) . lsp)
-  :config
-  (setq lsp-auto-guess-root t)
-  (setq lsp-enable-snippet nil)
-  (setq lsp-file-watch-threshold 500000)
-  (setq lsp-headerline-breadcrumb-enable nil)
-  (setq lsp-modeline-diagnostics-enable nil)
-  (setq lsp-prefer-flymake nil)
-  (setq lsp-rust-clippy-preference "on"))
+    (use-package lsp-mode
+      :commands lsp
+      :hook ((fortran-mode f90-mode sh-mode) . lsp)
+      :config
+      (setq lsp-auto-guess-root t)
+      (setq lsp-enable-snippet nil)
+      (setq lsp-file-watch-threshold 500000)
+      (setq lsp-headerline-breadcrumb-enable nil)
+      (setq lsp-modeline-diagnostics-enable nil)
+      (setq lsp-prefer-flymake nil)
+      (setq lsp-rust-clippy-preference "on"))
 
 (use-package eglot
   :ensure t)
