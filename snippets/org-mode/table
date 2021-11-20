@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: table 
+# key:  tt 
+# --
+
+#+attr_latex: :align |c|${1:centering}
+| $0             

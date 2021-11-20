@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: big-equation 
+# key: $b
+# --
+$$ \boxed{ $0 }$$
