@@ -12,7 +12,7 @@
     \includegraphics[height 0.2\textwidth]{${image-path}}
 \end{figure}
 #+end_latex
-
+#+STARTUP: latexpreview
 #+include: ~/Dropbox/Templates/report.org
 
 

@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: shaded 
+# key:  sd 
+# --
+
+#+begin_latex
+\begin{shaded}
+    $0
+\end{shaded}
+#+end_latex
