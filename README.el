@@ -215,6 +215,7 @@ current buffer's, reload dir-locals."
 
 (setq-default org-image-actual-width 620)
 (setq org-latex-prefer-user-labels t)
+(setq org-export-with-sub-superscripts nil)
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
@@ -316,6 +317,7 @@ current buffer's, reload dir-locals."
           (lambda () (when (eq major-mode 'org-mode)
                        (make-local-variable 'org-pretty-entities-include-sub-superscripts)
                        (setq org-pretty-entities-include-sub-superscripts nil))))
+(add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
 
 (setq org-latex-to-pdf-process (list "latexmk -pvc -pdf %f"))
 

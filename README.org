@@ -299,6 +299,8 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
 
   (setq-default org-image-actual-width 620)
   (setq org-latex-prefer-user-labels t)
+  (setq org-export-with-sub-superscripts nil)
+
 #+end_src 
 *** Org-bullets
 #+begin_src emacs-lisp
@@ -434,6 +436,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
                 (lambda () (when (eq major-mode 'org-mode)
                              (make-local-variable 'org-pretty-entities-include-sub-superscripts)
                              (setq org-pretty-entities-include-sub-superscripts nil))))
+      (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
 
     #+end_src
 *** bibtex
