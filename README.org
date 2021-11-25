@@ -119,7 +119,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
 ** Font
    Taken from here:  https://emacs.stackexchange.com/q/45895
    #+begin_src emacs-lisp
-     (set-frame-font "Monospace-12:antialias=true")
+     (set-frame-font "Source Code Pro-12:antialias=true")
    #+end_src
    #+begin_src emacs-lisp
      (use-package default-text-scale
@@ -359,11 +359,12 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
 ** Displaying inline images
    The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/nn
 #+begin_src emacs-lisp
-  (defun my/fix-inline-images ()
-    (when org-inline-image-overlays
-      (org-redisplay-inline-images)))
-  (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
-  (add-hook 'org-mode-hook 'org-toggle-inline-images)
+  (setq org-image-actual-width 200)
+    (defun my/fix-inline-images ()
+      (when org-inline-image-overlays
+        (org-redisplay-inline-images)))
+    (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
+    (add-hook 'org-mode-hook 'org-toggle-inline-images)
 #+end_src
 ** Code
 #+begin_src emacs-lisp
@@ -421,10 +422,20 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
      (setq org-latex-create-formula-image-program 'dvisvgm)
 
                                              ; adjusting the size
-     (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.4))
 
 ;     (setq org-latex-caption-above nil)
    #+end_src
+*** cdlatex
+    #+begin_src emacs-lisp
+      (use-package cdlatex
+        :ensure t)
+      (add-hook 'cdlatex-mode-hook
+                (lambda () (when (eq major-mode 'org-mode)
+                             (make-local-variable 'org-pretty-entities-include-sub-superscripts)
+                             (setq org-pretty-entities-include-sub-superscripts nil))))
+
+    #+end_src
 *** bibtex
     #+begin_src emacs-lisp
       (setq org-latex-to-pdf-process (list "latexmk -pvc -pdf %f"))
@@ -564,7 +575,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
     (use-package yasnippet
       :ensure t
       :config
-      (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+      (setq yas-snippet-dirs '("~/Projects/yasnippets"))
       (yas-global-mode 1))
 
   #+end_src

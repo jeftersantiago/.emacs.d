@@ -72,7 +72,7 @@
 ; (set-frame-parameter (selected-frame) 'alpha '(98 98))
 ; (add-to-list 'default-frame-alist '(alpha 98 98))
 
-(set-frame-font "Monospace-12:antialias=true")
+(set-frame-font "Source Code Pro-12:antialias=true")
 
 (use-package default-text-scale
   :ensure t
@@ -261,11 +261,12 @@ current buffer's, reload dir-locals."
 (add-to-list 'org-structure-template-alist
              '("g" . "\frac{d ?}{d }"))
 
-(defun my/fix-inline-images ()
-  (when org-inline-image-overlays
-    (org-redisplay-inline-images)))
-(add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
-(add-hook 'org-mode-hook 'org-toggle-inline-images)
+(setq org-image-actual-width 200)
+  (defun my/fix-inline-images ()
+    (when org-inline-image-overlays
+      (org-redisplay-inline-images)))
+  (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
+  (add-hook 'org-mode-hook 'org-toggle-inline-images)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -305,9 +306,16 @@ current buffer's, reload dir-locals."
      (setq org-latex-create-formula-image-program 'dvisvgm)
 
                                              ; adjusting the size
-     (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0))
+     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.4))
 
 ;     (setq org-latex-caption-above nil)
+
+(use-package cdlatex
+  :ensure t)
+(add-hook 'cdlatex-mode-hook
+          (lambda () (when (eq major-mode 'org-mode)
+                       (make-local-variable 'org-pretty-entities-include-sub-superscripts)
+                       (setq org-pretty-entities-include-sub-superscripts nil))))
 
 (setq org-latex-to-pdf-process (list "latexmk -pvc -pdf %f"))
 
@@ -415,7 +423,7 @@ current buffer's, reload dir-locals."
 (use-package yasnippet
   :ensure t
   :config
-  (setq yas-snippet-dirs '("~/.emacs.d/snippets"))
+  (setq yas-snippet-dirs '("~/Projects/yasnippets"))
   (yas-global-mode 1))
 
 (use-package flycheck
