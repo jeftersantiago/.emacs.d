@@ -257,11 +257,6 @@ current buffer's, reload dir-locals."
   (org-archive-subtree))
 (setq org-log-done 'time)
 
-
-
-(add-to-list 'org-structure-template-alist
-             '("g" . "\frac{d ?}{d }"))
-
 (setq org-image-actual-width 200)
   (defun my/fix-inline-images ()
     (when org-inline-image-overlays
