@@ -20,13 +20,15 @@
    - [ ] use the =~/.inputrc= configs.
    - [ ] check the =julia= REPL.
 * programming
-** language server protocol [0/3]
+** language server protocol [0%]
    - [ ] C++
    - [ ] C
    - [ ] fortran
    - [ ] gnuplot (maybe this does not exists)
-** debugger [0/1]
+** debugger [0%]
    - [ ] test dap-mode
+** compilation [0%]
+   - [ ] create structure templates for C/C++ compilation
 * writing
 ** TODO find a spell check tool
 ** LaTex [0%]
