@@ -67,7 +67,7 @@
 ;    (use-package spacemacs-theme
 ;     :defer t
 ;     :init (load-theme 'spacemacs-light t))
-;     (set-background-color "black")
+     ; (set-background-color "black")
 
 ; (set-frame-parameter (selected-frame) 'alpha '(98 98))
 ; (add-to-list 'default-frame-alist '(alpha 98 98))
@@ -89,8 +89,8 @@
   :custom ((doom-modeline-height 25))
   :ensure t)
 
-;(global-display-line-numbers-mode)
-;(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
 
 (use-package dashboard
   :ensure t

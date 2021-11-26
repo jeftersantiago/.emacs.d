@@ -108,7 +108,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
 ;    (use-package spacemacs-theme
 ;     :defer t
 ;     :init (load-theme 'spacemacs-light t))
-;     (set-background-color "black")
+     ; (set-background-color "black")
 #+end_src
 *** Transparency
      Enabling transparency
@@ -142,8 +142,8 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
    #+end_src
 ** Line number
 #+begin_src emacs-lisp
-;(global-display-line-numbers-mode)
-;(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
 #+end_src
 * Dashboard
   #+begin_src emacs-lisp
@@ -348,16 +348,6 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
     (org-archive-subtree))
   (setq org-log-done 'time)
 #+end_src
-** Org capture templates 
-   this breaks org-roam
-#+begin_src emacs-lisp
-#+end_src
-#+begin_src emacs-lisp
-
-  (add-to-list 'org-structure-template-alist
-               '("g" . "\frac{d ?}{d }"))
-
-#+end_src
 ** Displaying inline images
    The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/nn
 #+begin_src emacs-lisp
@@ -416,17 +406,17 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
      [[./images/latex-preview-example.gif]]
     - TODO [ ] Still want a way to store all images generated in one place.
    #+begin_src emacs-lisp
-      ; load the latex fragments automatically
-     (use-package org-fragtog :ensure t)
-     (add-hook 'org-mode-hook 'org-fragtog-mode)
+           ; load the latex fragments automatically
+          (use-package org-fragtog :ensure t)
+          (add-hook 'org-mode-hook 'org-fragtog-mode)
 
-     ; this is the only way to really work (idk y)
-     (setq org-latex-create-formula-image-program 'dvisvgm)
+          ; this is the only way to really work (idk y)
+          (setq org-latex-create-formula-image-program 'dvisvgm)
 
-                                             ; adjusting the size
-     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.4))
+                                                  ; adjusting the size
+          (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.4))
 
-;     (setq org-latex-caption-above nil)
+     ;     (setq org-latex-caption-above nil)
    #+end_src
 *** cdlatex
     #+begin_src emacs-lisp
