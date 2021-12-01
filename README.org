@@ -102,12 +102,12 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
 *** Theme
     Loading theme and setting modeline background color.
 #+begin_src emacs-lisp
-    (use-package doom-themes
-       :init (load-theme 'doom-Iosvkem t))
+;    (use-package doom-themes
+;       :init (load-theme 'doom-Iosvkem t))
 
-;    (use-package spacemacs-theme
-;     :defer t
-;     :init (load-theme 'spacemacs-light t))
+    (use-package spacemacs-theme
+     :defer t
+     :init (load-theme 'spacemacs-dark t))
      ; (set-background-color "black")
 #+end_src
 *** Transparency
@@ -119,7 +119,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
 ** Font
    Taken from here:  https://emacs.stackexchange.com/q/45895
    #+begin_src emacs-lisp
-     (set-frame-font "Source Code Pro-12:antialias=true")
+     (set-frame-font "Inconsolata-12:antialias=true")
    #+end_src
    #+begin_src emacs-lisp
      (use-package default-text-scale
@@ -142,8 +142,8 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
    #+end_src
 ** Line number
 #+begin_src emacs-lisp
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
+;(global-display-line-numbers-mode)
+;(setq display-line-numbers-type 'relative)
 #+end_src
 * Dashboard
   #+begin_src emacs-lisp
@@ -157,9 +157,15 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
         (setq dashboard-set-file-icons t)
         (setq dashboard-set-heading-icons t)
         (setq dashboard-startup-banner "~/.emacs.d/images/emacs-logo.png")
+        (setq dashboard-items '((recents  . 5)
+                                (projects . 5)
+                                (agenda . 0)
+                                (bookmarks . 0)
+                                (registers . 0)))
         )
       :config
       (dashboard-setup-startup-hook))
+
   #+end_src
 * Dired
 ** Sidebar
@@ -406,17 +412,18 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
      [[./images/latex-preview-example.gif]]
     - TODO [ ] Still want a way to store all images generated in one place.
    #+begin_src emacs-lisp
-           ; load the latex fragments automatically
-          (use-package org-fragtog :ensure t)
-          (add-hook 'org-mode-hook 'org-fragtog-mode)
+                                             ; load the latex fragments automatically
+     (use-package org-fragtog :ensure t)
+     (add-hook 'org-mode-hook 'org-fragtog-mode)
 
-          ; this is the only way to really work (idk y)
-          (setq org-latex-create-formula-image-program 'dvisvgm)
+                                             ; using dvipng makes it faster, but with less quality
+     (setq org-latex-create-formula-image-program  'dvisvgm)
 
-                                                  ; adjusting the size
-          (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.4))
 
-     ;     (setq org-latex-caption-above nil)
+                                             ; adjusting the size
+     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+
+                                             ;     (setq org-latex-caption-above nil)
    #+end_src
 *** cdlatex
     #+begin_src emacs-lisp
@@ -568,7 +575,8 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
     (use-package yasnippet
       :ensure t
       :config
-      (setq yas-snippet-dirs '("~/Projects/yasnippets"))
+      (setq yas-snippet-dirs '("~/Projects/yasnippets"
+                               "~/Dropbox/private-configs/private-snippets/"))
       (yas-global-mode 1))
 
   #+end_src
@@ -874,6 +882,12 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
   #+end_src
 * Gnuplot
   #+begin_src emacs-lisp
+    (use-package gnuplot-mode
+      :ensure t)
+
+    (autoload 'gnuplot-mode "gnuplot" "Gnuplot major mode" t)
+    (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
+    (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
 
   #+end_src
 * Auto-completation
@@ -925,12 +939,15 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
     (use-package elcord
       :ensure t
       :config
+
+      (global-set-key (kbd "C-c d") 'elcord-mode)
+
+
       (setq elcord-use-major-mode-as-main-icon t)
       (setq elcord-display-buffer-detail 'nil)
       (setq elcord-refresh-rate 2)
       :init)
 
-  (global-set-key (kbd "C-c d") 'elcord-mode)
   #+end_src
   
 

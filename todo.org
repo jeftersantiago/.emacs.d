@@ -5,6 +5,7 @@
   - [ ] org-babel configure languages
   - [ ] try to replicate [[https://castel.dev/post/lecture-notes-2/][this]]
   - [ ] find a way to create variables *in* the current =org= in a easy way
+
     I'll use this when writing.
 ** org-roam [0%] 
   - [ ] org-roam and org-ref integration

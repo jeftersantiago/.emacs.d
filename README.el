@@ -61,18 +61,18 @@
   :ensure t)
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-(use-package doom-themes
-       :init (load-theme 'doom-Iosvkem t))
+;    (use-package doom-themes
+;       :init (load-theme 'doom-Iosvkem t))
 
-;    (use-package spacemacs-theme
-;     :defer t
-;     :init (load-theme 'spacemacs-light t))
+    (use-package spacemacs-theme
+     :defer t
+     :init (load-theme 'spacemacs-dark t))
      ; (set-background-color "black")
 
 ; (set-frame-parameter (selected-frame) 'alpha '(98 98))
 ; (add-to-list 'default-frame-alist '(alpha 98 98))
 
-(set-frame-font "Source Code Pro-12:antialias=true")
+(set-frame-font "Inconsolata-12:antialias=true")
 
 (use-package default-text-scale
   :ensure t
@@ -89,8 +89,8 @@
   :custom ((doom-modeline-height 25))
   :ensure t)
 
-(global-display-line-numbers-mode)
-(setq display-line-numbers-type 'relative)
+;(global-display-line-numbers-mode)
+;(setq display-line-numbers-type 'relative)
 
 (use-package dashboard
   :ensure t
@@ -102,6 +102,11 @@
     (setq dashboard-set-file-icons t)
     (setq dashboard-set-heading-icons t)
     (setq dashboard-startup-banner "~/.emacs.d/images/emacs-logo.png")
+    (setq dashboard-items '((recents  . 5)
+                            (projects . 5)
+                            (agenda . 0)
+                            (bookmarks . 0)
+                            (registers . 0)))
     )
   :config
   (dashboard-setup-startup-hook))
@@ -295,16 +300,17 @@ current buffer's, reload dir-locals."
 (define-key global-map "\C-cc" 'org-capture)
 
 ; load the latex fragments automatically
-     (use-package org-fragtog :ensure t)
-     (add-hook 'org-mode-hook 'org-fragtog-mode)
+(use-package org-fragtog :ensure t)
+(add-hook 'org-mode-hook 'org-fragtog-mode)
 
-     ; this is the only way to really work (idk y)
-     (setq org-latex-create-formula-image-program 'dvisvgm)
+                                        ; using dvipng makes it faster, but with less quality
+(setq org-latex-create-formula-image-program  'dvisvgm)
 
-                                             ; adjusting the size
-     (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.4))
 
-;     (setq org-latex-caption-above nil)
+                                        ; adjusting the size
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+
+                                        ;     (setq org-latex-caption-above nil)
 
 (use-package cdlatex
   :ensure t)
@@ -420,7 +426,8 @@ current buffer's, reload dir-locals."
 (use-package yasnippet
   :ensure t
   :config
-  (setq yas-snippet-dirs '("~/Projects/yasnippets"))
+  (setq yas-snippet-dirs '("~/Projects/yasnippets"
+                           "~/Dropbox/private-configs/private-snippets/"))
   (yas-global-mode 1))
 
 (use-package flycheck
@@ -689,7 +696,12 @@ the header, based upon the associated source code file."
   (add-hook 'python-mode-hook 'jedi:setup)
   (add-hook 'python-mode-hook 'jedi:ac-setup))
 
+(use-package gnuplot-mode
+  :ensure t)
 
+(autoload 'gnuplot-mode "gnuplot" "Gnuplot major mode" t)
+(autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
+(setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
 
 (use-package auto-complete
   :ensure t
@@ -729,11 +741,13 @@ the header, based upon the associated source code file."
    (add-hook 'irony-mode-hook #'irony-eldoc))
 
 (use-package elcord
-    :ensure t
-    :config
-    (setq elcord-use-major-mode-as-main-icon t)
-    (setq elcord-display-buffer-detail 'nil)
-    (setq elcord-refresh-rate 2)
-    :init)
+  :ensure t
+  :config
 
-(global-set-key (kbd "C-c d") 'elcord-mode)
+  (global-set-key (kbd "C-c d") 'elcord-mode)
+
+
+  (setq elcord-use-major-mode-as-main-icon t)
+  (setq elcord-display-buffer-detail 'nil)
+  (setq elcord-refresh-rate 2)
+  :init)
