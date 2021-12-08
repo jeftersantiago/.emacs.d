@@ -280,8 +280,9 @@ current buffer's, reload dir-locals."
 (setq org-latex-pdf-process (list
    "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
 
+(setq org-export-with-sub-superscripts nil)
 (add-hook 'org-mode-hook
-  (lambda () (org-toggle-pretty-entities)))
+          (lambda () (org-toggle-pretty-entities)))
 ;; Opening pdfs
 (add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
 
@@ -698,10 +699,11 @@ the header, based upon the associated source code file."
 
 (use-package gnuplot-mode
   :ensure t)
-
+(add-to-list 'load-path "~/.emacs.d/gnuplot/gnuplot-mode.el")
 (autoload 'gnuplot-mode "gnuplot" "Gnuplot major mode" t)
 (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
 (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
+(require 'ob-gnuplot)
 
 (use-package auto-complete
   :ensure t
@@ -715,7 +717,7 @@ the header, based upon the associated source code file."
    :ensure t
    :config
    (setq company-idle-delay 0)
-   (setq company-minimum-prefix-length 1)
+   (setq company-minimum-prefix-length 2)
    :init (global-company-mode t))
 
 (use-package company-box
