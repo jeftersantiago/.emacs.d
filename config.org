@@ -418,7 +418,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
 ** Org LaTeX
 *** Preview Latex fragments
 **** org-fragtog loading latex fragments
-     [[./images/latex-preview-example.gif]]
+     [[./images/preview-example.gif]]
     - TODO [ ] Still want a way to store all images generated in one place.
    #+begin_src emacs-lisp
                                              ; load the latex fragments automatically
