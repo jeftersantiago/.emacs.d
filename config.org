@@ -6,7 +6,7 @@
 Welcome! This is my emacs personal configs, i customize it based only in my
 general use of the editor (which is basically for everything i do in the
 computer). You may find usefull pieces of code or configurations if you're a
-person that uses =\LaTeX=, =orgmode=, =org-roam=, =Julia=, and many other
+person that uses =LaTeX=, =orgmode=, =org-roam=, =Julia=, and many other
 stuff. I also have a separated repository only for my snippets (i use the
 =yasnippets= package) , you can find them in [[https://github.com/jefter66/][here]].
 

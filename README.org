@@ -1,7 +1,7 @@
 * Welcome!
   I'm on the path to make Emacs an general porpuse use. The
   configurations are based in the tasks that i usually do in Emacs,
-  that is, write code, note taking (in org-roam) and write in \LaTeX.
+  that is, write code, note taking (in org-roam) and write in LaTeX.
   The note taking is done using the =org-roam-mode=.
 * Installation
   First of all, if you already have an configuration you may want to have
