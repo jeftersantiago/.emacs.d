@@ -69,8 +69,8 @@
      :init (load-theme 'spacemacs-dark t))
      ; (set-background-color "black")
 
-; (set-frame-parameter (selected-frame) 'alpha '(98 98))
-; (add-to-list 'default-frame-alist '(alpha 98 98))
+(set-frame-parameter (selected-frame) 'alpha '(98 98))
+(add-to-list 'default-frame-alist '(alpha 98 98))
 
 (set-frame-font "Inconsolata-12:antialias=true")
 
@@ -89,8 +89,8 @@
   :custom ((doom-modeline-height 25))
   :ensure t)
 
-;(global-display-line-numbers-mode)
-;(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode)
+(setq display-line-numbers-type 'relative)
 
 (use-package dashboard
   :ensure t
