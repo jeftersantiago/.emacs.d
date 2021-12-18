@@ -1,4 +1,4 @@
-* Welcome
+* Welcome!
   I'm on the path to make Emacs an general porpuse use. The
   configurations are based in the tasks that i usually do in Emacs,
   that is, write code, note taking (in org-roam) and write in \LaTeX.
