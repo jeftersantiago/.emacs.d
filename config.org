@@ -25,14 +25,33 @@ stuff. I also have a separated repository only for my snippets (i use the
 
     (add-hook 'emacs-startup-hook #'efs/display-startup-time)
   #+end_src
-* Appearance 
+* [[./general/general.org][General configurations]]
+   #+begin_src emacs-lisp
+    (org-babel-load-file (expand-file-name "~/.emacs.d/general/general.org"))
+  #+end_src
+* [[./appearance/appearance.org][Appearance]]
   #+begin_src emacs-lisp
     (org-babel-load-file (expand-file-name "~/.emacs.d/appearance/appearance.org"))
   #+end_src
-
-* Buffers behavior and dired-mode
+* [[./buffers/buffers.org][Buffers behavior and dired-mode]]
   #+begin_src emacs-lisp
     (org-babel-load-file (expand-file-name "~/.emacs.d/buffers/buffers.org"))
+  #+end_src
+* [[./org/README.org][Org-mode]]
+  #+begin_src emacs-lisp
+    (org-babel-load-file (expand-file-name "~/.emacs.d/org/org-mode.org"))
+  #+end_src
+* [[./org/README.org][Org-babel]]
+    #+begin_src emacs-lisp
+    (org-babel-load-file (expand-file-name "~/.emacs.d/org/org-mode.org"))
+  #+end_src
+* [[./org/README.org][Org-roam]]
+  #+begin_src emacs-lisp
+    (org-babel-load-file (expand-file-name "~/.emacs.d/org/org-roam.org"))
+  #+end_src
+* [[./org/README.org][LaTeX]]
+  #+begin_src emacs-lisp
+    (org-babel-load-file (expand-file-name "~/.emacs.d/latex/latex.org"))
   #+end_src
 * Multi-term 
   #+begin_src emacs-lisp
@@ -40,23 +59,6 @@ stuff. I also have a separated repository only for my snippets (i use the
     (setq multi-term-program "/bin/bash")
     (global-set-key (kbd "C-x t") 'multi-term)
   #+end_src
-* Org-mode
-  #+begin_src emacs-lisp
-    (org-babel-load-file (expand-file-name "~/.emacs.d/org/org-mode.org"))
-  #+end_src
-* Org-babel
-    #+begin_src emacs-lisp
-    (org-babel-load-file (expand-file-name "~/.emacs.d/org/org-mode.org"))
-  #+end_src
-* Org-roam
-  #+begin_src emacs-lisp
-    (org-babel-load-file (expand-file-name "~/.emacs.d/org/org-roam.org"))
-  #+end_src
-* Latex
-  #+begin_src emacs-lisp
-    (org-babel-load-file (expand-file-name "~/.emacs.d/latex/latex.org"))
-  #+end_src
-
 * Swiper
 #+begin_src emacs-lisp
   (use-package swiper
