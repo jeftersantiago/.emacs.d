@@ -1,0 +1,84 @@
+#+title: Emacs UI configurations
+* System default variables
+#+begin_src emacs-lisp
+  (scroll-bar-mode 0)
+  (tool-bar-mode 0)
+  (menu-bar-mode 0)
+  (fringe-mode 0)
+  (font-lock-mode t)
+
+  (setq initial-scratch-message nil)
+  (setq inhibit-startup-message t)
+
+  (setq-default indent-tabs-mode nil)
+  (setq-default tab-width 4)
+  (setq confirm-kill-processes nil)
+  (setq-default truncate-lines t)
+  (setq-default fill-column 80)
+
+  (setq-default cursor-type 'square)
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+#+end_src
+Emacs window covering entire screen.
+Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/177]]
+#+begin_src emacs-lisp
+  (setq frame-resize-pixelwise t)
+#+end_src
+* Rainbow-delimiters
+    Makes the parenthesis shine
+#+begin_src emacs-lisp
+    (use-package rainbow-delimiters
+      :hook (prog-mode . rainbow-delimiters-mode)
+      :ensure t)
+    (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+#+end_src
+* Theme and transparency
+** Theme
+   Loading theme and setting modeline background color.
+  #+begin_src emacs-lisp
+;    (use-package doom-themes
+;       :init (load-theme 'doom-Iosvkem t))
+
+    (use-package spacemacs-theme
+      :defer t
+      :init (load-theme 'spacemacs-dark t))
+;    (set-background-color "black")
+
+  #+end_src
+** Transparency
+   Enabling transparency
+#+begin_src emacs-lisp
+  (set-frame-parameter (selected-frame) 'alpha '(100 100))
+  (add-to-list 'default-frame-alist '(alpha 100 100))
+#+end_src
+* Font
+  Taken from here:  https://emacs.stackexchange.com/q/45895
+   #+begin_src emacs-lisp
+     (set-frame-font "Inconsolata-12:antialias=true")
+   #+end_src
+   #+begin_src emacs-lisp
+     (use-package default-text-scale
+       :ensure t
+       :hook (after-init . default-text-scale-mode))
+     (set-language-environment "UTF-8")
+     (global-prettify-symbols-mode t)
+     (prefer-coding-system 'utf-8)
+
+     (global-set-key (kbd "C-x C-l") 'font-lock-mode)
+   #+end_src
+* Modeline
+    Nice and simple.
+   #+begin_src emacs-lisp
+     (use-package all-the-icons :ensure t)
+     (use-package doom-modeline
+       :init (doom-modeline-mode 1)
+       :custom ((doom-modeline-height 25))
+       :ensure t)
+   #+end_src
+* Line number
+#+begin_src emacs-lisp
+  ;(global-display-line-numbers-mode)
+  ;(setq display-line-numbers-type 'relative)
+#+end_src
+
