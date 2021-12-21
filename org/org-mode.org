@@ -33,12 +33,12 @@
 #+end_src
 ** Center org buffers
 #+begin_src emacs-lisp
-; (defun efs/org-mode-visual-fill ()
-;   (visual-fill-column-mode 1))
+  (defun efs/org-mode-visual-fill ()
+    (visual-fill-column-mode 1))
 
-; (use-package visual-fill-column
-;   :ensure t
-;   :hook (org-mode . efs/org-mode-visual-fill))
+  (use-package visual-fill-column
+    :ensure t
+    :hook (org-mode . efs/org-mode-visual-fill))
 #+end_src
 * Tasks management
 #+begin_src emacs-lisp
@@ -118,10 +118,12 @@
    #+end_src
 * Key-bindings in org-mode
 #+begin_src emacs-lisp
+
   (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
   (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
   (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
   (define-key global-map "\C-cc" 'org-capture)
+
 #+end_src
 * Org LaTeX
 ** Preview Latex fragments

@@ -23,12 +23,12 @@
  '(("^[[:space:]]*\\(-\\) "
     (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-; (defun efs/org-mode-visual-fill ()
-;   (visual-fill-column-mode 1))
+(defun efs/org-mode-visual-fill ()
+  (visual-fill-column-mode 1))
 
-; (use-package visual-fill-column
-;   :ensure t
-;   :hook (org-mode . efs/org-mode-visual-fill))
+(use-package visual-fill-column
+  :ensure t
+  :hook (org-mode . efs/org-mode-visual-fill))
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))

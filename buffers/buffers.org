@@ -55,7 +55,6 @@
           ((t (:inherit ace-jump-face-foreground :height 2.0)))))))
   #+end_src
 
-
 * Dired
 ** Sidebar
 #+begin_src emacs-lisp

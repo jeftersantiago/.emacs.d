@@ -43,7 +43,7 @@ stuff. I also have a separated repository only for my snippets (i use the
   #+end_src
 * [[./org/README.org][Org-babel]]
     #+begin_src emacs-lisp
-    (org-babel-load-file (expand-file-name "~/.emacs.d/org/org-mode.org"))
+    (org-babel-load-file (expand-file-name "~/.emacs.d/org/org-babel.org"))
   #+end_src
 * [[./org/README.org][Org-roam]]
   #+begin_src emacs-lisp

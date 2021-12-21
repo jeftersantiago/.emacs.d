@@ -1,5 +1,6 @@
 (use-package auctex
   :hook ((latex-mode LaTeX-mode) . lsp)
+  :ensure t
   :config
   (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
   (texmathp-compile)

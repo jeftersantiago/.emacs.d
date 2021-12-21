@@ -2,8 +2,10 @@
 ** setup
    Loads =Auctex= and =lsp= for latex.
   #+begin_src emacs-lisp
+
     (use-package auctex
       :hook ((latex-mode LaTeX-mode) . lsp)
+      :ensure t
       :config
       (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
       (texmathp-compile)
@@ -24,6 +26,7 @@
     (add-hook 'LaTeX-mode-hook 'visual-line-mode)
     (add-hook 'LaTeX-mode-hook 'flyspell-mode)
     (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+
 #+end_src
 ** compile shortcuts and open with =xreader=
 #+begin_src emacs-lisp

@@ -18,7 +18,7 @@
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/org/org-mode.org"))
 
-(org-babel-load-file (expand-file-name "~/.emacs.d/org/org-mode.org"))
+(org-babel-load-file (expand-file-name "~/.emacs.d/org/org-babel.org"))
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/org/org-roam.org"))
 
