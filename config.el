@@ -10,13 +10,11 @@
 
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
+(org-babel-load-file (expand-file-name "~/.emacs.d/general/general.org"))
+
 (org-babel-load-file (expand-file-name "~/.emacs.d/appearance/appearance.org"))
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/buffers/buffers.org"))
-
-(use-package multi-term :ensure t)
-(setq multi-term-program "/bin/bash")
-(global-set-key (kbd "C-x t") 'multi-term)
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/org/org-mode.org"))
 
@@ -25,6 +23,10 @@
 (org-babel-load-file (expand-file-name "~/.emacs.d/org/org-roam.org"))
 
 (org-babel-load-file (expand-file-name "~/.emacs.d/latex/latex.org"))
+
+(use-package multi-term :ensure t)
+(setq multi-term-program "/bin/bash")
+(global-set-key (kbd "C-x t") 'multi-term)
 
 (use-package swiper
   :ensure t

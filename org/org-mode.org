@@ -2,6 +2,7 @@
 * General config
 ** Variables
 #+begin_src emacs-lisp
+
   (setq org-startup-folded t)
   (setq org-src-tab-acts-natively t)
   (setq org-src-window-setup 'current-window)
@@ -41,6 +42,7 @@
 #+end_src
 * Tasks management
 #+begin_src emacs-lisp
+
   (add-hook 'org-mode-hook 'auto-fill-mode)
   (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
         org-log-into-drawer t)
@@ -62,19 +64,23 @@
     (org-todo 'done)
     (org-archive-subtree))
   (setq org-log-done 'time)
+
 #+end_src
 * Displaying inline images
    The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/nn
 #+begin_src emacs-lisp
+
   (setq org-image-actual-width 200)
     (defun my/fix-inline-images ()
       (when org-inline-image-overlays
         (org-redisplay-inline-images)))
     (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
     (add-hook 'org-mode-hook 'org-toggle-inline-images)
+
 #+end_src
 * Code
 #+begin_src emacs-lisp
+
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((python . t)))
@@ -82,6 +88,7 @@
   (set-face-attribute 'org-block nil :background
                       (color-darken-name
                        (face-attribute 'default :background) 3))
+
 #+end_src
 * org-publishing 
 ** Compiling pdf
