@@ -53,3 +53,22 @@
 
 ;(global-display-line-numbers-mode)
 ;(setq display-line-numbers-type 'relative)
+
+(use-package dashboard
+  :ensure t
+  :init
+  (progn
+    (setq dashboard-show-shortcuts nil)
+    (setq dashboard-center-content nil)
+    (setq dashboard-banner-logo-title "EMACS")
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-set-heading-icons t)
+    (setq dashboard-startup-banner "~/.emacs.d/images/emacs-logo.png")
+    (setq dashboard-items '((recents  . 5)
+                            (projects . 5)
+                            (agenda . 0)
+                            (bookmarks . 0)
+                            (registers . 0)))
+    )
+  :config
+  (dashboard-setup-startup-hook))
