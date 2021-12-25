@@ -1,3 +1,6 @@
+* TODO's
+  - [ ] Export =org-roam= notes in pdf for one specific location.
+  - [ ] Gnuplot update without re-open the graph.
 * Welcome!
   I'm on the path to make Emacs an general porpuse use. The
   configurations are based in the tasks that i usually do in Emacs,

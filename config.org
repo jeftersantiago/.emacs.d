@@ -9,10 +9,6 @@ computer). You may find usefull pieces of code or configurations if you're a
 person that uses =LaTeX=, =orgmode=, =org-roam=, =Julia=, and many other
 stuff. I also have a separated repository only for my snippets (i use the
 =yasnippets= package) , you can find them in [[https://github.com/jefter66/][here]].
-* TODO's
-  - [ ] Export =org-roam= notes in pdf for one specific location.
-  - [ ] Gnuplot update without re-open the graph.
-
 * Startup performance
   Taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org
   #+begin_src emacs-lisp
