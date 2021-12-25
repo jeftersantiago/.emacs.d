@@ -13,6 +13,9 @@
 (setq-default truncate-lines t)
 (setq-default fill-column 80)
 
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(setq-default auto-fill-function 'do-auto-fill)
+
 (setq-default cursor-type 'square)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -34,7 +37,7 @@
 (set-frame-parameter (selected-frame) 'alpha '(100 100))
 (add-to-list 'default-frame-alist '(alpha 100 100))
 
-(set-frame-font "Inconsolata-12:antialias=true")
+(set-frame-font "Noto Sans Mono-12:antialias=true")
 
 (use-package default-text-scale
   :ensure t

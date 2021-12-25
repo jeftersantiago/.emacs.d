@@ -31,3 +31,12 @@
 (eval-after-load "tex"
   '(add-to-list 'TeX-command-list
                 '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+
+; arrrghh dealing with super and sub script
+(add-hook 'cdlatex-mode-hook
+          (lambda () (when (eq major-mode 'org-mode)
+                       (make-local-variable 'org-pretty-entities-include-sub-superscripts)
+                       (setq org-pretty-entities-include-sub-superscripts nil))))
+
+(add-hook 'org-mode-hook
+          (lambda () (org-toggle-pretty-entities)))

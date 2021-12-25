@@ -16,6 +16,9 @@
   (setq-default truncate-lines t)
   (setq-default fill-column 80)
 
+  (add-hook 'text-mode-hook 'turn-on-auto-fill)
+  (setq-default auto-fill-function 'do-auto-fill)
+
   (setq-default cursor-type 'square)
   (defalias 'yes-or-no-p 'y-or-n-p)
 
@@ -55,7 +58,7 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
 * Font
   Taken from here:  https://emacs.stackexchange.com/q/45895
    #+begin_src emacs-lisp
-     (set-frame-font "Inconsolata-12:antialias=true")
+     (set-frame-font "Noto Sans Mono-12:antialias=true")
    #+end_src
    #+begin_src emacs-lisp
      (use-package default-text-scale
@@ -81,8 +84,6 @@ Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/17
   ;(global-display-line-numbers-mode)
   ;(setq display-line-numbers-type 'relative)
 #+end_src
-
-
 * Dashboard
     #+begin_src emacs-lisp
     (use-package dashboard

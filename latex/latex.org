@@ -42,3 +42,16 @@
 
   #+end_src
 
+** super & subscript
+#+begin_src emacs-lisp
+                                         ; arrrghh dealing with super and sub script
+  (add-hook 'cdlatex-mode-hook
+            (lambda () (when (eq major-mode 'org-mode)
+                         (make-local-variable 'org-pretty-entities-include-sub-superscripts)
+                         (setq org-pretty-entities-include-sub-superscripts nil))))
+
+  (add-hook 'org-mode-hook
+            (lambda () (org-toggle-pretty-entities)))
+
+   #+end_src
+
