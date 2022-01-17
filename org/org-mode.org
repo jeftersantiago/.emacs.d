@@ -70,7 +70,7 @@
    The joy of programming = https://joy.pm/post/2017-09-17-a_graphviz_primer/nn
 #+begin_src emacs-lisp
 
-  (setq org-image-actual-width 200)
+  (setq org-image-actual-width 300)
     (defun my/fix-inline-images ()
       (when org-inline-image-overlays
         (org-redisplay-inline-images)))
@@ -115,6 +115,12 @@
 ;        (setq pub-dir (concat org-export-output-directory-prefix (substring extension 1)))
 ;        (when (not (file-directory-p pub-dir))
 ;          (make-directory pub-dir))))
+   #+end_src
+** Org to ipynb
+   #+begin_src emacs-lisp
+     (load "~/.emacs.d/external/ox-ipynb.el")
+     (require 'ox-ipynb)
+
    #+end_src
 * Key-bindings in org-mode
 #+begin_src emacs-lisp

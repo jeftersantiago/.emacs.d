@@ -1,12 +1,17 @@
 #+title: Org-babel configurations
 * Loading org-babel
    #+begin_src emacs-lisp
+
      (org-babel-do-load-languages
       'org-babel-load-languages
       '((emacs-lisp . t)
         (python . t)
+        (fortran . t)
+        (C . t)
+        (gnuplot . t)
         ))
      (setq org-confirm-babel-evaluate t)
+
    #+end_src
 * Structure templates
 #+begin_src emacs-lisp

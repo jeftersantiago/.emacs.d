@@ -294,6 +294,7 @@ the header, based upon the associated source code file."
 (autoload 'gnuplot-make-buffer "gnuplot" "open a buffer in gnuplot-mode" t)
 (setq auto-mode-alist (append '(("\\.gp$" . gnuplot-mode)) auto-mode-alist))
 (require 'ob-gnuplot)
+(use-package gnuplot :ensure t)
 
 (use-package auto-complete
   :ensure t

@@ -2,6 +2,9 @@
  'org-babel-load-languages
  '((emacs-lisp . t)
    (python . t)
+   (fortran . t)
+   (C . t)
+   (gnuplot . t)
    ))
 (setq org-confirm-babel-evaluate t)
 

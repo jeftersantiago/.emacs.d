@@ -52,7 +52,7 @@
   (org-archive-subtree))
 (setq org-log-done 'time)
 
-(setq org-image-actual-width 200)
+(setq org-image-actual-width 300)
   (defun my/fix-inline-images ()
     (when org-inline-image-overlays
       (org-redisplay-inline-images)))
@@ -84,6 +84,9 @@
 ;        (setq pub-dir (concat org-export-output-directory-prefix (substring extension 1)))
 ;        (when (not (file-directory-p pub-dir))
 ;          (make-directory pub-dir))))
+
+(load "~/.emacs.d/external/ox-ipynb.el")
+(require 'ox-ipynb)
 
 (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
 (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
