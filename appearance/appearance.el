@@ -26,27 +26,23 @@
   :ensure t)
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-;    (use-package doom-themes
-;       :init (load-theme 'doom-Iosvkem t))
+(use-package spacemacs-theme
+  :defer t
+  :init (load-theme 'spacemacs-dark t))
 
-    (use-package spacemacs-theme
-      :defer t
-      :init (load-theme 'spacemacs-dark t))
-;    (set-background-color "black")
+(set-frame-parameter (selected-frame) 'alpha '(100 100))
+(add-to-list 'default-frame-alist '(alpha 100 100))
 
-(set-frame-parameter (selected-frame) 'alpha '(90 90))
-(add-to-list 'default-frame-alist '(alpha 90 90))
-
-(set-frame-font "Noto Sans Mono-12:antialias=true")
+(set-frame-font "DejaVu Sans Mono-12:antialias=true")
 
 (use-package default-text-scale
-  :ensure t
-  :hook (after-init . default-text-scale-mode))
-(set-language-environment "UTF-8")
-(global-prettify-symbols-mode t)
-(prefer-coding-system 'utf-8)
+       :ensure t
+       :hook (after-init . default-text-scale-mode))
+     (set-language-environment "UTF-8")
+     (global-prettify-symbols-mode t)
+     (prefer-coding-system 'utf-8)
 
-(global-set-key (kbd "C-x C-l") 'font-lock-mode)
+;     (global-set-key (kbd "C-x C-l") 'font-lock-mode)
 
 (use-package all-the-icons :ensure t)
 (use-package doom-modeline
@@ -54,8 +50,9 @@
   :custom ((doom-modeline-height 25))
   :ensure t)
 
-; (global-display-line-numbers-mode)
-; (setq display-line-numbers-type 'relative)
+(setq display-line-numbers-type 'relative)
+;  (global-display-line-numbers-mode)
+  (global-set-key (kbd "C-x C-l") 'global-display-line-numbers-mode)
 
 (use-package dashboard
   :ensure t

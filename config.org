@@ -419,7 +419,6 @@ stuff. I also have a separated repository only for my snippets (i use the
 
       (global-set-key (kbd "C-c d") 'elcord-mode)
 
-
       (setq elcord-use-major-mode-as-main-icon t)
       (setq elcord-display-buffer-detail 'nil)
       (setq elcord-refresh-rate 2)
