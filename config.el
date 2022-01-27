@@ -3,10 +3,10 @@
 
 (defun efs/display-startup-time ()
   (message "Emacs loaded in %s with %d garbage collections."
-	   (format "%.2f seconds"
-		   (float-time
-		    (time-subtract after-init-time before-init-time)))
-	   gcs-done))
+       (format "%.2f seconds"
+           (float-time
+        (time-subtract after-init-time before-init-time)))
+       gcs-done))
 
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
@@ -206,6 +206,8 @@
   (setq lsp-prefer-flymake nil)
   (setq lsp-rust-clippy-preference "on"))
 
+(use-package simple-httpd :ensure t)
+
 (use-package eglot
   :ensure t)
 (add-hook 'LaTeX-mode-hook 'eglot-ensure)
@@ -338,7 +340,6 @@ the header, based upon the associated source code file."
   :config
 
   (global-set-key (kbd "C-c d") 'elcord-mode)
-
 
   (setq elcord-use-major-mode-as-main-icon t)
   (setq elcord-display-buffer-detail 'nil)
