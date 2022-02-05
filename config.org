@@ -75,26 +75,31 @@ stuff. I also have a separated repository only for my snippets (i use the
 * Appearance
 ** System default variables
  #+begin_src emacs-lisp
-    (scroll-bar-mode 0)
-    (tool-bar-mode 0)
-    (menu-bar-mode 0)
-    (fringe-mode 0)
-    (font-lock-mode t)
+   (scroll-bar-mode 0)
+   (tool-bar-mode 0)
+   (menu-bar-mode 0)
+   (fringe-mode 0)
+   (global-font-lock-mode 0)
 
-    (setq initial-scratch-message nil)
-    (setq inhibit-startup-message t)
 
-    (setq-default indent-tabs-mode nil)
-    (setq-default tab-width 4)
-    (setq confirm-kill-processes nil)
-    (setq-default truncate-lines t)
-    (setq-default fill-column 80)
+   (setq initial-scratch-message nil)
+   (setq inhibit-startup-message t)
 
-    (add-hook 'text-mode-hook 'turn-on-auto-fill)
-    (setq-default auto-fill-function 'do-auto-fill)
+   (setq-default indent-tabs-mode nil)
+   (setq-default tab-width 4)
+   (setq confirm-kill-processes nil)
+   (setq-default truncate-lines t)
+   (setq-default fill-column 80)
 
-    (setq-default cursor-type 'square)
-    (defalias 'yes-or-no-p 'y-or-n-p)
+   (add-hook 'text-mode-hook 'turn-on-auto-fill)
+   (setq-default auto-fill-function 'do-auto-fill)
+
+   (setq-default cursor-type 'square)
+   (defalias 'yes-or-no-p 'y-or-n-p)
+
+   (global-hl-line-mode 1)
+
+
   #+end_src
  Emacs window covering entire screen.
  Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/177]]
@@ -113,42 +118,39 @@ stuff. I also have a separated repository only for my snippets (i use the
 *** Theme
    Loading theme and setting modeline background color.
   #+begin_src emacs-lisp
-                                            ;    (use-package spacemacs-theme
-                                            ;      :defer t
-                                            ;      :init (load-theme 'spacemacs-dark t))
     (use-package doom-themes
-      :init (load-theme 'doom-dracula t))
-
+      :ensure t
+      :init (load-theme 'doom-one t))
   #+end_src
 *** Transparency
    Enabling transparency
   #+begin_src emacs-lisp
-    (set-frame-parameter (selected-frame) 'alpha '(95 95))
-    (add-to-list 'default-frame-alist '(alpha 95 95))
+    (set-frame-parameter (selected-frame) 'alpha '(97 97))
+    (add-to-list 'default-frame-alist '(alpha 97 97))
   #+end_src
 ** Font
   Taken from here:  https://emacs.stackexchange.com/q/45895
    #+begin_src emacs-lisp
-     (set-frame-font "DejaVu Sans Mono-12:antialias=true")
+     (set-frame-font "Dejavu Sans Mono-12:antialias=true")
    #+end_src
    #+begin_src emacs-lisp
      (use-package default-text-scale
-       :ensure t
-       :hook (after-init . default-text-scale-mode))
-     (set-language-environment "UTF-8")
-     (global-prettify-symbols-mode t)
-     (prefer-coding-system 'utf-8)
+        :ensure t
+        :hook (after-init . default-text-scale-mode))
+      (set-language-environment "UTF-8")
+      (global-prettify-symbols-mode t)
+      (prefer-coding-system 'utf-8)
 
-;     (global-set-key (kbd "C-x C-l") 'font-lock-mode)
+      (global-set-key (kbd "C-x C-k") 'font-lock-mode)
    #+end_src
 ** Modeline
     Nice and simple.
    #+begin_src emacs-lisp
      (use-package all-the-icons :ensure t)
-     (use-package doom-modeline
-       :init (doom-modeline-mode 1)
-       :custom ((doom-modeline-height 25))
-       :ensure t)
+    (use-package doom-modeline
+      :init (doom-modeline-mode 1)
+      :custom ((doom-modeline-height 25))
+      :ensure t)
    #+end_src
 ** Line number
 #+begin_src emacs-lisp
@@ -206,9 +208,24 @@ stuff. I also have a separated repository only for my snippets (i use the
 * Evil Mode
   Yes, i use vim too.
 #+begin_src emacs-lisp
- (add-to-list 'load-path "~/.emacs.d/evil")
- (require 'evil)
- (evil-mode 1)
+
+;  (add-to-list 'load-path "~/.emacs.d/evil")
+;  (require 'evil)
+
+ (use-package evil
+   :ensure t
+   :init
+   (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
+   (setq evil-want-keybinding nil)
+   :config
+   (evil-mode 1))
+
+; (use-package evil-collection
+;   :after evil
+;   :ensure t
+;   :config
+;   (evil-collection-init))
+
 #+end_src
 * Smartparents
   Creates pairs of parenthesis in a smart way
@@ -266,7 +283,7 @@ stuff. I also have a separated repository only for my snippets (i use the
             ("mov" . "mpv")
             ("mp3" . "mpv")
             ("mp4" . "mpv")
-            ("pdf" . "xreader")
+;            ("pdf" . "xreader")
             ("webm" . "mpv"))))
 #+end_src
 ** Hide dotfiles and extra information (aka ownership and such)
@@ -295,8 +312,6 @@ stuff. I also have a separated repository only for my snippets (i use the
           (when (equal default-directory dir))
           (my-reload-dir-locals-for-current-buffer)))))
 #+end_src
-
-
 * Org-mode
 ** General config
 *** Variables
@@ -314,9 +329,12 @@ stuff. I also have a separated repository only for my snippets (i use the
 
   (setq-default org-image-actual-width 620)
   (setq org-latex-prefer-user-labels t)
-  (setq org-export-with-sub-superscripts nil)
 
 #+end_src 
+*** Font-lock-hook
+    #+begin_src emacs-lisp
+      (add-hook 'org-mode-hook 'font-lock-mode)
+    #+end_src
 *** Org-bullets
 #+begin_src emacs-lisp
   (use-package org-bullets
@@ -332,12 +350,12 @@ stuff. I also have a separated repository only for my snippets (i use the
 #+end_src
 *** Center org buffers
 #+begin_src emacs-lisp
-  (defun efs/org-mode-visual-fill ()
-    (visual-fill-column-mode 1))
+; (defun efs/org-mode-visual-fill ()
+;   (visual-fill-column-mode 1))
 
-  (use-package visual-fill-column
-    :ensure t
-    :hook (org-mode . efs/org-mode-visual-fill))
+; (use-package visual-fill-column
+;   :ensure t
+;   :hook (org-mode . efs/org-mode-visual-fill))
 #+end_src
 ** Tasks management
 #+begin_src emacs-lisp
@@ -402,7 +420,7 @@ stuff. I also have a separated repository only for my snippets (i use the
      (add-hook 'org-mode-hook
                (lambda () (org-toggle-pretty-entities)))
      ;; Opening pdfs
-     (add-to-list 'org-file-apps '("\\.pdf" . "xreader %s"))
+     (add-to-list 'org-file-apps '("\\.pdf" .  "xreader %s"))
 #+end_src
 *** Org publishing folder
    #+begin_src emacs-lisp
@@ -534,7 +552,7 @@ stuff. I also have a separated repository only for my snippets (i use the
     :ensure t
     :custom
     (org-roam-v2-ack t)
-    (org-roam-directory (file-truename "~/Dropbox/notes/"))
+    (org-roam-directory (file-truename "~/Dropbox/roam/"))
     (org-roam-completion-everywhere t)
     (org-roam-capture-templates
      '(("d" "Default notes" plain
@@ -575,6 +593,24 @@ stuff. I also have a separated repository only for my snippets (i use the
     (add-to-list 'load-path "~/.emacs.d/org-roam-ui")
     (load-library "org-roam-ui")
   #+end_src
+* Org-noter
+  #+begin_src emacs-lisp
+        (use-package org-noter
+          :ensure t
+          )
+  #+end_src
+* pdf-tools
+  #+begin_src emacs-lisp
+    (use-package pdf-tools
+      :ensure t
+      :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
+      :magic ("%PDF" . pdf-view-mode)
+      :config
+      (pdf-tools-install))
+   (global-set-key (kbd "C-c i") 'pdf-view-midnight-minor-mode)
+
+  #+end_src
+  
 * LaTeX
 ** setup
    Loads =Auctex= and =lsp= for latex.
@@ -631,6 +667,13 @@ stuff. I also have a separated repository only for my snippets (i use the
             (lambda () (org-toggle-pretty-entities)))
 
    #+end_src
+* Elfeed
+  #+begin_src emacs-lisp
+    (use-package elfeed :ensure t)
+    (use-package elfeed-org :ensure t)
+    (elfeed-org)
+    (setq rmh-elfeed-org-files (list "~/Downloads/elfeed.org"))
+  #+end_src
 * Multi-term 
   #+begin_src emacs-lisp
     (use-package multi-term :ensure t)
@@ -746,55 +789,55 @@ stuff. I also have a separated repository only for my snippets (i use the
               treemacs-user-mode-line-format           nil
               treemacs-user-header-line-format         nil
               treemacs-wide-toggle-width               70
-              treemacs-width                           35
+              treemacs-width                           25
               treemacs-width-increment                 1
               treemacs-width-is-initially-locked       t
               treemacs-workspace-switch-cleanup        nil)
 
-        ;; The default width and height of the icons is 22 pixels. If you are
-        ;; using a Hi-DPI display, uncomment this to double the icon size.
-        ;;(treemacs-resize-icons 44)
+              ;; The default width and height of the icons is 22 pixels. If you are
+              ;; using a Hi-DPI display, uncomment this to double the icon size.
+              ;;(treemacs-resize-icons 44)
 
-        (treemacs-follow-mode t)
-        (treemacs-filewatch-mode t)
-        (treemacs-fringe-indicator-mode 'always)
+              (treemacs-follow-mode t)
+              (treemacs-filewatch-mode t)
+              (treemacs-fringe-indicator-mode 'always)
 
-        (pcase (cons (not (null (executable-find "git")))
-                     (not (null treemacs-python-executable)))
-          (`(t . t)
-           (treemacs-git-mode 'deferred))
-          (`(t . _)
-           (treemacs-git-mode 'simple)))
+              (pcase (cons (not (null (executable-find "git")))
+                           (not (null treemacs-python-executable)))
+                (`(t . t)
+                 (treemacs-git-mode 'deferred))
+                (`(t . _)
+                 (treemacs-git-mode 'simple)))
 
-        (treemacs-hide-gitignored-files-mode nil))
-      :bind
-      (:map global-map
-            ("M-0"       . treemacs-select-window)
-            ("C-x n 1"   . treemacs-delete-other-windows)
-            ("C-x n t"   . treemacs)
-            ("C-x n B"   . treemacs-bookmark)
-            ("C-x n C-t" . treemacs-find-file)
-            ("C-x n M-t" . treemacs-find-tag)))
+              (treemacs-hide-gitignored-files-mode nil))
+        :bind
+        (:map global-map
+              ("M-0"       . treemacs-select-window)
+              ("C-x n 1"   . treemacs-delete-other-windows)
+              ("C-x n t"   . treemacs)
+              ("C-x n B"   . treemacs-bookmark)
+              ("C-x n C-t" . treemacs-find-file)
+              ("C-x n M-t" . treemacs-find-tag)))
 
-    (use-package treemacs-evil
-      :after (treemacs evil)
-      :ensure t)
+                                            ;    (use-package treemacs-evil
+                                            ;      :after (treemacs evil)
+                                            ;      :ensure t)
 
-    (use-package treemacs-projectile
-      :after (treemacs projectile)
-      :ensure t)
+      (use-package treemacs-projectile
+        :after (treemacs projectile)
+        :ensure t)
 
-    (use-package treemacs-icons-dired
-      :hook (dired-mode . treemacs-icons-dired-enable-once)
-      :ensure t)
+      (use-package treemacs-icons-dired
+        :hook (dired-mode . treemacs-icons-dired-enable-once)
+        :ensure t)
 
                                             ;   (use-package treemacs-magit
                                             ;    :ensure t)
 
-    (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
-      :after (treemacs persp-mode) ;;or perspective vs. persp-mode
-      :ensure t
-      :config (treemacs-set-scope-type 'Perspectives))
+      (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
+        :after (treemacs persp-mode) ;;or perspective vs. persp-mode
+        :ensure t
+        :config (treemacs-set-scope-type 'Perspectives))
 
   #+end_src
 * lsp-mode
