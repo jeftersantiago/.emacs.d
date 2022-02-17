@@ -3,10 +3,10 @@
 
 (defun efs/display-startup-time ()
   (message "Emacs loaded in %s with %d garbage collections."
-       (format "%.2f seconds"
-           (float-time
-        (time-subtract after-init-time before-init-time)))
-       gcs-done))
+           (format "%.2f seconds"
+                   (float-time
+                    (time-subtract after-init-time before-init-time)))
+           gcs-done))
 
 (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
@@ -42,7 +42,6 @@
 (fringe-mode 0)
 (global-font-lock-mode 0)
 
-
 (setq initial-scratch-message nil)
 (setq inhibit-startup-message t)
 
@@ -67,25 +66,32 @@
   :ensure t)
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-(use-package doom-themes
-  :ensure t
-  :init (load-theme 'doom-one t))
+;    (use-package spacemacs-theme
+;      :defer t
+;      :init (load-theme 'spacemacs-light t))
+    (use-package doom-themes
+      :ensure t
+      :init (load-theme 'doom-gruvbox t))
 
-(set-frame-parameter (selected-frame) 'alpha '(97 97))
-(add-to-list 'default-frame-alist '(alpha 97 97))
+;     (set-frame-parameter (selected-frame) 'alpha '(97 97))
+;     (add-to-list 'default-frame-alist '(alpha 97 97))
 
-(set-frame-font "Dejavu Sans Mono-12:antialias=true")
+(when (member "Iosevka" (font-family-list))
+  (progn
+    (set-frame-font "Iosevka-12" nil t)))
+
 
 (use-package default-text-scale
-   :ensure t
-   :hook (after-init . default-text-scale-mode))
- (set-language-environment "UTF-8")
- (global-prettify-symbols-mode t)
- (prefer-coding-system 'utf-8)
+  :ensure t
+  :hook (after-init . default-text-scale-mode))
+(set-language-environment "UTF-8")
+(global-prettify-symbols-mode t)
+(prefer-coding-system 'utf-8)
 
- (global-set-key (kbd "C-x C-k") 'font-lock-mode)
+(global-set-key (kbd "C-x C-k") 'font-lock-mode)
 
-(use-package all-the-icons :ensure t)
+(use-package all-the-icons
+  :ensure t)
 (use-package doom-modeline
   :init (doom-modeline-mode 1)
   :custom ((doom-modeline-height 25))
@@ -114,11 +120,10 @@
   (dashboard-setup-startup-hook))
 
 (defun insert-new-line-below ()
-     (interactive)
-     (let ((oldpos (point)))
-       (end-of-line)
-       (newline-and-indent)))
-
+  (interactive)
+  (let ((oldpos (point)))
+    (end-of-line)
+    (newline-and-indent)))
 (global-set-key (kbd "C-o") 'insert-new-line-below)
 
 (setq kill-buffer-query-functions
@@ -132,22 +137,17 @@
       mouse-wheel-progressive-speed nil
       mouse-wheel-follow-mouse 't)
 
-;  (add-to-list 'load-path "~/.emacs.d/evil")
-;  (require 'evil)
+(setq evil-want-keybinding nil)
 
-;(use-package evil
-;  :ensure t
-;  :init
-;  (setq evil-want-integration t) ;; This is optional since it's already set to t by default.
-;  (setq evil-want-keybinding nil)
-;  :config
-;  (evil-mode 1))
+(use-package evil
+  :ensure t)
+(evil-mode 1)
 
-; (use-package evil-collection
-;   :after evil
-;   :ensure t
-;   :config
-;   (evil-collection-init))
+(use-package evil-collection
+  :after evil
+  :ensure t
+  :config
+  (evil-collection-init))
 
 (use-package smartparens
   :ensure t
@@ -156,44 +156,46 @@
   (add-hook 'prog-mode-hook #'smartparens-mode)
   (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
 
-
-
 (use-package ace-window
   :ensure t
   :init
   (progn
-   (global-set-key [remap other-window] 'ace-window)
-   (custom-set-faces
-    '(aw-leading-char-face
-      ((t (:inherit ace-jump-face-foreground :height 2.0)))))))
+    (global-set-key [remap other-window] 'ace-window)
+    (custom-set-faces
+     '(aw-leading-char-face
+       ((t (:inherit ace-jump-face-foreground :height 2.0)))))))
 
-; (use-package dired-sidebar
-;   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
-;   :ensure t
-;   :commands (dired-sidebar-toggle-sidebar)
-;   :init)
+(use-package dired-sidebar
+  :after dired
+  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init)
 
-;  (use-package all-the-icons-dired :ensure t)
-;  (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+(use-package all-the-icons-dired
+  :after dired
+  :ensure t)
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
 (use-package dired-open
-    :ensure t
-    :config
-    (setq dired-open-extensions
-          '(("doc" . "openoffice4")
-            ("docx" . "openoffice4")
-            ("xopp" . "xournalpp")
-            ("gif" . "mirage")
-            ("jpeg" ."mirage")
-            ("jpg" . "mirage")
-            ("png" . "mirage")
-            ("mkv" . "mpv")
-            ("avi" . "mpv")
-            ("mov" . "mpv")
-            ("mp3" . "mpv")
-            ("mp4" . "mpv")
-;            ("pdf" . "xreader")
-            ("webm" . "mpv"))))
+      :after dired
+      :ensure t
+      :config
+      (setq dired-open-extensions
+            '(("doc" . "openoffice4")
+              ("docx" . "openoffice4")
+              ("xopp" . "xournalpp")
+              ("gif" . "mirage")
+              ("jpeg" ."mirage")
+              ("jpg" . "mirage")
+              ("png" . "mirage")
+              ("mkv" . "mpv")
+              ("avi" . "mpv")
+              ("mov" . "mpv")
+              ("mp3" . "mpv")
+              ("mp4" . "mpv")
+;            ("pdf" . "evince")
+              ("webm" . "mpv"))))
 
 (use-package dired-hide-dotfiles
   :ensure t
@@ -245,12 +247,12 @@ current buffer's, reload dir-locals."
  '(("^[[:space:]]*\\(-\\) "
     (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-; (defun efs/org-mode-visual-fill ()
-;   (visual-fill-column-mode 1))
+(defun efs/org-mode-visual-fill ()
+  (visual-fill-column-mode 1))
 
-; (use-package visual-fill-column
-;   :ensure t
-;   :hook (org-mode . efs/org-mode-visual-fill))
+(use-package visual-fill-column
+  :ensure t
+  :hook (org-mode . efs/org-mode-visual-fill))
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
@@ -275,11 +277,11 @@ current buffer's, reload dir-locals."
 (setq org-log-done 'time)
 
 (setq org-image-actual-width 300)
-  (defun my/fix-inline-images ()
-    (when org-inline-image-overlays
-      (org-redisplay-inline-images)))
-  (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
-  (add-hook 'org-mode-hook 'org-toggle-inline-images)
+(defun my/fix-inline-images ()
+  (when org-inline-image-overlays
+    (org-redisplay-inline-images)))
+(add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
+(add-hook 'org-mode-hook 'org-toggle-inline-images)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -296,7 +298,7 @@ current buffer's, reload dir-locals."
 (add-hook 'org-mode-hook
           (lambda () (org-toggle-pretty-entities)))
 ;; Opening pdfs
-(add-to-list 'org-file-apps '("\\.pdf" .  "xreader %s"))
+(add-to-list 'org-file-apps '("\\.pdf" .  "evince %s"))
 
 ;    (defvar org-export-output-directory-prefix "~/Documents" "prefix of directory used for org-mode export")
 
@@ -306,9 +308,6 @@ current buffer's, reload dir-locals."
 ;        (setq pub-dir (concat org-export-output-directory-prefix (substring extension 1)))
 ;        (when (not (file-directory-p pub-dir))
 ;          (make-directory pub-dir))))
-
-(load "~/.emacs.d/external/ox-ipynb.el")
-(require 'ox-ipynb)
 
 (global-set-key (kbd "C-c C-x C-s") 'hrs/mark-done-and-archive)
 (global-set-key (kbd "C-c i") 'org-toggle-inline-images)
@@ -321,7 +320,6 @@ current buffer's, reload dir-locals."
 
                                         ; using dvipng makes it faster, but with less quality
 (setq org-latex-create-formula-image-program  'dvisvgm)
-
 
                                         ; adjusting the size
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
@@ -343,12 +341,12 @@ current buffer's, reload dir-locals."
       '(("frame" "") ("linenos=true")))
 
 ;      (add-hook 'org-mode-hook
-;        (lambda () (texfrag-mode))
+                                        ;        (lambda () (texfrag-mode))
 
-      (add-to-list 'org-latex-packages-alist
-                   '("" "tikz" t))
-      (eval-after-load "preview"
-        '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t))
+(add-to-list 'org-latex-packages-alist
+             '("" "tikz" t))
+(eval-after-load "preview"
+  '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t))
 
 ;    (use-package org-ref
 ;      :disabled t
@@ -361,30 +359,31 @@ current buffer's, reload dir-locals."
 ;      (setq bibtex-completion-library-path "~/bibliography2/pdfs")
 ;      (setq bibtex-completion-notes-path "~/bibliography2/notes"))
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((emacs-lisp . t)
-   (python . t)
-   (fortran . t)
-   (C . t)
-   (gnuplot . t)
-   ))
-(setq org-confirm-babel-evaluate t)
-
-(require 'org-tempo)
-(add-to-list 'org-modules 'org-tempo t)
+(with-eval-after-load 'org
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (python . t)
+     (fortran . t)
+     (C . t)
+     (gnuplot . t)
+     ))
+  (setq org-confirm-babel-evaluate t))
 
 (with-eval-after-load 'org
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("jl" . "src julia"))
-(add-to-list 'org-structure-template-alist '("sh" . "src shell"))
-(add-to-list 'org-structure-template-alist '("py" . "src python")))
+  (require 'org-tempo)
+  (add-to-list 'org-modules 'org-tempo t)
+
+  (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
+  (add-to-list 'org-structure-template-alist '("jl" . "src julia"))
+  (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
+  (add-to-list 'org-structure-template-alist '("py" . "src python")))
 
 (use-package org-roam
   :ensure t
   :custom
   (org-roam-v2-ack t)
-  (org-roam-directory (file-truename "~/Dropbox/roam/"))
+  (org-roam-directory (file-truename "~/Dropbox/notes/"))
   (org-roam-completion-everywhere t)
   (org-roam-capture-templates
    '(("d" "Default notes" plain
@@ -395,45 +394,127 @@ current buffer's, reload dir-locals."
       "#+setupfile:~/Dropbox/Templates/physics.org \n* %?"
       :if-new (file+head "${slug}.org" "#+title: ${title}\n")
       :unnarrowed t)
-   ("m" "Notes on mathematics" plain
-    "#+setupfile:~/Dropbox/Templates/mathematics.org \n* %?"
-    :if-new (file+head "${slug}.org" "#+title: ${title}\n")
-    :unnarrowed t)
-  ("c" "Notes on computing" plain
-   "#+setupfile:~/Dropbox/Templates/computing.org \n* %?"
-   :if-new (file+head "${slug}.org" "#+title: ${title}\n")
-   :unnarrowed t)))
-:bind (("C-c n l" . org-roam-buffer-toggle)
-       ("C-c n f" . org-roam-node-find)
-       ("C-c n g" . org-roam-graph)
-       ("C-c n i" . org-roam-node-insert)
-       ("C-c n c" . org-roam-capture)
-       ;; Dailies
-       ("C-c n j" . org-roam-dailies-capture-today))
-:config
-(org-roam-db-autosync-mode)
-;; If using org-roam-protocol
-(require 'org-roam-protocol))
-
-(setq org-roam-v2-ack t)
+     ("m" "Notes on mathematics" plain
+      "#+setupfile:~/Dropbox/Templates/mathematics.org \n* %?"
+      :if-new (file+head "${slug}.org" "#+title: ${title}\n")
+      :unnarrowed t)
+     ("c" "Notes on computing" plain
+      "#+setupfile:~/Dropbox/Templates/computing.org \n* %?"
+      :if-new (file+head "${slug}.org" "#+title: ${title}\n")
+      :unnarrowed t)))
+  :bind
+  (("C-c n l" . org-roam-buffer-toggle)
+   ("C-c n f" . org-roam-node-find)
+   ("C-c n g" . org-roam-graph)
+   ("C-c n i" . org-roam-node-insert)
+   ("C-c n c" . org-roam-capture)
+   ;; Dailies
+   ("C-c n j" . org-roam-dailies-capture-today))
+  :config
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
 
 (use-package websocket
+  :after org-roam
   :ensure t)
-(use-package simple-httpd :ensure t)
-(add-to-list 'load-path "~/.emacs.d/org-roam-ui")
-(load-library "org-roam-ui")
+
+(use-package org-roam-ui
+  :after org-roam
+  :ensure t)
 
 (use-package org-noter
-  :ensure t
-  )
+      :ensure t
+      )
+(use-package org-noter
+  :config
+  ;; Your org-noter config ........
+  (require 'org-noter-pdftools))
+
+(use-package org-pdftools
+  :hook (org-mode . org-pdftools-setup-link))
+
+(use-package org-noter-pdftools
+  :after org-noter
+  :config
+  ;; Add a function to ensure precise note is inserted
+  (defun org-noter-pdftools-insert-precise-note (&optional toggle-no-questions)
+    (interactive "P")
+    (org-noter--with-valid-session
+     (let ((org-noter-insert-note-no-questions (if toggle-no-questions
+                                                   (not org-noter-insert-note-no-questions)
+                                                 org-noter-insert-note-no-questions))
+           (org-pdftools-use-isearch-link t)
+           (org-pdftools-use-freestyle-annot t))
+       (org-noter-insert-note (org-noter--get-precise-info)))))
+
+  ;; fix https://github.com/weirdNox/org-noter/pull/93/commits/f8349ae7575e599f375de1be6be2d0d5de4e6cbf
+  (defun org-noter-set-start-location (&optional arg)
+    "When opening a session with this document, go to the current location.
+With a prefix ARG, remove start location."
+    (interactive "P")
+    (org-noter--with-valid-session
+     (let ((inhibit-read-only t)
+           (ast (org-noter--parse-root))
+           (location (org-noter--doc-approx-location (when (called-interactively-p 'any) 'interactive))))
+       (with-current-buffer (org-noter--session-notes-buffer session)
+         (org-with-wide-buffer
+          (goto-char (org-element-property :begin ast))
+          (if arg
+              (org-entry-delete nil org-noter-property-note-location)
+            (org-entry-put nil org-noter-property-note-location
+                           (org-noter--pretty-print-location location))))))))
+  (with-eval-after-load 'pdf-annot
+    (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
+
+;    (use-package pdf-tools
+;      :ensure t
+;      :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
+;      :magic ("%PDF" . pdf-view-mode)
+;      :config
+;      (pdf-tools-install))
+    ;(global-set-key (kbd "C-c i") 'pdf-view-midnight-minor-mode)
 
 (use-package pdf-tools
-   :ensure t
-   :mode ("\\.[pP][dD][fF]\\'" . pdf-view-mode)
-   :magic ("%PDF" . pdf-view-mode)
-   :config
-   (pdf-tools-install))
-(global-set-key (kbd "C-c i") 'pdf-view-midnight-minor-mode)
+  :init (pdf-tools-install :no-query)
+  :magic ("%PDF" . pdf-view-mode))
+
+
+(defun pdf-open-evince ()
+  "Opens the PDF with ´xreader´."
+  (interactive)
+  (save-window-excursion
+    (let ((current-file (buffer-file-name))
+          (current-page (number-to-string (pdf-view-current-page))))
+      (async-shell-command
+       (format "xreader -i %s \"%s\"" current-page current-file))))
+  (message "Sent to xreader"))
+
+(defun pdf-open-xournalpp ()
+  "Opens the PDF with ´xreader´."
+  (interactive)
+  (save-window-excursion
+    (let ((current-file (buffer-file-name))
+          (current-page (number-to-string (pdf-view-current-page))))
+      (async-shell-command
+       (format "GTK_THEME=Materia-light-compact: xournalpp \"%s\"" current-page current-file))))
+  (message "Sent to Xournal++"))
+
+(define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+    (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
+
+;    (define-key pdf-view-mode-map (kbd "m") 'pdf-view-midnight-minor-mode)
+
+
+    (define-key pdf-view-mode-map [(return)] 'pdf-open-evince)
+    (define-key pdf-view-mode-map [(shift return)] 'pdf-open-xournalpp)
+
+    (define-key pdf-view-mode-map (kbd "P") 'pdf-view-printer-minor-mode)
+    (define-key pdf-view-mode-map (kbd "M") 'pdf-view-set-slice-using-mouse)
+    (define-key pdf-view-mode-map (kbd "w") 'pdf-view-fit-width-to-window)
+    (define-key pdf-view-mode-map (kbd "f") 'pdf-view-fit-height-to-window)
+
+;    (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
 
 (use-package auctex
   :hook ((latex-mode LaTeX-mode) . lsp)
@@ -469,7 +550,6 @@ current buffer's, reload dir-locals."
   '(add-to-list 'TeX-command-list
                 '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
 
-; arrrghh dealing with super and sub script
 (add-hook 'cdlatex-mode-hook
           (lambda () (when (eq major-mode 'org-mode)
                        (make-local-variable 'org-pretty-entities-include-sub-superscripts)
@@ -477,11 +557,6 @@ current buffer's, reload dir-locals."
 
 (add-hook 'org-mode-hook
           (lambda () (org-toggle-pretty-entities)))
-
-(use-package elfeed :ensure t)
-(use-package elfeed-org :ensure t)
-(elfeed-org)
-(setq rmh-elfeed-org-files (list "~/Downloads/elfeed.org"))
 
 (use-package multi-term :ensure t)
 (setq multi-term-program "/bin/bash")
@@ -503,6 +578,7 @@ current buffer's, reload dir-locals."
 (setq ivy-display-style 'fancy)
 
 (use-package which-key
+  :defer 0
   :ensure t
   :config (which-key-mode))
 
@@ -527,108 +603,10 @@ current buffer's, reload dir-locals."
   (when (file-directory-p "~/Projects/")
     (setq projectile-project-search-path '("~/Projects/"))))
 (setq projectile-switch-projects-action #'projectile-dired)
-
-(use-package treemacs
+(use-package counsel-projectile
+  :after projectile
   :ensure t
-  :defer t
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-  :config
-  (progn
-    (setq treemacs-collapse-dirs                   (if treemacs-python-executable 3 0)
-          treemacs-deferred-git-apply-delay        0.5
-          treemacs-directory-name-transformer      #'identity
-          treemacs-display-in-side-window          t
-          treemacs-eldoc-display                   t
-          treemacs-file-event-delay                5000
-          treemacs-file-extension-regex            treemacs-last-period-regex-value
-          treemacs-file-follow-delay               0.2
-          treemacs-file-name-transformer           #'identity
-          treemacs-follow-after-init               t
-          treemacs-expand-after-init               t
-          treemacs-git-command-pipe                ""
-          treemacs-goto-tag-strategy               'refetch-index
-          treemacs-indentation                     2
-          treemacs-indentation-string              " "
-          treemacs-is-never-other-window           nil
-          treemacs-max-git-entries                 5000
-          treemacs-missing-project-action          'ask
-          treemacs-move-forward-on-expand          nil
-          treemacs-no-png-images                   nil
-          treemacs-no-delete-other-windows         t
-          treemacs-project-follow-cleanup          nil
-          treemacs-persist-file                    (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-          treemacs-position                        'left
-          treemacs-read-string-input               'from-child-frame
-          treemacs-recenter-distance               0.1
-          treemacs-recenter-after-file-follow      nil
-          treemacs-recenter-after-tag-follow       nil
-          treemacs-recenter-after-project-jump     'always
-          treemacs-recenter-after-project-expand   'on-distance
-          treemacs-litter-directories              '("/node_modules" "/.venv" "/.cask")
-          treemacs-show-cursor                     nil
-          treemacs-show-hidden-files               t
-          treemacs-silent-filewatch                nil
-          treemacs-silent-refresh                  nil
-          treemacs-sorting                         'alphabetic-asc
-          treemacs-select-when-already-in-treemacs 'move-back
-          treemacs-space-between-root-nodes        t
-          treemacs-tag-follow-cleanup              t
-          treemacs-tag-follow-delay                1.5
-          treemacs-text-scale                      nil
-          treemacs-user-mode-line-format           nil
-          treemacs-user-header-line-format         nil
-          treemacs-wide-toggle-width               70
-          treemacs-width                           25
-          treemacs-width-increment                 1
-          treemacs-width-is-initially-locked       t
-          treemacs-workspace-switch-cleanup        nil)
-
-          ;; The default width and height of the icons is 22 pixels. If you are
-          ;; using a Hi-DPI display, uncomment this to double the icon size.
-          ;;(treemacs-resize-icons 44)
-
-          (treemacs-follow-mode t)
-          (treemacs-filewatch-mode t)
-          (treemacs-fringe-indicator-mode 'always)
-
-          (pcase (cons (not (null (executable-find "git")))
-                       (not (null treemacs-python-executable)))
-            (`(t . t)
-             (treemacs-git-mode 'deferred))
-            (`(t . _)
-             (treemacs-git-mode 'simple)))
-
-          (treemacs-hide-gitignored-files-mode nil))
-    :bind
-    (:map global-map
-          ("M-0"       . treemacs-select-window)
-          ("C-x n 1"   . treemacs-delete-other-windows)
-          ("C-x n t"   . treemacs)
-          ("C-x n B"   . treemacs-bookmark)
-          ("C-x n C-t" . treemacs-find-file)
-          ("C-x n M-t" . treemacs-find-tag)))
-
-                                        ;    (use-package treemacs-evil
-                                        ;      :after (treemacs evil)
-                                        ;      :ensure t)
-
-  (use-package treemacs-projectile
-    :after (treemacs projectile)
-    :ensure t)
-
-  (use-package treemacs-icons-dired
-    :hook (dired-mode . treemacs-icons-dired-enable-once)
-    :ensure t)
-
-                                        ;   (use-package treemacs-magit
-                                        ;    :ensure t)
-
-  (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
-    :after (treemacs persp-mode) ;;or perspective vs. persp-mode
-    :ensure t
-    :config (treemacs-set-scope-type 'Perspectives))
+  :config (counsel-projectile-mode))
 
 (defun efs/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
@@ -648,11 +626,6 @@ current buffer's, reload dir-locals."
   :ensure t
   :after lsp)
 
-(use-package lsp-treemacs
-  :ensure t
-  :after lsp)
-(global-set-key (kbd "C-x C-n") 'lsp-treemacs-symbols)
-
 (use-package lsp-mode
   :commands lsp
   :hook ((fortran-mode f90-mode sh-mode) . lsp)
@@ -665,7 +638,9 @@ current buffer's, reload dir-locals."
   (setq lsp-prefer-flymake nil)
   (setq lsp-rust-clippy-preference "on"))
 
-(use-package simple-httpd :ensure t)
+(use-package simple-httpd
+  :commands http-server-directory
+  :ensure t)
 
 (use-package eglot
   :ensure t)
@@ -722,14 +697,19 @@ the header, based upon the associated source code file."
   :when (executable-find "astyle"))
 
 (use-package julia-mode :ensure t)
-;; Snail requires vterm
-(use-package vterm
-  :ensure t
-  :config
-  (setq vterm-always-compile-module t))
+    ;; Snail requires vterm
+;    (use-package vterm
+;      :ensure t
+;      :config
+;      (setq vterm-always-compile-module t))
 
-(use-package julia-snail
-  :hook (julia-mode . julia-snail-mode))
+    (use-package vterm
+      :ensure t)
+    ;; Now run `M-x vterm` and make sure it works!
+
+    (use-package julia-snail
+      :ensure t
+      :hook (julia-mode . julia-snail-mode))
 
 (use-package lsp-julia
   :hook (julia-mode . (lambda ()
@@ -804,3 +784,5 @@ the header, based upon the associated source code file."
   (setq elcord-display-buffer-detail 'nil)
   (setq elcord-refresh-rate 2)
   :init)
+
+(setq gc-cons-threshold (* 2 1000 1000))

@@ -1,4 +1,5 @@
 (setq frame-inhibit-implied-resize t)
+
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
@@ -10,7 +11,6 @@
 (unless(package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-
 
 (require 'use-package)
 (setq use-package-always-ensure t)
@@ -24,3 +24,6 @@
 (put 'dired-find-alternate-file 'disabled nil)
 (put 'set-goal-column 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
+
+
+
