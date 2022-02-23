@@ -338,9 +338,9 @@ current buffer's, reload dir-locals."
                           :foreground "#f21782"
                           :box (:line-width 1 :color "#f21782")
                           ))))
- '(org-document-infor ((t(
+ '(org-document-info ((t(
                           :weight bold
-                          :height 1
+                          :height 1.2
                           :foreground "#d36198"
                           ))))
  )

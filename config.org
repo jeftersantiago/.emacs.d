@@ -11,6 +11,7 @@ person that uses =LaTeX=, =orgmode=, =org-roam=, =Julia=, and many other
 stuff. I also have a separated repository only for my snippets (i use the
 =yasnippets= package) , you can find them in [[https://github.com/jefter66/][here]].
 
+
 * Startup performance
   
   Taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org
@@ -398,7 +399,6 @@ stuff. I also have a separated repository only for my snippets (i use the
 ** Custom faces
    Inspired by [[https://protesilaos.com/codelog/2022-01-05-custom-face-org-emphasis-alist/][Protesilaos blog post]].
    #+begin_src emacs-lisp
-
           (setq org-emphasis-alist
                 '(("*" bold)
                   ("/" italic)
@@ -457,9 +457,9 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
                               :foreground "#f21782"
                               :box (:line-width 1 :color "#f21782")
                               ))))
-     '(org-document-infor ((t(
+     '(org-document-info ((t(
                               :weight bold
-                              :height 1
+                              :height 1.2
                               :foreground "#d36198"
                               ))))
      )
