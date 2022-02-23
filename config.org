@@ -12,7 +12,7 @@ stuff. I also have a separated repository only for my snippets (i use the
 =yasnippets= package) , you can find them in [[https://github.com/jefter66/][here]].
 
 * Startup performance
-
+  
   Taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org
 
   #+begin_src emacs-lisp
@@ -29,7 +29,6 @@ stuff. I also have a separated repository only for my snippets (i use the
     (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
   #+end_src
-** 
 * General configurations
 ** Personal configs
 *** Info
@@ -101,7 +100,6 @@ stuff. I also have a separated repository only for my snippets (i use the
    (setq-default cursor-type 'square)
    (defalias 'yes-or-no-p 'y-or-n-p)
 
-   (global-hl-line-mode 1)
   #+end_src
   Emacs window covering entire screen.
   Solution found in: [[https://github.com/d12frosted/homebrew-emacs-plus/issues/177]]
@@ -120,18 +118,15 @@ stuff. I also have a separated repository only for my snippets (i use the
 *** Theme
     Loading theme and setting modeline background color.
     #+begin_src emacs-lisp
-      ;    (use-package spacemacs-theme
-      ;      :defer t
-      ;      :init (load-theme 'spacemacs-light t))
-          (use-package doom-themes
-            :ensure t
-            :init (load-theme 'doom-gruvbox t))
+      (use-package doom-themes
+        :ensure t
+        :init (load-theme 'doom-Iosvkem t))
     #+end_src
 *** Transparency
     Enabling transparency
     #+begin_src emacs-lisp
-;     (set-frame-parameter (selected-frame) 'alpha '(97 97))
-;     (add-to-list 'default-frame-alist '(alpha 97 97))
+     (set-frame-parameter (selected-frame) 'alpha '(99 99))
+     (add-to-list 'default-frame-alist '(alpha 99 99))
     #+end_src
 
 ** Font
@@ -139,9 +134,9 @@ stuff. I also have a separated repository only for my snippets (i use the
    Setting Iosevka font: https://www.reddit.com/r/emacs/comments/96q8r3/configuring_iosevka_ligatures_for_emacs/
    #+begin_src emacs-lisp
 
-     (when (member "Iosevka" (font-family-list))
+     (when (member "Inconsolata" (font-family-list))
        (progn
-         (set-frame-font "Iosevka-12" nil t)))
+         (set-frame-font "Inconsolata-10" nil t)))
 
 
      (use-package default-text-scale
@@ -165,8 +160,11 @@ stuff. I also have a separated repository only for my snippets (i use the
    #+end_src
 ** Line number
    #+begin_src emacs-lisp
+
      (setq display-line-numbers-type 'relative)
+
      (global-set-key (kbd "C-x C-l") 'global-display-line-numbers-mode)
+
    #+end_src
 * Dashboard
    #+begin_src emacs-lisp
@@ -179,7 +177,7 @@ stuff. I also have a separated repository only for my snippets (i use the
          (setq dashboard-banner-logo-title "EMACS")
          (setq dashboard-set-file-icons t)
          (setq dashboard-set-heading-icons t)
-         (setq dashboard-startup-banner "~/.emacs.d/images/emacs-logo.png")
+;         (setq dashboard-startup-banner "~/.emacs.d/images/emacs-logo.png")
          (setq dashboard-items '((recents  . 5)
                                  (projects . 5)
                                  (agenda . 0)
@@ -216,18 +214,17 @@ stuff. I also have a separated repository only for my snippets (i use the
 * Evil Mode
   Yes, i use vim too.
   #+begin_src emacs-lisp
-    (setq evil-want-keybinding nil)
+   (setq evil-want-keybinding nil)
 
-    (use-package evil
-      :ensure t)
-    (evil-mode 1)
+   (use-package evil
+     :ensure t)
+   (evil-mode 1)
 
-    (use-package evil-collection
-      :after evil
-      :ensure t
-      :config
-      (evil-collection-init))
-
+   (use-package evil-collection
+     :after evil
+     :ensure t
+     :config
+     (evil-collection-init))
   #+end_src
 * Smartparents
   Creates pairs of parenthesis in a smart way
@@ -321,24 +318,23 @@ stuff. I also have a separated repository only for my snippets (i use the
 *** Variables
     #+begin_src emacs-lisp
 
-    (setq org-startup-folded t)
-    (setq org-src-tab-acts-natively t)
-    (setq org-src-window-setup 'current-window)
+      (setq org-startup-folded t)
+      (setq org-src-tab-acts-natively t)
+      (setq org-src-window-setup 'current-window)
+      (setq org-src-fontify-natively t)
+      (setq org-hide-emphasis-markers t)
+;      (setq modus-themes-intense-markup t)
 
-    (setq visual-fill-column-width 100 visual-fill-column-center-text t)
+      (setq visual-fill-column-width 100 visual-fill-column-center-text t)
 
-    (setq-default fill-column 79)
-    (setq org-refile-use-outline-path t)
-    (setq org-outline-path-complete-in-steps nil)
+      (setq-default fill-column 79)
+      (setq org-refile-use-outline-path t)
+      (setq org-outline-path-complete-in-steps nil)
 
-    (setq-default org-image-actual-width 620)
-    (setq org-latex-prefer-user-labels t)
+      (setq-default org-image-actual-width 620)
+      (setq org-latex-prefer-user-labels t)
 
     #+end_src 
-*** Font-lock-hook
-    #+begin_src emacs-lisp
-      (add-hook 'org-mode-hook 'font-lock-mode)
-    #+end_src
 *** Org-bullets
     #+begin_src emacs-lisp
       (use-package org-bullets
@@ -352,15 +348,122 @@ stuff. I also have a separated repository only for my snippets (i use the
        '(("^[[:space:]]*\\(-\\) "
           (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
     #+end_src
+*** Fonts
+    From [[https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org]]
+    #+begin_src emacs-lisp
+      (defun efs/org-font-setup ()
+        ;; Replace list hyphen with dot
+        (font-lock-add-keywords 'org-mode
+                                '(("^ *\\([-]\\) "
+                                   (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+        ;; Set faces for heading levels
+        (dolist (face '((org-level-1 . 1.2)
+                        (org-level-2 . 1.1)
+                        (org-level-3 . 1.05)
+                        (org-level-4 . 1.0)
+                        (org-level-5 . 1.1)
+                        (org-level-6 . 1.1)
+                        (org-level-7 . 1.1)
+                        (org-level-8 . 1.1)))
+          (set-face-attribute (car face) nil :font "Inconsolata" :weight 'regular :height (cdr face)))
+
+        ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+        (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+        (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+        (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+        (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+        (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+        (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+        (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+        (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+        (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
+        (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
+        (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch))
+    #+end_src
+*** Font-lock-hook
+    #+begin_src emacs-lisp
+      (add-hook 'org-mode-hook 'font-lock-mode)
+      (add-hook 'org-mode-hook 'hl-line-mode)
+    #+end_src
 *** Center org buffers
     #+begin_src emacs-lisp
-       (defun efs/org-mode-visual-fill ()
+      (defun efs/org-mode-visual-fill ()
          (visual-fill-column-mode 1))
 
-       (use-package visual-fill-column
-         :ensure t
-         :hook (org-mode . efs/org-mode-visual-fill))
+;      (use-package visual-fill-column
+;        :ensure t
+;        :hook (org-mode . efs/org-mode-visual-fill))
     #+end_src
+** Custom faces
+   Inspired by [[https://protesilaos.com/codelog/2022-01-05-custom-face-org-emphasis-alist/][Protesilaos blog post]].
+   #+begin_src emacs-lisp
+
+          (setq org-emphasis-alist
+                '(("*" bold)
+                  ("/" italic)
+                  ("_" underline)
+                  ("=" org-verbatim verbatim)
+                  ("~" org-code verbatim)
+                  ("+" (:strick-through t))))
+
+     (defface custom-bold
+       '((default :inherit bold)
+         (((class color) (min-colors 88) (background light))
+          :foreground "#a60000")
+         (((class color) (min-colors 88) (background dark))
+          :foreground "#f21782"  :weight ultra-bold :box(:line-width 1 :color "#f21782")))
+       "My bold emphasis for Org.")
+
+          (defface custom-italic
+            '((default :inherit italic)
+              (((class color) (min-colors 88) (background light))
+               :foreground "#005e00")
+              (((class color) (min-colors 88) (background dark))
+               :foreground "#f21782"))
+            "Italic emphasis for Org.")
+
+          (defface custom-underline
+            '((default :inherit underline)
+              (((class color) (min-colors 88) (background light))
+               :foreground "#813e00")
+              (((class color) (min-colors 88) (background dark))
+               :foreground  "#d36198" ))
+            "Underline emphasis for Org.")
+
+          (defface custom-strike-through
+            '((((class color) (min-colors 88) (background light))
+               :strike-through "#BABDB6" :foreground "#FF0000")
+              (((class color) (min-colors 88) (background dark))
+               :strike-through "#d36198" :foreground "#ff0023"))
+            "Custom strike-through for Org.")
+
+          (setq org-emphasis-alist
+                '(("*" custom-bold)
+                  ("/" custom-italic)
+                  ("_" custom-underline)
+                  ("=" org-verbatim fixed-pitch)
+                  ("~" org-code fixed-pitch)
+                  ("+" (bold custom-strike-through))))
+   #+end_src
+Changing the org-mode document key words.
+Ref: [[https://orgmode.org/worg/org-tutorials/org-appearance.html]]
+Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
+  #+begin_src emacs-lisp
+    (custom-set-faces
+     '(org-document-title ((t(
+                              :weight ultra-bold 
+                              :height 1.2
+                              :foreground "#f21782"
+                              :box (:line-width 1 :color "#f21782")
+                              ))))
+     '(org-document-infor ((t(
+                              :weight bold
+                              :height 1
+                              :foreground "#d36198"
+                              ))))
+     )
+   #+end_src
 ** Tasks management
   #+begin_src emacs-lisp
 
@@ -737,12 +840,19 @@ With a prefix ARG, remove start location."
      (add-hook 'org-mode-hook
                (lambda () (org-toggle-pretty-entities)))
    #+end_src
-* Multi-term 
+* Vterm
   #+begin_src emacs-lisp
-    (use-package multi-term :ensure t)
-    (setq multi-term-program "/bin/bash")
-    (global-set-key (kbd "C-x t") 'multi-term)
-  #+end_src
+;   (defun set-black-face ()
+;     (set-face-background 'default "#000000"))
+
+
+    (use-package vterm
+      :ensure t
+      :config 
+      (global-set-key (kbd "C-x t") 'vterm))
+    (add-hook 'vterm-mode-hook 'font-lock-mode)
+;   (add-hook 'vterm-mode-hook 'set-black-face)
+  #+end_src  
 * Swiper
   #+begin_src emacs-lisp
     (use-package swiper
@@ -908,13 +1018,7 @@ With a prefix ARG, remove start location."
    #+begin_src emacs-lisp
      (use-package julia-mode :ensure t)
      ;; Snail requires vterm
- ;    (use-package vterm
- ;      :ensure t
- ;      :config
- ;      (setq vterm-always-compile-module t))
 
-     (use-package vterm
-       :ensure t)
      ;; Now run `M-x vterm` and make sure it works!
 
      (use-package julia-snail

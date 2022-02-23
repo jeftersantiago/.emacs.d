@@ -57,8 +57,6 @@
 (setq-default cursor-type 'square)
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-(global-hl-line-mode 1)
-
 (setq frame-resize-pixelwise t)
 
 (use-package rainbow-delimiters
@@ -66,19 +64,16 @@
   :ensure t)
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-;    (use-package spacemacs-theme
-;      :defer t
-;      :init (load-theme 'spacemacs-light t))
-    (use-package doom-themes
-      :ensure t
-      :init (load-theme 'doom-gruvbox t))
+(use-package doom-themes
+  :ensure t
+  :init (load-theme 'doom-Iosvkem t))
 
-;     (set-frame-parameter (selected-frame) 'alpha '(97 97))
-;     (add-to-list 'default-frame-alist '(alpha 97 97))
+(set-frame-parameter (selected-frame) 'alpha '(99 99))
+(add-to-list 'default-frame-alist '(alpha 99 99))
 
-(when (member "Iosevka" (font-family-list))
+(when (member "Inconsolata" (font-family-list))
   (progn
-    (set-frame-font "Iosevka-12" nil t)))
+    (set-frame-font "Inconsolata-10" nil t)))
 
 
 (use-package default-text-scale
@@ -98,26 +93,27 @@
   :ensure t)
 
 (setq display-line-numbers-type 'relative)
+
 (global-set-key (kbd "C-x C-l") 'global-display-line-numbers-mode)
 
 (use-package dashboard
-  :ensure t
-  :init
-  (progn
-    (setq dashboard-show-shortcuts nil)
-    (setq dashboard-center-content nil)
-    (setq dashboard-banner-logo-title "EMACS")
-    (setq dashboard-set-file-icons t)
-    (setq dashboard-set-heading-icons t)
-    (setq dashboard-startup-banner "~/.emacs.d/images/emacs-logo.png")
-    (setq dashboard-items '((recents  . 5)
-                            (projects . 5)
-                            (agenda . 0)
-                            (bookmarks . 0)
-                            (registers . 0)))
-    )
-  :config
-  (dashboard-setup-startup-hook))
+       :ensure t
+       :init
+       (progn
+         (setq dashboard-show-shortcuts nil)
+         (setq dashboard-center-content nil)
+         (setq dashboard-banner-logo-title "EMACS")
+         (setq dashboard-set-file-icons t)
+         (setq dashboard-set-heading-icons t)
+;         (setq dashboard-startup-banner "~/.emacs.d/images/emacs-logo.png")
+         (setq dashboard-items '((recents  . 5)
+                                 (projects . 5)
+                                 (agenda . 0)
+                                 (bookmarks . 0)
+                                 (registers . 0)))
+         )
+       :config
+       (dashboard-setup-startup-hook))
 
 (defun insert-new-line-below ()
   (interactive)
@@ -222,19 +218,20 @@ current buffer's, reload dir-locals."
         (my-reload-dir-locals-for-current-buffer)))))
 
 (setq org-startup-folded t)
-(setq org-src-tab-acts-natively t)
-(setq org-src-window-setup 'current-window)
+      (setq org-src-tab-acts-natively t)
+      (setq org-src-window-setup 'current-window)
+      (setq org-src-fontify-natively t)
+      (setq org-hide-emphasis-markers t)
+;      (setq modus-themes-intense-markup t)
 
-(setq visual-fill-column-width 100 visual-fill-column-center-text t)
+      (setq visual-fill-column-width 100 visual-fill-column-center-text t)
 
-(setq-default fill-column 79)
-(setq org-refile-use-outline-path t)
-(setq org-outline-path-complete-in-steps nil)
+      (setq-default fill-column 79)
+      (setq org-refile-use-outline-path t)
+      (setq org-outline-path-complete-in-steps nil)
 
-(setq-default org-image-actual-width 620)
-(setq org-latex-prefer-user-labels t)
-
-(add-hook 'org-mode-hook 'font-lock-mode)
+      (setq-default org-image-actual-width 620)
+      (setq org-latex-prefer-user-labels t)
 
 (use-package org-bullets
   :hook (org-mode . org-bullets-mode)
@@ -247,12 +244,106 @@ current buffer's, reload dir-locals."
  '(("^[[:space:]]*\\(-\\) "
     (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-(defun efs/org-mode-visual-fill ()
-  (visual-fill-column-mode 1))
+(defun efs/org-font-setup ()
+  ;; Replace list hyphen with dot
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-(use-package visual-fill-column
-  :ensure t
-  :hook (org-mode . efs/org-mode-visual-fill))
+  ;; Set faces for heading levels
+  (dolist (face '((org-level-1 . 1.2)
+                  (org-level-2 . 1.1)
+                  (org-level-3 . 1.05)
+                  (org-level-4 . 1.0)
+                  (org-level-5 . 1.1)
+                  (org-level-6 . 1.1)
+                  (org-level-7 . 1.1)
+                  (org-level-8 . 1.1)))
+    (set-face-attribute (car face) nil :font "Inconsolata" :weight 'regular :height (cdr face)))
+
+  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+  (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+  (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
+  (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
+  (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch))
+
+(add-hook 'org-mode-hook 'font-lock-mode)
+(add-hook 'org-mode-hook 'hl-line-mode)
+
+(defun efs/org-mode-visual-fill ()
+         (visual-fill-column-mode 1))
+
+;      (use-package visual-fill-column
+;        :ensure t
+;        :hook (org-mode . efs/org-mode-visual-fill))
+
+(setq org-emphasis-alist
+           '(("*" bold)
+             ("/" italic)
+             ("_" underline)
+             ("=" org-verbatim verbatim)
+             ("~" org-code verbatim)
+             ("+" (:strick-through t))))
+
+(defface custom-bold
+  '((default :inherit bold)
+    (((class color) (min-colors 88) (background light))
+     :foreground "#a60000")
+    (((class color) (min-colors 88) (background dark))
+     :foreground "#f21782"  :weight ultra-bold :box(:line-width 1 :color "#f21782")))
+  "My bold emphasis for Org.")
+
+     (defface custom-italic
+       '((default :inherit italic)
+         (((class color) (min-colors 88) (background light))
+          :foreground "#005e00")
+         (((class color) (min-colors 88) (background dark))
+          :foreground "#f21782"))
+       "Italic emphasis for Org.")
+
+     (defface custom-underline
+       '((default :inherit underline)
+         (((class color) (min-colors 88) (background light))
+          :foreground "#813e00")
+         (((class color) (min-colors 88) (background dark))
+          :foreground  "#d36198" ))
+       "Underline emphasis for Org.")
+
+     (defface custom-strike-through
+       '((((class color) (min-colors 88) (background light))
+          :strike-through "#BABDB6" :foreground "#FF0000")
+         (((class color) (min-colors 88) (background dark))
+          :strike-through "#d36198" :foreground "#ff0023"))
+       "Custom strike-through for Org.")
+
+     (setq org-emphasis-alist
+           '(("*" custom-bold)
+             ("/" custom-italic)
+             ("_" custom-underline)
+             ("=" org-verbatim fixed-pitch)
+             ("~" org-code fixed-pitch)
+             ("+" (bold custom-strike-through))))
+
+(custom-set-faces
+ '(org-document-title ((t(
+                          :weight ultra-bold 
+                          :height 1.2
+                          :foreground "#f21782"
+                          :box (:line-width 1 :color "#f21782")
+                          ))))
+ '(org-document-infor ((t(
+                          :weight bold
+                          :height 1
+                          :foreground "#d36198"
+                          ))))
+ )
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
@@ -558,9 +649,16 @@ With a prefix ARG, remove start location."
 (add-hook 'org-mode-hook
           (lambda () (org-toggle-pretty-entities)))
 
-(use-package multi-term :ensure t)
-(setq multi-term-program "/bin/bash")
-(global-set-key (kbd "C-x t") 'multi-term)
+;   (defun set-black-face ()
+;     (set-face-background 'default "#000000"))
+
+
+    (use-package vterm
+      :ensure t
+      :config 
+      (global-set-key (kbd "C-x t") 'vterm))
+    (add-hook 'vterm-mode-hook 'font-lock-mode)
+;   (add-hook 'vterm-mode-hook 'set-black-face)
 
 (use-package swiper
   :ensure t
@@ -697,19 +795,13 @@ the header, based upon the associated source code file."
   :when (executable-find "astyle"))
 
 (use-package julia-mode :ensure t)
-    ;; Snail requires vterm
-;    (use-package vterm
-;      :ensure t
-;      :config
-;      (setq vterm-always-compile-module t))
+;; Snail requires vterm
 
-    (use-package vterm
-      :ensure t)
-    ;; Now run `M-x vterm` and make sure it works!
+;; Now run `M-x vterm` and make sure it works!
 
-    (use-package julia-snail
-      :ensure t
-      :hook (julia-mode . julia-snail-mode))
+(use-package julia-snail
+  :ensure t
+  :hook (julia-mode . julia-snail-mode))
 
 (use-package lsp-julia
   :hook (julia-mode . (lambda ()
