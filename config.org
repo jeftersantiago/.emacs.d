@@ -178,7 +178,7 @@ stuff. I also have a separated repository only for my snippets (i use the
          (setq dashboard-banner-logo-title "EMACS")
          (setq dashboard-set-file-icons t)
          (setq dashboard-set-heading-icons t)
-;         (setq dashboard-startup-banner "~/.emacs.d/images/emacs-logo.png")
+         (setq dashboard-startup-banner "~/.emacs.d/images/lula-meme.png")
          (setq dashboard-items '((recents  . 5)
                                  (projects . 5)
                                  (agenda . 0)
