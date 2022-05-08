@@ -117,10 +117,18 @@ stuff. I also have a separated repository only for my snippets (i use the
 *** Theme
     Loading theme and setting modeline background color.
     #+begin_src emacs-lisp
-      (use-package doom-themes
-        :ensure t
-        :init (load-theme 'doom-Iosvkem t))
+                                              ;     (use-package doom-themes
+                                              ;       :ensure t
+                                              ;       :init (load-theme 'doom-Iosvkem t))
+     (use-package spacemacs-theme
+       :defer t
+       :init (load-theme 'spacemacs-light t))
     #+end_src
+#+begin_src emacs-lisp
+; (use-package modus-operandi-theme
+; :ensure t
+; :init (load-theme 'modus-operandi t))
+#+end_src
 *** Transparency
     Enabling transparency
     #+begin_src emacs-lisp
@@ -165,7 +173,7 @@ stuff. I also have a separated repository only for my snippets (i use the
      (global-set-key (kbd "C-x C-l") 'global-display-line-numbers-mode)
 
    #+end_src
-* Dashboard
+** Dashboard
    #+begin_src emacs-lisp
      (use-package dashboard
        :ensure t
@@ -186,7 +194,7 @@ stuff. I also have a separated repository only for my snippets (i use the
        :config
        (dashboard-setup-startup-hook))
    #+end_src
-* Text navigation
+* Buffer/Text navigation
 ** Inserting new line
    Add a new line below the current line
    #+begin_src emacs-lisp
@@ -210,7 +218,7 @@ stuff. I also have a separated repository only for my snippets (i use the
            mouse-wheel-progressive-speed nil
            mouse-wheel-follow-mouse 't)
    #+end_src
-* Evil Mode
+** Evil Mode
 Yes, i use vim too.
 #+begin_src emacs-lisp
    (setq evil-want-keybinding nil)
@@ -225,7 +233,7 @@ Yes, i use vim too.
      :config
      (evil-collection-init))
 #+end_src
-* Smartparents
+** Smartparents
   Creates pairs of parenthesis in a smart way
   #+begin_src emacs-lisp
     (use-package smartparens
@@ -235,7 +243,7 @@ Yes, i use vim too.
       (add-hook 'prog-mode-hook #'smartparens-mode)
       (sp-pair "{" nil :post-handlers '(("||\n[i]" "RET"))))
   #+end_src
-* Ace-window
+** Ace-window
   #+begin_src emacs-lisp
     (use-package ace-window
       :ensure t
@@ -386,12 +394,12 @@ Yes, i use vim too.
     #+end_src
 *** Center org buffers
     #+begin_src emacs-lisp
-;     (defun efs/org-mode-visual-fill ()
-;        (visual-fill-column-mode 2))
+     (defun efs/org-mode-visual-fill ()
+        (visual-fill-column-mode 2))
 
-;     (use-package visual-fill-column
-;       :ensure t
-;       :hook (org-mode . efs/org-mode-visual-fill))
+     (use-package visual-fill-column
+       :ensure t
+       :hook (org-mode . efs/org-mode-visual-fill))
     #+end_src
 ** Custom faces
    Inspired by [[https://protesilaos.com/codelog/2022-01-05-custom-face-org-emphasis-alist/][Protesilaos blog post]].
@@ -463,16 +471,22 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
    #+end_src
 ** Side bar
 #+begin_src emacs-lisp
-   (use-package imenu
-     :ensure t
-     :after org-mode)
-   (use-package imenu-list
-     :ensure t
-     :after org-mode)
+  (use-package imenu
+    :ensure t
+    :after org-mode)
+  (setq org-imenu-depth 3)
+
+  (use-package imenu-list
+    :ensure t
+    :after org-mode)
 
   (setq  imenu-list-position 'left
-         imenu-list-size 45
+         imenu-list-size 55
          imenu-list-focus-after-activation t)
+
+  (global-set-key (kbd "C-l") #'imenu-list-minor-mode)
+  (setq imenu-list-focus-after-activation nil)
+
 
   (add-hook 'after-save-hook 'imenu-list-refresh)
 
@@ -720,7 +734,7 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
 
 
 #+end_src
-* Org-noter
+** Org-noter
 #+begin_src emacs-lisp
   (setq org-noter-set-start-location "~/Dropbox/Papers/")
 #+end_src
@@ -738,8 +752,9 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
     (use-package pdf-tools
       :init (pdf-tools-install :no-query)
       :magic ("%PDF" . pdf-view-mode))
-
-
+  #+end_src
+** Opening pdfs with external softwares
+  #+begin_src emacs-lisp
     (defun pdf-open-evince ()
       "Opens the PDF with ´xreader´."
       (interactive)
@@ -760,6 +775,7 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
            (format "GTK_THEME=Materia-light-compact: xournalpp \"%s\"" current-page current-file))))
       (message "Sent to Xournal++"))
   #+end_src
+** Keybindings
   #+begin_src emacs-lisp
     (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
     (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)

@@ -37,25 +37,25 @@
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 (scroll-bar-mode 0)
-(tool-bar-mode 0)
-(menu-bar-mode 0)
-(fringe-mode 0)
-(global-font-lock-mode 0)
+   (tool-bar-mode 0)
+   (menu-bar-mode 0)
+   (fringe-mode 0)
+;   (global-font-lock-mode 0)
 
-(setq initial-scratch-message nil)
-(setq inhibit-startup-message t)
+   (setq initial-scratch-message nil)
+   (setq inhibit-startup-message t)
 
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq confirm-kill-processes nil)
-(setq-default truncate-lines t)
-(setq-default fill-column 80)
+   (setq-default indent-tabs-mode nil)
+   (setq-default tab-width 4)
+   (setq confirm-kill-processes nil)
+   (setq-default truncate-lines t)
+   (setq-default fill-column 80)
 
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
-(setq-default auto-fill-function 'do-auto-fill)
+   (add-hook 'text-mode-hook 'turn-on-auto-fill)
+   (setq-default auto-fill-function 'do-auto-fill)
 
-(setq-default cursor-type 'square)
-(defalias 'yes-or-no-p 'y-or-n-p)
+   (setq-default cursor-type 'square)
+   (defalias 'yes-or-no-p 'y-or-n-p)
 
 (setq frame-resize-pixelwise t)
 
@@ -64,12 +64,19 @@
   :ensure t)
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-(use-package doom-themes
-  :ensure t
-  :init (load-theme 'doom-Iosvkem t))
+;     (use-package doom-themes
+                                              ;       :ensure t
+                                              ;       :init (load-theme 'doom-Iosvkem t))
+;     (use-package spacemacs-theme
+;       :defer t
+;       :init (load-theme 'spacemacs-light t))
 
-(set-frame-parameter (selected-frame) 'alpha '(99 99))
-(add-to-list 'default-frame-alist '(alpha 99 99))
+(use-package modus-operandi-theme
+:ensure t
+:init (load-theme 'modus-operandi t))
+
+(set-frame-parameter (selected-frame) 'alpha '(98 98))
+(add-to-list 'default-frame-alist '(alpha 98 98))
 
 (when (member "Inconsolata" (font-family-list))
   (progn
@@ -105,7 +112,7 @@
     (setq dashboard-banner-logo-title "EMACS")
     (setq dashboard-set-file-icons t)
     (setq dashboard-set-heading-icons t)
-    (setq dashboard-startup-banner "~/.emacs.d/images/lula-meme.png")
+    (setq dashboard-startup-banner "~/.emacs.d/images/emacs-logo.png")
     (setq dashboard-items '((recents  . 5)
                             (projects . 5)
                             (agenda . 0)
@@ -274,15 +281,15 @@ current buffer's, reload dir-locals."
   (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
   (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch))
 
-(add-hook 'org-mode-hook 'font-lock-mode)
-(add-hook 'org-mode-hook 'hl-line-mode)
+;      (add-hook 'org-mode-hook 'font-lock-mode)
+      (add-hook 'org-mode-hook 'hl-line-mode)
 
 (defun efs/org-mode-visual-fill ()
-         (visual-fill-column-mode 1))
+   (visual-fill-column-mode 2))
 
-;      (use-package visual-fill-column
-;        :ensure t
-;        :hook (org-mode . efs/org-mode-visual-fill))
+(use-package visual-fill-column
+  :ensure t
+  :hook (org-mode . efs/org-mode-visual-fill))
 
 (setq org-emphasis-alist
            '(("*" bold)
@@ -297,7 +304,7 @@ current buffer's, reload dir-locals."
     (((class color) (min-colors 88) (background light))
      :foreground "#a60000")
     (((class color) (min-colors 88) (background dark))
-     :foreground "#f21782"  :weight ultra-bold :box(:line-width 1 :color "#f21782")))
+     :foreground "#f21782"  :weight ultra-bold))
   "My bold emphasis for Org.")
 
      (defface custom-italic
@@ -332,18 +339,37 @@ current buffer's, reload dir-locals."
              ("+" (bold custom-strike-through))))
 
 (custom-set-faces
- '(org-document-title ((t(
-                          :weight ultra-bold 
-                          :height 1.2
-                          :foreground "#f21782"
-                          :box (:line-width 1 :color "#f21782")
-                          ))))
- '(org-document-info ((t(
-                          :weight bold
-                          :height 1.2
-                          :foreground "#d36198"
-                          ))))
- )
+     '(org-document-title ((t(
+                              :weight ultra-bold 
+                              :height 1.2
+                              :foreground "#f21782"
+;                              :box (:line-width 1 :color "#f21782")
+                              ))))
+     '(org-document-info ((t(
+                              :weight bold
+                              :height 1.2
+                              :foreground "#d36198"
+                              ))))
+     )
+
+(use-package imenu
+  :ensure t
+  :after org-mode)
+(setq org-imenu-depth 3)
+
+(use-package imenu-list
+  :ensure t
+  :after org-mode)
+
+(setq  imenu-list-position 'left
+       imenu-list-size 55
+       imenu-list-focus-after-activation t)
+
+(global-set-key (kbd "C-l") #'imenu-list-minor-mode)
+(setq imenu-list-focus-after-activation nil)
+
+
+(add-hook 'after-save-hook 'imenu-list-refresh)
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
@@ -439,16 +465,7 @@ current buffer's, reload dir-locals."
 (eval-after-load "preview"
   '(add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t))
 
-;    (use-package org-ref
-;      :disabled t
-;      :config
-;      (setq reftex-default-bibliography "~/bibliography2/references.bib")
-;      (setq org-ref-default-bibliography "~/bibliography2/references.bib")
-;      (setq org-ref-bibliography-notes "~/bibliography2/notes.org")
-;      (setq org-ref-pdf-directory "~/bibliography2/pdfs")
-;      (setq bibtex-completion-bibliography "~/bibliography2/references.bib")
-;      (setq bibtex-completion-library-path "~/bibliography2/pdfs")
-;      (setq bibtex-completion-notes-path "~/bibliography2/notes"))
+
 
 (with-eval-after-load 'org
   (org-babel-do-load-languages
@@ -492,7 +509,16 @@ current buffer's, reload dir-locals."
      ("c" "Notes on computing" plain
       "#+setupfile:~/Dropbox/Templates/computing.org \n* %?"
       :if-new (file+head "${slug}.org" "#+title: ${title}\n")
-      :unnarrowed t)))
+      :unnarrowed t)
+     ("s" "Paper" plain
+      "#+setupfile:~/Dropbox/Templates/paper.org \n* %?"
+      :if-new (file+head "${slug}.org" "#+title: ${title}\n")
+      )
+     ("r" "bibliography reference" plain "%?"
+      :target
+      (file+head "~/Dropbox/references/${citekey}.org" "#+title: ${title}\n")
+      :unnarrowed t)
+     ))
   :bind
   (("C-c n l" . org-roam-buffer-toggle)
    ("C-c n f" . org-roam-node-find)
@@ -514,49 +540,27 @@ current buffer's, reload dir-locals."
   :after org-roam
   :ensure t)
 
-(use-package org-noter
-      :ensure t
-      )
-(use-package org-noter
-  :config
-  ;; Your org-noter config ........
-  (require 'org-noter-pdftools))
+(use-package helm-bibtex
+  :ensure t)
+(setq bibtex-completion-bibliography
+      '("~/Dropbox/references/ic.bib"
+        "~/Dropbox/references/lab-lib.bib"
+        "~/Dropbox/references/cs.bib"))
 
-(use-package org-pdftools
-  :hook (org-mode . org-pdftools-setup-link))
+(setq bibtex-completion-pdf-field "file")
 
-(use-package org-noter-pdftools
-  :after org-noter
-  :config
-  ;; Add a function to ensure precise note is inserted
-  (defun org-noter-pdftools-insert-precise-note (&optional toggle-no-questions)
-    (interactive "P")
-    (org-noter--with-valid-session
-     (let ((org-noter-insert-note-no-questions (if toggle-no-questions
-                                                   (not org-noter-insert-note-no-questions)
-                                                 org-noter-insert-note-no-questions))
-           (org-pdftools-use-isearch-link t)
-           (org-pdftools-use-freestyle-annot t))
-       (org-noter-insert-note (org-noter--get-precise-info)))))
+(setq bibtex-completion-notes-path "~/Dropbox/notes/")
 
-  ;; fix https://github.com/weirdNox/org-noter/pull/93/commits/f8349ae7575e599f375de1be6be2d0d5de4e6cbf
-  (defun org-noter-set-start-location (&optional arg)
-    "When opening a session with this document, go to the current location.
-With a prefix ARG, remove start location."
-    (interactive "P")
-    (org-noter--with-valid-session
-     (let ((inhibit-read-only t)
-           (ast (org-noter--parse-root))
-           (location (org-noter--doc-approx-location (when (called-interactively-p 'any) 'interactive))))
-       (with-current-buffer (org-noter--session-notes-buffer session)
-         (org-with-wide-buffer
-          (goto-char (org-element-property :begin ast))
-          (if arg
-              (org-entry-delete nil org-noter-property-note-location)
-            (org-entry-put nil org-noter-property-note-location
-                           (org-noter--pretty-print-location location))))))))
-  (with-eval-after-load 'pdf-annot
-    (add-hook 'pdf-annot-activate-handler-functions #'org-noter-pdftools-jump-to-note)))
+(setq bibtex-completion-browser-function
+      (lambda (url _) (start-process "firefox" "*firefox*" "firefox" url)))
+
+(use-package org-roam-bibtex
+:after org-roam
+:load-path "~/.emacs.d/external/org-roam-bibtex/" ; Modify with your own path where you cloned the repository
+:config
+(require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
+
+(setq org-noter-set-start-location "~/Dropbox/Papers/")
 
 ;    (use-package pdf-tools
 ;      :ensure t
@@ -569,7 +573,6 @@ With a prefix ARG, remove start location."
 (use-package pdf-tools
   :init (pdf-tools-install :no-query)
   :magic ("%PDF" . pdf-view-mode))
-
 
 (defun pdf-open-evince ()
   "Opens the PDF with ´xreader´."
@@ -592,44 +595,42 @@ With a prefix ARG, remove start location."
   (message "Sent to Xournal++"))
 
 (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-    (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
+(define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
+                                        ;    (define-key pdf-view-mode-map (kbd "m") 'pdf-view-midnight-minor-mode)
 
-;    (define-key pdf-view-mode-map (kbd "m") 'pdf-view-midnight-minor-mode)
+(define-key pdf-view-mode-map [(return)] 'pdf-open-evince)
+(define-key pdf-view-mode-map [(shift return)] 'pdf-open-xournalpp)
 
+(define-key pdf-view-mode-map (kbd "P") 'pdf-view-printer-minor-mode)
+(define-key pdf-view-mode-map (kbd "M") 'pdf-view-set-slice-using-mouse)
+(define-key pdf-view-mode-map (kbd "w") 'pdf-view-fit-width-to-window)
+(define-key pdf-view-mode-map (kbd "f") 'pdf-view-fit-height-to-window)
 
-    (define-key pdf-view-mode-map [(return)] 'pdf-open-evince)
-    (define-key pdf-view-mode-map [(shift return)] 'pdf-open-xournalpp)
-
-    (define-key pdf-view-mode-map (kbd "P") 'pdf-view-printer-minor-mode)
-    (define-key pdf-view-mode-map (kbd "M") 'pdf-view-set-slice-using-mouse)
-    (define-key pdf-view-mode-map (kbd "w") 'pdf-view-fit-width-to-window)
-    (define-key pdf-view-mode-map (kbd "f") 'pdf-view-fit-height-to-window)
-
-;    (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
+                                        ;    (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
 
 (use-package auctex
-  :hook ((latex-mode LaTeX-mode) . lsp)
-  :ensure t
-  :config
-  (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
-  (texmathp-compile)
-  :init
-  (setq-default TeX-master 'shared)
-  ;; nil is the default; this remains here as a reminder that setting it to
-  ;; true makes emacs hang on every save when enabled.
-  (setq TeX-auto-save nil)
-  (setq TeX-parse-self t))
+       :hook ((latex-mode LaTeX-mode) . lsp)
+       :ensure t
+       :config
+       (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
+       (texmathp-compile)
+       :init
+       (setq-default TeX-master 'shared)
+       ;; nil is the default; this remains here as a reminder that setting it to
+       ;; true makes emacs hang on every save when enabled.
+       (setq TeX-auto-save nil)
+       (setq TeX-parse-self t))
 
-(setq-default TeX-master nil)
-(use-package auctex-latexmk
-  :config
-  (setq auctex-latexmk-inherit-TeX-PDF-mode t)
-  :init
-  (auctex-latexmk-setup))
+     (setq-default TeX-master nil)
+;     (use-package auctex-latexmk
+;       :config
+;       (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+;       :init
+;       (auctex-latexmk-setup))
 
-(add-hook 'LaTeX-mode-hook 'visual-line-mode)
-(add-hook 'LaTeX-mode-hook 'flyspell-mode)
-(add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+     (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+     (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+     (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
 (setq TeX-view-program-selection
       '((output-pdf "PDF Viewer")))
