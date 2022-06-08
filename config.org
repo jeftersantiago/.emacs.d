@@ -82,7 +82,7 @@ stuff. I also have a separated repository only for my snippets (i use the
    (tool-bar-mode 0)
    (menu-bar-mode 0)
    (fringe-mode 0)
-;   (global-font-lock-mode 0)
+   (global-font-lock-mode 0)
 
    (setq initial-scratch-message nil)
    (setq inhibit-startup-message t)
@@ -117,23 +117,19 @@ stuff. I also have a separated repository only for my snippets (i use the
 *** Theme
     Loading theme and setting modeline background color.
     #+begin_src emacs-lisp
-                                              ;     (use-package doom-themes
-                                              ;       :ensure t
-                                              ;       :init (load-theme 'doom-Iosvkem t))
-     (use-package spacemacs-theme
-       :defer t
-       :init (load-theme 'spacemacs-light t))
+    (use-package doom-themes
+      :ensure t
+      :init (load-theme 'doom-dracula t))
+;   (use-package spacemacs-theme
+;     :defer t
+;     :init (load-theme 'spacemacs-dark t))
     #+end_src
-#+begin_src emacs-lisp
-; (use-package modus-operandi-theme
-; :ensure t
-; :init (load-theme 'modus-operandi t))
 #+end_src
 *** Transparency
     Enabling transparency
     #+begin_src emacs-lisp
-     (set-frame-parameter (selected-frame) 'alpha '(98 98))
-     (add-to-list 'default-frame-alist '(alpha 98 98))
+     (set-frame-parameter (selected-frame) 'alpha '(99 99))
+     (add-to-list 'default-frame-alist '(alpha 99 99))
     #+end_src
 
 ** Font
@@ -141,9 +137,9 @@ stuff. I also have a separated repository only for my snippets (i use the
    Setting Iosevka font: https://www.reddit.com/r/emacs/comments/96q8r3/configuring_iosevka_ligatures_for_emacs/
    #+begin_src emacs-lisp
 
-     (when (member "Inconsolata" (font-family-list))
+     (when (member "Iosevka" (font-family-list))
        (progn
-         (set-frame-font "Inconsolata-10" nil t)))
+         (set-frame-font "Iosevka-10" nil t)))
 
 
      (use-package default-text-scale
@@ -389,7 +385,7 @@ Yes, i use vim too.
     #+end_src
 *** Font-lock-hook
     #+begin_src emacs-lisp
-;      (add-hook 'org-mode-hook 'font-lock-mode)
+      (add-hook 'org-mode-hook 'font-lock-mode)
       (add-hook 'org-mode-hook 'hl-line-mode)
     #+end_src
 *** Center org buffers
@@ -488,7 +484,7 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
   (setq imenu-list-focus-after-activation nil)
 
 
-  (add-hook 'after-save-hook 'imenu-list-refresh)
+  ; (add-hook 'after-save-hook 'imenu-list-refresh)
 
 #+end_src
 ** Tasks management
@@ -750,6 +746,7 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
   #+end_src
   #+begin_src emacs-lisp
     (use-package pdf-tools
+      :ensure t
       :init (pdf-tools-install :no-query)
       :magic ("%PDF" . pdf-view-mode))
   #+end_src
@@ -777,17 +774,17 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
   #+end_src
 ** Keybindings
   #+begin_src emacs-lisp
-    (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
-    (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
-                                            ;    (define-key pdf-view-mode-map (kbd "m") 'pdf-view-midnight-minor-mode)
+   (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
+   (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
+                                           ;    (define-key pdf-view-mode-map (kbd "m") 'pdf-view-midnight-minor-mode)
 
-    (define-key pdf-view-mode-map [(return)] 'pdf-open-evince)
-    (define-key pdf-view-mode-map [(shift return)] 'pdf-open-xournalpp)
+   (define-key pdf-view-mode-map [(return)] 'pdf-open-evince)
+   (define-key pdf-view-mode-map [(shift return)] 'pdf-open-xournalpp)
 
-    (define-key pdf-view-mode-map (kbd "P") 'pdf-view-printer-minor-mode)
-    (define-key pdf-view-mode-map (kbd "M") 'pdf-view-set-slice-using-mouse)
-    (define-key pdf-view-mode-map (kbd "w") 'pdf-view-fit-width-to-window)
-    (define-key pdf-view-mode-map (kbd "f") 'pdf-view-fit-height-to-window)
+   (define-key pdf-view-mode-map (kbd "P") 'pdf-view-printer-minor-mode)
+   (define-key pdf-view-mode-map (kbd "M") 'pdf-view-set-slice-using-mouse)
+   (define-key pdf-view-mode-map (kbd "w") 'pdf-view-fit-width-to-window)
+   (define-key pdf-view-mode-map (kbd "f") 'pdf-view-fit-height-to-window)
 
                                             ;    (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
 
@@ -1046,7 +1043,6 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
      (use-package python-mode
        :ensure t
        :hook (python-mode . lsp-deferred))
-
    #+end_src
 ** jedi-server for auto-completetion 
    #+begin_src emacs-lisp

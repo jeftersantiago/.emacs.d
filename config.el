@@ -37,25 +37,25 @@
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 (scroll-bar-mode 0)
-   (tool-bar-mode 0)
-   (menu-bar-mode 0)
-   (fringe-mode 0)
-;   (global-font-lock-mode 0)
+(tool-bar-mode 0)
+(menu-bar-mode 0)
+(fringe-mode 0)
+(global-font-lock-mode 0)
 
-   (setq initial-scratch-message nil)
-   (setq inhibit-startup-message t)
+(setq initial-scratch-message nil)
+(setq inhibit-startup-message t)
 
-   (setq-default indent-tabs-mode nil)
-   (setq-default tab-width 4)
-   (setq confirm-kill-processes nil)
-   (setq-default truncate-lines t)
-   (setq-default fill-column 80)
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq confirm-kill-processes nil)
+(setq-default truncate-lines t)
+(setq-default fill-column 80)
 
-   (add-hook 'text-mode-hook 'turn-on-auto-fill)
-   (setq-default auto-fill-function 'do-auto-fill)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+(setq-default auto-fill-function 'do-auto-fill)
 
-   (setq-default cursor-type 'square)
-   (defalias 'yes-or-no-p 'y-or-n-p)
+(setq-default cursor-type 'square)
+(defalias 'yes-or-no-p 'y-or-n-p)
 
 (setq frame-resize-pixelwise t)
 
@@ -64,23 +64,19 @@
   :ensure t)
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-;     (use-package doom-themes
-                                              ;       :ensure t
-                                              ;       :init (load-theme 'doom-Iosvkem t))
-;     (use-package spacemacs-theme
-;       :defer t
-;       :init (load-theme 'spacemacs-light t))
+(use-package doom-themes
+      :ensure t
+      :init (load-theme 'doom-dracula t))
+;   (use-package spacemacs-theme
+;     :defer t
+;     :init (load-theme 'spacemacs-dark t))
 
-(use-package modus-operandi-theme
-:ensure t
-:init (load-theme 'modus-operandi t))
+(set-frame-parameter (selected-frame) 'alpha '(99 99))
+(add-to-list 'default-frame-alist '(alpha 99 99))
 
-(set-frame-parameter (selected-frame) 'alpha '(98 98))
-(add-to-list 'default-frame-alist '(alpha 98 98))
-
-(when (member "Inconsolata" (font-family-list))
+(when (member "Iosevka" (font-family-list))
   (progn
-    (set-frame-font "Inconsolata-10" nil t)))
+    (set-frame-font "Iosevka-10" nil t)))
 
 
 (use-package default-text-scale
@@ -281,8 +277,8 @@ current buffer's, reload dir-locals."
   (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
   (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch))
 
-;      (add-hook 'org-mode-hook 'font-lock-mode)
-      (add-hook 'org-mode-hook 'hl-line-mode)
+(add-hook 'org-mode-hook 'font-lock-mode)
+(add-hook 'org-mode-hook 'hl-line-mode)
 
 (defun efs/org-mode-visual-fill ()
    (visual-fill-column-mode 2))
@@ -369,7 +365,7 @@ current buffer's, reload dir-locals."
 (setq imenu-list-focus-after-activation nil)
 
 
-(add-hook 'after-save-hook 'imenu-list-refresh)
+; (add-hook 'after-save-hook 'imenu-list-refresh)
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
@@ -571,6 +567,7 @@ current buffer's, reload dir-locals."
     ;(global-set-key (kbd "C-c i") 'pdf-view-midnight-minor-mode)
 
 (use-package pdf-tools
+  :ensure t
   :init (pdf-tools-install :no-query)
   :magic ("%PDF" . pdf-view-mode))
 
@@ -606,7 +603,7 @@ current buffer's, reload dir-locals."
 (define-key pdf-view-mode-map (kbd "w") 'pdf-view-fit-width-to-window)
 (define-key pdf-view-mode-map (kbd "f") 'pdf-view-fit-height-to-window)
 
-                                        ;    (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
+                                         ;    (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
 
 (use-package auctex
        :hook ((latex-mode LaTeX-mode) . lsp)
