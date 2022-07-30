@@ -37,25 +37,25 @@
       `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
 
 (scroll-bar-mode 0)
-(tool-bar-mode 0)
-(menu-bar-mode 0)
-(fringe-mode 0)
-(global-font-lock-mode 0)
+   (tool-bar-mode 0)
+   (menu-bar-mode 0)
+   (fringe-mode 0)
+;   (global-font-lock-mode 0)
 
-(setq initial-scratch-message nil)
-(setq inhibit-startup-message t)
+   (setq initial-scratch-message nil)
+   (setq inhibit-startup-message t)
 
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq confirm-kill-processes nil)
-(setq-default truncate-lines t)
-(setq-default fill-column 80)
+   (setq-default indent-tabs-mode nil)
+   (setq-default tab-width 4)
+   (setq confirm-kill-processes nil)
+   (setq-default truncate-lines t)
+   (setq-default fill-column 80)
 
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
-(setq-default auto-fill-function 'do-auto-fill)
+   (add-hook 'text-mode-hook 'turn-on-auto-fill)
+   (setq-default auto-fill-function 'do-auto-fill)
 
-(setq-default cursor-type 'square)
-(defalias 'yes-or-no-p 'y-or-n-p)
+   (setq-default cursor-type 'square)
+   (defalias 'yes-or-no-p 'y-or-n-p)
 
 (setq frame-resize-pixelwise t)
 
@@ -65,18 +65,39 @@
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 (use-package doom-themes
-      :ensure t
-      :init (load-theme 'doom-dracula t))
-;   (use-package spacemacs-theme
-;     :defer t
-;     :init (load-theme 'spacemacs-dark t))
+     :ensure t
+     :init (load-theme 'doom-dracula t))
+;  (use-package spacemacs-theme
+;    :defer t
+;    :init (load-theme 'spacemacs-dark t))
+
+;; Configure the Modus Themes' appearance
+;     (setq modus-themes-mode-line '(accented borderless)
+;           modus-themes-bold-constructs t
+;           modus-themes-italic-constructs t
+;           modus-themes-fringes 'subtle
+;           modus-themes-tabs-accented t
+;           modus-themes-paren-match '(bold intense)
+;           modus-themes-prompts '(bold intense)
+;           modus-themes-completions 'opinionated
+;           modus-themes-org-blocks 'tinted-background
+;           modus-themes-scale-headings t
+;           modus-themes-region '(bg-only)
+;           modus-themes-headings
+;           '((1 . (rainbow overline background 1.4))
+;             (2 . (rainbow background 1.3))
+;             (3 . (rainbow bold 1.2))
+;             (t . (semilight 1.1))))
+
+;     ;; Load the dark theme by default
+;     (load-theme 'modus-vivendi t)
 
 (set-frame-parameter (selected-frame) 'alpha '(99 99))
 (add-to-list 'default-frame-alist '(alpha 99 99))
 
-(when (member "Iosevka" (font-family-list))
+(when (member "Source Code Pro" (font-family-list))
   (progn
-    (set-frame-font "Iosevka-10" nil t)))
+    (set-frame-font "Source Code Pro-10" nil t)))
 
 
 (use-package default-text-scale
@@ -108,7 +129,7 @@
     (setq dashboard-banner-logo-title "EMACS")
     (setq dashboard-set-file-icons t)
     (setq dashboard-set-heading-icons t)
-    (setq dashboard-startup-banner "~/.emacs.d/images/emacs-logo.png")
+    (setq dashboard-startup-banner "~/.emacs.d/images/luffy.gif")
     (setq dashboard-items '((recents  . 5)
                             (projects . 5)
                             (agenda . 0)
@@ -277,15 +298,15 @@ current buffer's, reload dir-locals."
   (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
   (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch))
 
-(add-hook 'org-mode-hook 'font-lock-mode)
-(add-hook 'org-mode-hook 'hl-line-mode)
+;      (add-hook 'org-mode-hook 'font-lock-mode)
+      (add-hook 'org-mode-hook 'hl-line-mode)
 
-(defun efs/org-mode-visual-fill ()
-   (visual-fill-column-mode 2))
+;    (defun efs/org-mode-visual-fill ()
+;       (visual-fill-column-mode 2))
 
-(use-package visual-fill-column
-  :ensure t
-  :hook (org-mode . efs/org-mode-visual-fill))
+;    (use-package visual-fill-column
+;      :ensure t
+;      :hook (org-mode . efs/org-mode-visual-fill))
 
 (setq org-emphasis-alist
            '(("*" bold)
@@ -396,14 +417,6 @@ current buffer's, reload dir-locals."
 (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
 (add-hook 'org-mode-hook 'org-toggle-inline-images)
 
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)))
-(require 'color)
-(set-face-attribute 'org-block nil :background
-                    (color-darken-name
-                     (face-attribute 'default :background) 3))
-
 (setq org-latex-pdf-process (list
    "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
 
@@ -467,12 +480,18 @@ current buffer's, reload dir-locals."
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((emacs-lisp . t)
-     (python . t)
-     (fortran . t)
-     (C . t)
-     (gnuplot . t)
+     (python .t)
+     (fortran .t)
+     (C .t)
+     (gnuplot .t)
+     (shell .t)
+     (julia .t)
      ))
   (setq org-confirm-babel-evaluate t))
+(require 'color)
+(set-face-attribute 'org-block nil :background
+                    (color-darken-name
+                     (face-attribute 'default :background) 3))
 
 (with-eval-after-load 'org
   (require 'org-tempo)
@@ -655,7 +674,7 @@ current buffer's, reload dir-locals."
       :ensure t
       :config 
       (global-set-key (kbd "C-x t") 'vterm))
-    (add-hook 'vterm-mode-hook 'font-lock-mode)
+;    (add-hook 'vterm-mode-hook 'font-lock-mode)
 ;   (add-hook 'vterm-mode-hook 'set-black-face)
 
 (use-package swiper
