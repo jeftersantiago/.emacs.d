@@ -65,35 +65,14 @@
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 (use-package doom-themes
-     :ensure t
-     :init (load-theme 'doom-dracula t))
-;  (use-package spacemacs-theme
-;    :defer t
-;    :init (load-theme 'spacemacs-dark t))
+  :ensure t
+  :init (load-theme 'doom-Iosvkem t))
+                                        ; (use-package spacemacs-theme
+                                         ;   :defer t
+                                         ;   :init (load-theme 'spacemacs-dark t))
 
-;; Configure the Modus Themes' appearance
-;     (setq modus-themes-mode-line '(accented borderless)
-;           modus-themes-bold-constructs t
-;           modus-themes-italic-constructs t
-;           modus-themes-fringes 'subtle
-;           modus-themes-tabs-accented t
-;           modus-themes-paren-match '(bold intense)
-;           modus-themes-prompts '(bold intense)
-;           modus-themes-completions 'opinionated
-;           modus-themes-org-blocks 'tinted-background
-;           modus-themes-scale-headings t
-;           modus-themes-region '(bg-only)
-;           modus-themes-headings
-;           '((1 . (rainbow overline background 1.4))
-;             (2 . (rainbow background 1.3))
-;             (3 . (rainbow bold 1.2))
-;             (t . (semilight 1.1))))
-
-;     ;; Load the dark theme by default
-;     (load-theme 'modus-vivendi t)
-
-(set-frame-parameter (selected-frame) 'alpha '(99 99))
-(add-to-list 'default-frame-alist '(alpha 99 99))
+;    (set-frame-parameter (selected-frame) 'alpha '(99 99))
+;    (add-to-list 'default-frame-alist '(alpha 99 99))
 
 (when (member "Source Code Pro" (font-family-list))
   (progn
@@ -129,7 +108,7 @@
     (setq dashboard-banner-logo-title "EMACS")
     (setq dashboard-set-file-icons t)
     (setq dashboard-set-heading-icons t)
-    (setq dashboard-startup-banner "~/.emacs.d/images/luffy.gif")
+    (setq dashboard-startup-banner 'logo)
     (setq dashboard-items '((recents  . 5)
                             (projects . 5)
                             (agenda . 0)
@@ -250,7 +229,7 @@ current buffer's, reload dir-locals."
 
       (setq visual-fill-column-width 100 visual-fill-column-center-text t)
 
-      (setq-default fill-column 79)
+      (setq-default fill-column 100)
       (setq org-refile-use-outline-path t)
       (setq org-outline-path-complete-in-steps nil)
 
@@ -258,15 +237,30 @@ current buffer's, reload dir-locals."
       (setq org-latex-prefer-user-labels t)
 
 (use-package org-bullets
-  :hook (org-mode . org-bullets-mode)
+  :hook (org-mode . org-bullets-mode )
   :custom
   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+
 (setq org-ellipsis "ᐯ")
 
 (font-lock-add-keywords
  'org-mode
  '(("^[[:space:]]*\\(-\\) "
     (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+
+(add-hook 'org-mode-hook (lambda ()
+                           "Beautify Org Checkbox Symbol"
+                           (push '("[ ]" .  "☐") prettify-symbols-alist)
+                           (push '("[X]" . "☑" ) prettify-symbols-alist)
+                           (push '("[-]" . "❍" ) prettify-symbols-alist)
+                           (prettify-symbols-mode)))
+
+(use-package org-superstar
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
+  (org-superstar-configure-like-org-bullets))
 
 (defun efs/org-font-setup ()
   ;; Replace list hyphen with dot
@@ -356,18 +350,18 @@ current buffer's, reload dir-locals."
              ("+" (bold custom-strike-through))))
 
 (custom-set-faces
-     '(org-document-title ((t(
-                              :weight ultra-bold 
-                              :height 1.2
-                              :foreground "#f21782"
-;                              :box (:line-width 1 :color "#f21782")
-                              ))))
-     '(org-document-info ((t(
-                              :weight bold
-                              :height 1.2
-                              :foreground "#d36198"
-                              ))))
-     )
+ '(org-document-title ((t(
+                          :weight ultra-bold 
+                          :height 1.8
+                          :foreground "#f21782"
+                          :underline nil 
+                          ))))
+ '(org-document-info ((t(
+                         :weight bold
+                         :height 1.2
+                         :foreground "#d36198"
+                         ))))
+ )
 
 (use-package imenu
   :ensure t
@@ -525,6 +519,10 @@ current buffer's, reload dir-locals."
       "#+setupfile:~/Dropbox/Templates/computing.org \n* %?"
       :if-new (file+head "${slug}.org" "#+title: ${title}\n")
       :unnarrowed t)
+     ("b" "Book entry" plain
+      (file "~/Dropbox/Templates/book.org")
+      :if-new (file+head "${slug}.org" "#+title: ${title}")
+      :unnarrowed t)
      ("s" "Paper" plain
       "#+setupfile:~/Dropbox/Templates/paper.org \n* %?"
       :if-new (file+head "${slug}.org" "#+title: ${title}\n")
@@ -610,6 +608,16 @@ current buffer's, reload dir-locals."
        (format "GTK_THEME=Materia-light-compact: xournalpp \"%s\"" current-page current-file))))
   (message "Sent to Xournal++"))
 
+(defun st ()
+  (interactive)
+  (shell-command (format "st &")))
+
+(add-to-list 'display-buffer-alist
+             (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+
+
+(global-set-key (kbd "C-x t") 'st)
+
 (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
 (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
                                         ;    (define-key pdf-view-mode-map (kbd "m") 'pdf-view-midnight-minor-mode)
@@ -667,15 +675,24 @@ current buffer's, reload dir-locals."
           (lambda () (org-toggle-pretty-entities)))
 
 ;   (defun set-black-face ()
-;     (set-face-background 'default "#000000"))
+                                            ;     (set-face-background 'default "#000000"))
 
 
-    (use-package vterm
-      :ensure t
-      :config 
-      (global-set-key (kbd "C-x t") 'vterm))
-;    (add-hook 'vterm-mode-hook 'font-lock-mode)
-;   (add-hook 'vterm-mode-hook 'set-black-face)
+                                            ;    (use-package vterm
+                                            ;      :ensure t
+                                            ;      :config 
+                                            ;      (global-set-key (kbd "C-x t") 'vterm))
+;    (defun run-st()
+;      "Asks for a command and executes it in inferior shell with current buffer
+;    as input."
+;      (interactive)
+;      (shell-command-on-region
+;       (point-min) (point-max)
+;       (read-shell-command "Shell command on buffer: ")))
+
+;    (global-set-key (kbd "C-x t") ')
+                                            ;    (add-hook 'vterm-mode-hook 'font-lock-mode)
+                                            ;   (add-hook 'vterm-mode-hook 'set-black-face)
 
 (use-package swiper
   :ensure t
