@@ -115,12 +115,12 @@ stuff. I also have a separated repository only for my snippets (i use the
 *** Theme
     Loading theme and setting modeline background color.
     #+begin_src emacs-lisp
-     (use-package doom-themes
-       :ensure t
-       :init (load-theme 'doom-Iosvkem t))
-                                             ; (use-package spacemacs-theme
-                                              ;   :defer t
-                                              ;   :init (load-theme 'spacemacs-dark t))
+      (use-package doom-themes
+        :ensure t
+        :init (load-theme 'doom-Iosvkem t))
+      (use-package gruber-darker-theme
+        :defer t
+        :init (load-theme 'gruber-darker t))
     #+end_src
 *** Transparency
     Enabling transparency
@@ -133,9 +133,9 @@ stuff. I also have a separated repository only for my snippets (i use the
    Setting Iosevka font: https://www.reddit.com/r/emacs/comments/96q8r3/configuring_iosevka_ligatures_for_emacs/
    #+begin_src emacs-lisp
 
-     (when (member "Source Code Pro" (font-family-list))
+     (when (member "Iosevka" (font-family-list))
        (progn
-         (set-frame-font "Source Code Pro-10" nil t)))
+         (set-frame-font "Iosevka-10" nil t)))
 
 
      (use-package default-text-scale
@@ -717,25 +717,25 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
   #+end_src
 ** org-roam-bibtex
 #+begin_src emacs-lisp
-  (use-package helm-bibtex
-    :ensure t)
-  (setq bibtex-completion-bibliography
-        '("~/Dropbox/references/ic.bib"
-          "~/Dropbox/references/lab-lib.bib"
-          "~/Dropbox/references/cs.bib"))
+; (use-package helm-bibtex
+;   :ensure t)
+; (setq bibtex-completion-bibliography
+;       '("~/Dropbox/references/ic.bib"
+;         "~/Dropbox/references/lab-lib.bib"
+;         "~/Dropbox/references/cs.bib"))
 
-  (setq bibtex-completion-pdf-field "file")
+; (setq bibtex-completion-pdf-field "file")
 
-  (setq bibtex-completion-notes-path "~/Dropbox/notes/")
+; (setq bibtex-completion-notes-path "~/Dropbox/notes/")
 
-  (setq bibtex-completion-browser-function
-        (lambda (url _) (start-process "firefox" "*firefox*" "firefox" url)))
+; (setq bibtex-completion-browser-function
+;       (lambda (url _) (start-process "firefox" "*firefox*" "firefox" url)))
 
-  (use-package org-roam-bibtex
-  :after org-roam
-  :load-path "~/.emacs.d/external/org-roam-bibtex/" ; Modify with your own path where you cloned the repository
-  :config
-  (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
+; (use-package org-roam-bibtex
+; :after org-roam
+; :load-path "~/.emacs.d/external/org-roam-bibtex/" ; Modify with your own path where you cloned the repository
+; :config
+; (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
 
 
 #+end_src
@@ -856,6 +856,8 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
 I can't get used to use terminal emulators inside Emacs. This will run my favorite emulator 
 [[https://st.suckless.org/][simple-terminal]].
 #+begin_src emacs-lisp
+  ; When running async shell commands a window pop out, this line removes it
+  ; solution found at: https://stackoverflow.com/questions/13901955/how-to-avoid-pop-up-of-async-shell-command-buffer-in-emacs
   (add-to-list 'display-buffer-alist
                (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
 
@@ -1131,16 +1133,16 @@ Taken from:  https://stackoverflow.com/a/3346308
 ** Elcord
    Showing emacs as discord status.
    #+begin_src emacs-lisp
-    (use-package elcord
-      :ensure t
-      :config
+     (use-package elcord
+       :ensure t
+       :config
 
-      (global-set-key (kbd "C-c d") 'elcord-mode)
+       (global-set-key (kbd "C-c d") 'elcord-mode)
 
-      (setq elcord-use-major-mode-as-main-icon t)
-      (setq elcord-display-buffer-detail 'nil)
-      (setq elcord-refresh-rate 2)
-      :init)
+       (setq elcord-use-major-mode-as-main-icon t)
+       (setq elcord-display-buffer-detail 'nil)
+       (setq elcord-refresh-rate 2)
+       :init)
    #+end_src
 * Runtime performance
   #+begin_src emacs-lisp

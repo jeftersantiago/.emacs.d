@@ -67,16 +67,16 @@
 (use-package doom-themes
   :ensure t
   :init (load-theme 'doom-Iosvkem t))
-                                        ; (use-package spacemacs-theme
-                                         ;   :defer t
-                                         ;   :init (load-theme 'spacemacs-dark t))
+(use-package gruber-darker-theme
+  :defer t
+  :init (load-theme 'gruber-darker t))
 
 ;    (set-frame-parameter (selected-frame) 'alpha '(99 99))
 ;    (add-to-list 'default-frame-alist '(alpha 99 99))
 
-(when (member "Source Code Pro" (font-family-list))
+(when (member "Iosevka" (font-family-list))
   (progn
-    (set-frame-font "Source Code Pro-10" nil t)))
+    (set-frame-font "Iosevka-10" nil t)))
 
 
 (use-package default-text-scale
@@ -553,25 +553,25 @@ current buffer's, reload dir-locals."
   :after org-roam
   :ensure t)
 
-(use-package helm-bibtex
-  :ensure t)
-(setq bibtex-completion-bibliography
-      '("~/Dropbox/references/ic.bib"
-        "~/Dropbox/references/lab-lib.bib"
-        "~/Dropbox/references/cs.bib"))
+; (use-package helm-bibtex
+;   :ensure t)
+; (setq bibtex-completion-bibliography
+;       '("~/Dropbox/references/ic.bib"
+;         "~/Dropbox/references/lab-lib.bib"
+;         "~/Dropbox/references/cs.bib"))
 
-(setq bibtex-completion-pdf-field "file")
+; (setq bibtex-completion-pdf-field "file")
 
-(setq bibtex-completion-notes-path "~/Dropbox/notes/")
+; (setq bibtex-completion-notes-path "~/Dropbox/notes/")
 
-(setq bibtex-completion-browser-function
-      (lambda (url _) (start-process "firefox" "*firefox*" "firefox" url)))
+; (setq bibtex-completion-browser-function
+;       (lambda (url _) (start-process "firefox" "*firefox*" "firefox" url)))
 
-(use-package org-roam-bibtex
-:after org-roam
-:load-path "~/.emacs.d/external/org-roam-bibtex/" ; Modify with your own path where you cloned the repository
-:config
-(require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
+; (use-package org-roam-bibtex
+; :after org-roam
+; :load-path "~/.emacs.d/external/org-roam-bibtex/" ; Modify with your own path where you cloned the repository
+; :config
+; (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
 
 (setq org-noter-set-start-location "~/Dropbox/Papers/")
 
@@ -607,16 +607,6 @@ current buffer's, reload dir-locals."
       (async-shell-command
        (format "GTK_THEME=Materia-light-compact: xournalpp \"%s\"" current-page current-file))))
   (message "Sent to Xournal++"))
-
-(defun st ()
-  (interactive)
-  (shell-command (format "st &")))
-
-(add-to-list 'display-buffer-alist
-             (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
-
-
-(global-set-key (kbd "C-x t") 'st)
 
 (define-key pdf-view-mode-map (kbd "C-s") 'isearch-forward)
 (define-key pdf-view-mode-map (kbd "C-r") 'isearch-backward)
@@ -674,25 +664,26 @@ current buffer's, reload dir-locals."
 (add-hook 'org-mode-hook
           (lambda () (org-toggle-pretty-entities)))
 
+; When running async shell commands a window pop out, this line removes it
+; solution found at: https://stackoverflow.com/questions/13901955/how-to-avoid-pop-up-of-async-shell-command-buffer-in-emacs
+(add-to-list 'display-buffer-alist
+             (cons "\\*Async Shell Command\\*.*" (cons #'display-buffer-no-window nil)))
+
+(defun st ()
+  (interactive)
+  (shell-command (format "st &")))
+(global-set-key (kbd "C-x t") 'st)
+
 ;   (defun set-black-face ()
-                                            ;     (set-face-background 'default "#000000"))
+;     (set-face-background 'default "#000000"))
 
-
-                                            ;    (use-package vterm
-                                            ;      :ensure t
-                                            ;      :config 
-                                            ;      (global-set-key (kbd "C-x t") 'vterm))
-;    (defun run-st()
-;      "Asks for a command and executes it in inferior shell with current buffer
-;    as input."
-;      (interactive)
-;      (shell-command-on-region
-;       (point-min) (point-max)
-;       (read-shell-command "Shell command on buffer: ")))
-
+;    (use-package vterm
+;      :ensure t
+;      :config 
+;      (global-set-key (kbd "C-x t") 'vterm))
 ;    (global-set-key (kbd "C-x t") ')
-                                            ;    (add-hook 'vterm-mode-hook 'font-lock-mode)
-                                            ;   (add-hook 'vterm-mode-hook 'set-black-face)
+;    (add-hook 'vterm-mode-hook 'font-lock-mode)
+;   (add-hook 'vterm-mode-hook 'set-black-face)
 
 (use-package swiper
   :ensure t
