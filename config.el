@@ -40,6 +40,7 @@
    (tool-bar-mode 0)
    (menu-bar-mode 0)
    (fringe-mode 0)
+
 ;   (global-font-lock-mode 0)
 
    (setq initial-scratch-message nil)
@@ -434,17 +435,21 @@ current buffer's, reload dir-locals."
 (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
 (define-key global-map "\C-cc" 'org-capture)
 
-; load the latex fragments automatically
-(use-package org-fragtog :ensure t)
-(add-hook 'org-mode-hook 'org-fragtog-mode)
+;      (setq org-preview-latex-image-directory "~/.local/share/equations/ltximg/")
 
-                                        ; using dvipng makes it faster, but with less quality
-(setq org-latex-create-formula-image-program  'dvisvgm)
+                                              ; load the latex fragments automatically
+      (use-package org-fragtog :ensure t)
+      (add-hook 'org-mode-hook 'org-fragtog-mode)
 
-                                        ; adjusting the size
-(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+      (setq org-preview-latex-default-process 'dvisvgm)
+                                              ; using dvipng makes it faster, but with less quality
+      (setq org-latex-create-formula-image-program  'dvisvgm)
 
-                                        ;     (setq org-latex-caption-above nil)
+
+                                              ; adjusting the size
+      (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
+
+                                              ;     (setq org-latex-caption-above nil)
 
 (use-package cdlatex
   :ensure t)
@@ -589,17 +594,17 @@ current buffer's, reload dir-locals."
   :magic ("%PDF" . pdf-view-mode))
 
 (defun pdf-open-evince ()
-  "Opens the PDF with ´xreader´."
+  "Opens the PDF with ´evince´."
   (interactive)
   (save-window-excursion
     (let ((current-file (buffer-file-name))
           (current-page (number-to-string (pdf-view-current-page))))
       (async-shell-command
-       (format "xreader -i %s \"%s\"" current-page current-file))))
-  (message "Sent to xreader"))
+       (format "evince -i %s \"%s\"" current-page current-file))))
+  (message "Sent to evince"))
 
 (defun pdf-open-xournalpp ()
-  "Opens the PDF with ´xreader´."
+  "Opens the PDF with ´Xournal++´."
   (interactive)
   (save-window-excursion
     (let ((current-file (buffer-file-name))
@@ -650,7 +655,7 @@ current buffer's, reload dir-locals."
       '((output-pdf "PDF Viewer")))
 
 (setq TeX-view-program-list
-      '(("PDF Viewer" "xreader %o")))
+      '(("PDF Viewer" "evince %o")))
 
 (eval-after-load "tex"
   '(add-to-list 'TeX-command-list
