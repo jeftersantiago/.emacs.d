@@ -72,8 +72,8 @@
   :defer t
   :init (load-theme 'gruber-darker t))
 
-;    (set-frame-parameter (selected-frame) 'alpha '(99 99))
-;    (add-to-list 'default-frame-alist '(alpha 99 99))
+(set-frame-parameter (selected-frame) 'alpha '(99 99))
+(add-to-list 'default-frame-alist '(alpha 99 99))
 
 (when (member "Iosevka" (font-family-list))
   (progn
@@ -756,7 +756,7 @@ current buffer's, reload dir-locals."
 
 (use-package lsp-mode
   :commands lsp
-  :hook ((fortran-mode f90-mode sh-mode) . lsp)
+  :hook ((fortran-mode sh-mode) . lsp)
   :config
   (setq lsp-auto-guess-root t)
   (setq lsp-enable-snippet nil)
@@ -765,6 +765,10 @@ current buffer's, reload dir-locals."
   (setq lsp-modeline-diagnostics-enable nil)
   (setq lsp-prefer-flymake nil)
   (setq lsp-rust-clippy-preference "on"))
+
+(which-key-mode)
+(add-hook 'c-mode-hook 'lsp)
+(add-hook 'c++-mode-hook 'lsp)
 
 (use-package simple-httpd
   :commands http-server-directory

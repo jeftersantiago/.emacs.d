@@ -1,4 +1,5 @@
 #+TITLE: Jefter's Emacs configurations
+
 #+AUTHOR: Jefter Santiago
 #+EMAIL: jeftersmares@gmail.com
 #+OPTIONS: toc:nil num:nil 
@@ -125,8 +126,8 @@ Makes the parenthesis shine
 *** Transparency
     Enabling transparency
     #+begin_src emacs-lisp
-;    (set-frame-parameter (selected-frame) 'alpha '(99 99))
-;    (add-to-list 'default-frame-alist '(alpha 99 99))
+      (set-frame-parameter (selected-frame) 'alpha '(99 99))
+      (add-to-list 'default-frame-alist '(alpha 99 99))
     #+end_src
 ** Font
    Taken from here:  https://emacs.stackexchange.com/q/45895
@@ -964,7 +965,7 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
 
     (use-package lsp-mode
       :commands lsp
-      :hook ((fortran-mode f90-mode sh-mode) . lsp)
+      :hook ((fortran-mode sh-mode) . lsp)
       :config
       (setq lsp-auto-guess-root t)
       (setq lsp-enable-snippet nil)
@@ -973,6 +974,14 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
       (setq lsp-modeline-diagnostics-enable nil)
       (setq lsp-prefer-flymake nil)
       (setq lsp-rust-clippy-preference "on"))
+
+    (which-key-mode)
+    (add-hook 'c-mode-hook 'lsp)
+    (add-hook 'c++-mode-hook 'lsp)
+
+
+
+
   #+end_src
 * simple-httpd
   #+begin_src emacs-lisp
