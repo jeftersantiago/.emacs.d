@@ -116,12 +116,15 @@ Makes the parenthesis shine
 *** Theme
     Loading theme and setting modeline background color.
     #+begin_src emacs-lisp
-      (use-package doom-themes
-        :ensure t
-        :init (load-theme 'doom-Iosvkem t))
+
+     (use-package doom-themes
+       :ensure t
+       :init (load-theme 'doom-Iosvkem t))
+
       (use-package gruber-darker-theme
         :defer t
         :init (load-theme 'gruber-darker t))
+
     #+end_src
 *** Transparency
     Enabling transparency
@@ -492,8 +495,8 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
          imenu-list-size 55
          imenu-list-focus-after-activation t)
 
-  (global-set-key (kbd "C-l") #'imenu-list-minor-mode)
-  (setq imenu-list-focus-after-activation nil)
+;  (global-set-key (kbd "C-l") #'imenu-list-minor-mode)
+;  (setq imenu-list-focus-after-activation nil)
 
 
   ; (add-hook 'after-save-hook 'imenu-list-refresh)
@@ -544,9 +547,9 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
 *** Open pdfs in evince 
     Makes UTF-8 symbols appears in buffer i use it for editing Latex
     #+begin_src emacs-lisp
-      (setq org-export-with-sub-superscripts nil)
-      (add-hook 'org-mode-hook
-                (lambda () (org-toggle-pretty-entities)))
+;     (setq org-export-with-sub-superscripts nil)
+;     (add-hook 'org-mode-hook
+;               (lambda () (org-toggle-pretty-entities)))
       ;; Opening pdfs
       (add-to-list 'org-file-apps '("\\.pdf" .  "evince %s"))
     #+end_src
@@ -595,10 +598,10 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
     #+begin_src emacs-lisp
       (use-package cdlatex
         :ensure t)
-      (add-hook 'cdlatex-mode-hook
-                (lambda () (when (eq major-mode 'org-mode)
-                             (make-local-variable 'org-pretty-entities-include-sub-superscripts)
-                             (setq org-pretty-entities-include-sub-superscripts nil))))
+;      (add-hook 'cdlatex-mode-hook
+;                (lambda () (when (eq major-mode 'org-mode)
+;                             (make-local-variable 'org-pretty-entities-include-sub-superscripts)
+;                             (setq org-pretty-entities-include-sub-superscripts nil))))
       (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
     #+end_src
 *** bibtex
@@ -847,13 +850,13 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
 ** super & subscript
    arrrghh dealing with super and sub script
    #+begin_src emacs-lisp
-     (add-hook 'cdlatex-mode-hook
-               (lambda () (when (eq major-mode 'org-mode)
-                            (make-local-variable 'org-pretty-entities-include-sub-superscripts)
-                            (setq org-pretty-entities-include-sub-superscripts nil))))
+;    (add-hook 'cdlatex-mode-hook
+;              (lambda () (when (eq major-mode 'org-mode)
+;                           (make-local-variable 'org-pretty-entities-include-sub-superscripts)
+;                           (setq org-pretty-entities-include-sub-superscripts nil))))
 
-     (add-hook 'org-mode-hook
-               (lambda () (org-toggle-pretty-entities)))
+;    (add-hook 'org-mode-hook
+;              (lambda () (org-toggle-pretty-entities)))
    #+end_src
 * St
 I can't get used to use terminal emulators inside Emacs. This will run my favorite emulator 
@@ -975,13 +978,9 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
       (setq lsp-prefer-flymake nil)
       (setq lsp-rust-clippy-preference "on"))
 
-    (which-key-mode)
-    (add-hook 'c-mode-hook 'lsp)
-    (add-hook 'c++-mode-hook 'lsp)
-
-
-
-
+;;  (which-key-mode)
+;;  (add-hook 'c-mode-hook 'lsp)
+;;  (add-hook 'c++-mode-hook 'lsp)
   #+end_src
 * simple-httpd
   #+begin_src emacs-lisp
@@ -996,60 +995,23 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
     (add-hook 'LaTeX-mode-hook 'eglot-ensure)
   #+end_src
 * C/C++
-Taken from:  https://stackoverflow.com/a/3346308
-  #+begin_src emacs-lisp
-    ;; function decides whether .h file is C or C++ header, sets C++ by
-    ;; default because there's more chance of there being a .h without a
-    ;; .cc than a .h without a .c (ie. for C++ template files)
-    (defun ejb/c-c++-header ()
-      "Sets either c-mode or c++-mode, whichever is appropriate for
-    the header, based upon the associated source code file."
-      (interactive)
-      (let ((c-filename (concat (substring (buffer-file-name) 0 -1) "c")))
-        (if (file-exists-p c-filename)
-            (c-mode)
-          (c++-mode))))
-    (add-to-list 'auto-mode-alist '("\\.h\\'" . ejb/c-c++-header))
+#+begin_src emacs-lisp
+  (which-key-mode)
+  (add-hook 'c-mode-hook 'lsp)
+  (add-hook 'c++-mode-hook 'lsp)
 
-    (defun ejb/c-c++-toggle ()
-      "Toggles a buffer between c-mode and c++-mode."
-      (interactive)
-      (cond ((string= major-mode "c-mode")
-             (c++-mode))
-            ((string= major-mode "c++-mode")
-             (c-mode))))
-  #+end_src
-  #+begin_src emacs-lisp
-    (setq c-basic-offset 4)
-    (setq c-default-style
-          '((java-mode . "java")
-            (awk-mode . "awk")
-            (other . "k&r")))
-    (setq c-doc-comment-style
-          '((c-mode . javadoc)
-            (java-mode . javadoc)
-            (pike-mode . autodoc)))
+  (setq gc-cons-threshold (* 100 1024 1024)
+        read-process-output-max (* 1024 1024)
+        treemacs-space-between-root-nodes nil
+        company-idle-delay 0.0
+        company-minimum-prefix-length 1
+        lsp-idle-delay 0.1)  ;; clangd is fast
 
-    (defconst my-cc-style
-      '("cc-mode"
-        (c-offsets-alist . ((innamespace . [0])))))
-
-    (c-add-style "my-cc-mode" my-cc-style)
-  #+end_src
-  #+begin_src emacs-lisp
-    (use-package ccls
-      :ensure t
-      :after lsp-mode
-      :hook ((c-mode c++-mode) . lsp))
-
-    (use-package clang-format
-      :ensure t
-      :bind (("C-M-<tab>" . clang-format-region)))
-
-    (use-package astyle
-      :ensure t
-      :when (executable-find "astyle"))
-  #+end_src
+  (with-eval-after-load 'lsp-mode
+    (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+;   (require 'dap-cpptools)
+    (yas-global-mode))
+#+end_src
 * Julia
 ** julia mode
    #+begin_src emacs-lisp
@@ -1064,12 +1026,12 @@ Taken from:  https://stackoverflow.com/a/3346308
    #+end_src 
 ** lsp-julia
    #+begin_src emacs-lisp
-  (use-package lsp-julia
-    :hook (julia-mode . (lambda ()
-                          (require 'lsp-julia)
-                          (lsp)))
-    :config
-    (setq lsp-julia-default-environment "~/.julia/environments/v1.6"))
+; (use-package lsp-julia
+;   :hook (julia-mode . (lambda ()
+;                         (require 'lsp-julia)
+;                         (lsp)))
+;   :config
+;   (setq lsp-julia-default-environment "~/.julia/environments/v1.6"))
    #+end_src
 * Python
 ** lsp-jedi
@@ -1111,34 +1073,34 @@ Taken from:  https://stackoverflow.com/a/3346308
 * Company
   Taken from [[https://cestlaz.github.io/posts/using-emacs-45-company/]]
   #+begin_src emacs-lisp
-    (use-package company
-      :ensure t
-      :config
-      (setq company-idle-delay 0)
-      (setq company-minimum-prefix-length 2)
-      :init (global-company-mode t))
+        (use-package company
+          :ensure t
+          :config
+          (setq company-idle-delay 0)
+          (setq company-minimum-prefix-length 2)
+          :init (global-company-mode t))
 
-   (use-package company-box
-     :ensure t
-     :hook (global-company-mode . company-box))
+       (use-package company-box
+         :ensure t
+         :hook (global-company-mode . company-box))
 
 
-    (use-package company-irony
-      :ensure t
-      :config
-      (add-to-list 'company-backends 'company-irony))
+        (use-package company-irony
+          :ensure t
+          :config
+          (add-to-list 'company-backends 'company-irony))
 
-    (use-package irony
-      :ensure t
-      :config
-      (add-hook 'c++-mode-hook 'irony-mode)
-      (add-hook 'c-mode-hook 'irony-mode)
-      (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options))
+        (use-package irony
+          :ensure t
+          :config
+          (add-hook 'c++-mode-hook 'irony-mode)
+          (add-hook 'c-mode-hook 'irony-mode))
+    ;      (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options))
 
-    (use-package irony-eldoc
-      :ensure t
-      :config
-      (add-hook 'irony-mode-hook #'irony-eldoc))
+        (use-package irony-eldoc
+          :ensure t
+          :config
+          (add-hook 'irony-mode-hook #'irony-eldoc))
   #+end_src
 * External
 ** Elcord

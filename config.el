@@ -68,9 +68,10 @@
 (use-package doom-themes
   :ensure t
   :init (load-theme 'doom-Iosvkem t))
-(use-package gruber-darker-theme
-  :defer t
-  :init (load-theme 'gruber-darker t))
+
+ (use-package gruber-darker-theme
+   :defer t
+   :init (load-theme 'gruber-darker t))
 
 (set-frame-parameter (selected-frame) 'alpha '(99 99))
 (add-to-list 'default-frame-alist '(alpha 99 99))
@@ -365,23 +366,23 @@ current buffer's, reload dir-locals."
  )
 
 (use-package imenu
-  :ensure t
-  :after org-mode)
-(setq org-imenu-depth 3)
+    :ensure t
+    :after org-mode)
+  (setq org-imenu-depth 3)
 
-(use-package imenu-list
-  :ensure t
-  :after org-mode)
+  (use-package imenu-list
+    :ensure t
+    :after org-mode)
 
-(setq  imenu-list-position 'left
-       imenu-list-size 55
-       imenu-list-focus-after-activation t)
+  (setq  imenu-list-position 'left
+         imenu-list-size 55
+         imenu-list-focus-after-activation t)
 
-(global-set-key (kbd "C-l") #'imenu-list-minor-mode)
-(setq imenu-list-focus-after-activation nil)
+;  (global-set-key (kbd "C-l") #'imenu-list-minor-mode)
+;  (setq imenu-list-focus-after-activation nil)
 
 
-; (add-hook 'after-save-hook 'imenu-list-refresh)
+  ; (add-hook 'after-save-hook 'imenu-list-refresh)
 
 (add-hook 'org-mode-hook 'auto-fill-mode)
 (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)" "DROP(x!)"))
@@ -415,11 +416,11 @@ current buffer's, reload dir-locals."
 (setq org-latex-pdf-process (list
    "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
 
-(setq org-export-with-sub-superscripts nil)
-(add-hook 'org-mode-hook
-          (lambda () (org-toggle-pretty-entities)))
-;; Opening pdfs
-(add-to-list 'org-file-apps '("\\.pdf" .  "evince %s"))
+;     (setq org-export-with-sub-superscripts nil)
+;     (add-hook 'org-mode-hook
+;               (lambda () (org-toggle-pretty-entities)))
+      ;; Opening pdfs
+      (add-to-list 'org-file-apps '("\\.pdf" .  "evince %s"))
 
 ;    (defvar org-export-output-directory-prefix "~/Documents" "prefix of directory used for org-mode export")
 
@@ -452,12 +453,12 @@ current buffer's, reload dir-locals."
                                               ;     (setq org-latex-caption-above nil)
 
 (use-package cdlatex
-  :ensure t)
-(add-hook 'cdlatex-mode-hook
-          (lambda () (when (eq major-mode 'org-mode)
-                       (make-local-variable 'org-pretty-entities-include-sub-superscripts)
-                       (setq org-pretty-entities-include-sub-superscripts nil))))
-(add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
+        :ensure t)
+;      (add-hook 'cdlatex-mode-hook
+;                (lambda () (when (eq major-mode 'org-mode)
+;                             (make-local-variable 'org-pretty-entities-include-sub-superscripts)
+;                             (setq org-pretty-entities-include-sub-superscripts nil))))
+      (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
 
 (setq org-latex-to-pdf-process (list "latexmk -pvc -pdf %f"))
 
@@ -661,13 +662,13 @@ current buffer's, reload dir-locals."
   '(add-to-list 'TeX-command-list
                 '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
 
-(add-hook 'cdlatex-mode-hook
-          (lambda () (when (eq major-mode 'org-mode)
-                       (make-local-variable 'org-pretty-entities-include-sub-superscripts)
-                       (setq org-pretty-entities-include-sub-superscripts nil))))
+;    (add-hook 'cdlatex-mode-hook
+;              (lambda () (when (eq major-mode 'org-mode)
+;                           (make-local-variable 'org-pretty-entities-include-sub-superscripts)
+;                           (setq org-pretty-entities-include-sub-superscripts nil))))
 
-(add-hook 'org-mode-hook
-          (lambda () (org-toggle-pretty-entities)))
+;    (add-hook 'org-mode-hook
+;              (lambda () (org-toggle-pretty-entities)))
 
 ; When running async shell commands a window pop out, this line removes it
 ; solution found at: https://stackoverflow.com/questions/13901955/how-to-avoid-pop-up-of-async-shell-command-buffer-in-emacs
@@ -737,38 +738,38 @@ current buffer's, reload dir-locals."
   :config (counsel-projectile-mode))
 
 (defun efs/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
+      (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+      (lsp-headerline-breadcrumb-mode))
 
-(use-package lsp-mode
-  :ensure t
-  :commands (lsp lsp-deferred)
-  :hook (lsp-mode . efs/lsp-mode-setup)
-  :init
-  (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  :config
-  (lsp-enable-which-key-integration t))
+    (use-package lsp-mode
+      :ensure t
+      :commands (lsp lsp-deferred)
+      :hook (lsp-mode . efs/lsp-mode-setup)
+      :init
+      (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+      :config
+      (lsp-enable-which-key-integration t))
 
 
-(use-package lsp-ivy
-  :ensure t
-  :after lsp)
+    (use-package lsp-ivy
+      :ensure t
+      :after lsp)
 
-(use-package lsp-mode
-  :commands lsp
-  :hook ((fortran-mode sh-mode) . lsp)
-  :config
-  (setq lsp-auto-guess-root t)
-  (setq lsp-enable-snippet nil)
-  (setq lsp-file-watch-threshold 500000)
-  (setq lsp-headerline-breadcrumb-enable nil)
-  (setq lsp-modeline-diagnostics-enable nil)
-  (setq lsp-prefer-flymake nil)
-  (setq lsp-rust-clippy-preference "on"))
+    (use-package lsp-mode
+      :commands lsp
+      :hook ((fortran-mode sh-mode) . lsp)
+      :config
+      (setq lsp-auto-guess-root t)
+      (setq lsp-enable-snippet nil)
+      (setq lsp-file-watch-threshold 500000)
+      (setq lsp-headerline-breadcrumb-enable nil)
+      (setq lsp-modeline-diagnostics-enable nil)
+      (setq lsp-prefer-flymake nil)
+      (setq lsp-rust-clippy-preference "on"))
 
-(which-key-mode)
-(add-hook 'c-mode-hook 'lsp)
-(add-hook 'c++-mode-hook 'lsp)
+;;  (which-key-mode)
+;;  (add-hook 'c-mode-hook 'lsp)
+;;  (add-hook 'c++-mode-hook 'lsp)
 
 (use-package simple-httpd
   :commands http-server-directory
@@ -778,55 +779,21 @@ current buffer's, reload dir-locals."
   :ensure t)
 (add-hook 'LaTeX-mode-hook 'eglot-ensure)
 
-;; function decides whether .h file is C or C++ header, sets C++ by
-;; default because there's more chance of there being a .h without a
-;; .cc than a .h without a .c (ie. for C++ template files)
-(defun ejb/c-c++-header ()
-  "Sets either c-mode or c++-mode, whichever is appropriate for
-the header, based upon the associated source code file."
-  (interactive)
-  (let ((c-filename (concat (substring (buffer-file-name) 0 -1) "c")))
-    (if (file-exists-p c-filename)
-        (c-mode)
-      (c++-mode))))
-(add-to-list 'auto-mode-alist '("\\.h\\'" . ejb/c-c++-header))
+(which-key-mode)
+  (add-hook 'c-mode-hook 'lsp)
+  (add-hook 'c++-mode-hook 'lsp)
 
-(defun ejb/c-c++-toggle ()
-  "Toggles a buffer between c-mode and c++-mode."
-  (interactive)
-  (cond ((string= major-mode "c-mode")
-         (c++-mode))
-        ((string= major-mode "c++-mode")
-         (c-mode))))
+  (setq gc-cons-threshold (* 100 1024 1024)
+        read-process-output-max (* 1024 1024)
+        treemacs-space-between-root-nodes nil
+        company-idle-delay 0.0
+        company-minimum-prefix-length 1
+        lsp-idle-delay 0.1)  ;; clangd is fast
 
-(setq c-basic-offset 4)
-(setq c-default-style
-      '((java-mode . "java")
-        (awk-mode . "awk")
-        (other . "k&r")))
-(setq c-doc-comment-style
-      '((c-mode . javadoc)
-        (java-mode . javadoc)
-        (pike-mode . autodoc)))
-
-(defconst my-cc-style
-  '("cc-mode"
-    (c-offsets-alist . ((innamespace . [0])))))
-
-(c-add-style "my-cc-mode" my-cc-style)
-
-(use-package ccls
-  :ensure t
-  :after lsp-mode
-  :hook ((c-mode c++-mode) . lsp))
-
-(use-package clang-format
-  :ensure t
-  :bind (("C-M-<tab>" . clang-format-region)))
-
-(use-package astyle
-  :ensure t
-  :when (executable-find "astyle"))
+  (with-eval-after-load 'lsp-mode
+    (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration)
+;   (require 'dap-cpptools)
+    (yas-global-mode))
 
 (use-package julia-mode :ensure t)
 ;; Snail requires vterm
@@ -837,12 +804,12 @@ the header, based upon the associated source code file."
   :ensure t
   :hook (julia-mode . julia-snail-mode))
 
-(use-package lsp-julia
-  :hook (julia-mode . (lambda ()
-                        (require 'lsp-julia)
-                        (lsp)))
-  :config
-  (setq lsp-julia-default-environment "~/.julia/environments/v1.6"))
+; (use-package lsp-julia
+;   :hook (julia-mode . (lambda ()
+;                         (require 'lsp-julia)
+;                         (lsp)))
+;   :config
+;   (setq lsp-julia-default-environment "~/.julia/environments/v1.6"))
 
 (use-package python-mode
   :ensure t
@@ -872,33 +839,33 @@ the header, based upon the associated source code file."
     ))
 
 (use-package company
-   :ensure t
-   :config
-   (setq company-idle-delay 0)
-   (setq company-minimum-prefix-length 2)
-   :init (global-company-mode t))
+      :ensure t
+      :config
+      (setq company-idle-delay 0)
+      (setq company-minimum-prefix-length 2)
+      :init (global-company-mode t))
 
-(use-package company-box
-  :ensure t
-  :hook (global-company-mode . company-box))
+   (use-package company-box
+     :ensure t
+     :hook (global-company-mode . company-box))
 
 
- (use-package company-irony
-   :ensure t
-   :config
-   (add-to-list 'company-backends 'company-irony))
+    (use-package company-irony
+      :ensure t
+      :config
+      (add-to-list 'company-backends 'company-irony))
 
- (use-package irony
-   :ensure t
-   :config
-   (add-hook 'c++-mode-hook 'irony-mode)
-   (add-hook 'c-mode-hook 'irony-mode)
-   (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options))
+    (use-package irony
+      :ensure t
+      :config
+      (add-hook 'c++-mode-hook 'irony-mode)
+      (add-hook 'c-mode-hook 'irony-mode))
+;      (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options))
 
- (use-package irony-eldoc
-   :ensure t
-   :config
-   (add-hook 'irony-mode-hook #'irony-eldoc))
+    (use-package irony-eldoc
+      :ensure t
+      :config
+      (add-hook 'irony-mode-hook #'irony-eldoc))
 
 (use-package elcord
   :ensure t
