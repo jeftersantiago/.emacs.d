@@ -1,5 +1,9 @@
 (setq frame-inhibit-implied-resize t)
 
+
+(defvar efs/default-font-size 180)
+(defvar efs/default-variable-font-size 180)
+
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)

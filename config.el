@@ -66,29 +66,49 @@
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 (use-package doom-themes
-  :ensure t
-  :init (load-theme 'doom-Iosvkem t))
+     :ensure t
+     :init (load-theme 'doom-Iosvkem t))
 
- (use-package gruber-darker-theme
-   :defer t
-   :init (load-theme 'gruber-darker t))
+   (use-package gruber-darker-theme
+     :defer t
+     :init (load-theme 'gruber-darker t))
 
-(set-frame-parameter (selected-frame) 'alpha '(99 99))
-(add-to-list 'default-frame-alist '(alpha 99 99))
+;    (use-package spacemacs-theme
+;      :defer t
+;      :init (load-theme 'spacemacs-light t))
 
-(when (member "Iosevka" (font-family-list))
-  (progn
-    (set-frame-font "Iosevka-10" nil t)))
+;     (set-frame-parameter (selected-frame) 'alpha '(99 99))
+;     (add-to-list 'default-frame-alist '(alpha 99 99))
+
+;   (defun efs/set-font-faces ()
+     ;     (message "Setting faces")
+
+         ;  (set-face-attribute 'default nil :font "Iosevka Nerd Font Regular" :height 180)
+        ;   (set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font Regular" :height 180)
+        ;   (set-face-attribute 'variable-pitch nil :font "Iosevka" :height 140 :weight 'regular))
+
+     ;   (if (daemonp)
+     ;       (add-hook 'after-make-frame-functions
+     ;                  (lambda (frame)
+     ;                    (with-selected-frame frame
+     ;                      (efs/set-font-faces))))
+     ;      (efs/set-font-faces))
+     (set-frame-font "Inconsolata-12:antialias=true")
 
 
-(use-package default-text-scale
-  :ensure t
-  :hook (after-init . default-text-scale-mode))
-(set-language-environment "UTF-8")
-(global-prettify-symbols-mode t)
-(prefer-coding-system 'utf-8)
+;                                                    (when (member "Iosevka" (font-family-list))
+;                                                    (progn
+;                                                       (set-frame-font "Iosevka-10" nil t)))
 
-(global-set-key (kbd "C-x C-k") 'font-lock-mode)
+
+                                                 ; (use-package default-text-scale
+                                                 ;   :ensure t
+                                                 ;   :hook (after-init . default-text-scale-mode))
+                                                 ; (set-language-environment "UTF-8")
+                                                 ; (global-prettify-symbols-mode t)
+                                                 ; (prefer-coding-system 'utf-8)
+
+         (global-set-key (kbd "C-x C-k") 'font-lock-mode)
 
 (use-package all-the-icons
   :ensure t)
@@ -98,8 +118,10 @@
   :ensure t)
 
 (setq display-line-numbers-type 'relative)
+;     (setq column-number-mode t)
 
-(global-set-key (kbd "C-x C-l") 'global-display-line-numbers-mode)
+     ; disable/enable number line in focused buffer.
+     (global-set-key (kbd "C-x C-l") 'display-line-numbers-mode)
 
 (use-package dashboard
   :ensure t
@@ -166,6 +188,12 @@
      '(aw-leading-char-face
        ((t (:inherit ace-jump-face-foreground :height 2.0)))))))
 
+(dolist (mode '(
+                eshell-mode-hook
+                treemacs-mode-hook
+                ))
+  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+
 (use-package dired-sidebar
   :after dired
   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
@@ -221,6 +249,49 @@ current buffer's, reload dir-locals."
       (with-current-buffer buffer
         (when (equal default-directory dir))
         (my-reload-dir-locals-for-current-buffer)))))
+
+(use-package treemacs
+    :ensure t
+    :defer t
+    :init
+    (with-eval-after-load 'winum
+      (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+    :config
+    :bind
+    (:map global-map
+          ("M-0"       . treemacs-select-window)
+          ("C-x t 1"   . treemacs-delete-other-windows)
+          ("C-x t t"   . treemacs)
+          ("C-x t d"   . treemacs-select-directory)
+          ("C-x t B"   . treemacs-bookmark)
+          ("C-x t C-t" . treemacs-find-file)
+          ("C-x t M-t" . treemacs-find-tag)))
+
+  (use-package treemacs-evil
+    :after (treemacs evil)
+    :ensure t)
+
+  (use-package treemacs-projectile
+    :after (treemacs projectile)
+    :ensure t)
+
+  (use-package treemacs-icons-dired
+    :hook (dired-mode . treemacs-icons-dired-enable-once)
+    :ensure t)
+
+  (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
+    :after (treemacs persp-mode) ;;or perspective vs. persp-mode
+    :ensure t
+    :config (treemacs-set-scope-type 'Perspectives))
+
+  (use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
+    :after (treemacs)
+    :ensure t
+    :config (treemacs-set-scope-type 'Tabs))
+
+
+  
+; (add-hook 'treemacs-mode-hook (lambda() (display-line-numbers-mode -1)))
 
 (setq org-startup-folded t)
       (setq org-src-tab-acts-natively t)
@@ -448,17 +519,17 @@ current buffer's, reload dir-locals."
 
 
                                               ; adjusting the size
-      (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2))
+      (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.0))
 
                                               ;     (setq org-latex-caption-above nil)
 
-(use-package cdlatex
-        :ensure t)
+;     (use-package cdlatex
+;       :ensure t)
 ;      (add-hook 'cdlatex-mode-hook
 ;                (lambda () (when (eq major-mode 'org-mode)
 ;                             (make-local-variable 'org-pretty-entities-include-sub-superscripts)
 ;                             (setq org-pretty-entities-include-sub-superscripts nil))))
-      (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
+;     (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
 
 (setq org-latex-to-pdf-process (list "latexmk -pvc -pdf %f"))
 
@@ -628,29 +699,29 @@ current buffer's, reload dir-locals."
 
                                          ;    (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
 
-(use-package auctex
-       :hook ((latex-mode LaTeX-mode) . lsp)
-       :ensure t
-       :config
-       (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
-       (texmathp-compile)
-       :init
-       (setq-default TeX-master 'shared)
+;     (use-package auctex
+;      :hook ((latex-mode LaTeX-mode) . lsp)
+;       :ensure t
+;       :config
+;       (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
+;       (texmathp-compile)
+;       :init
+;       (setq-default TeX-master 'shared)
        ;; nil is the default; this remains here as a reminder that setting it to
        ;; true makes emacs hang on every save when enabled.
-       (setq TeX-auto-save nil)
-       (setq TeX-parse-self t))
+;       (setq TeX-auto-save nil)
+;       (setq TeX-parse-self t))
 
-     (setq-default TeX-master nil)
+;     (setq-default TeX-master nil)
 ;     (use-package auctex-latexmk
 ;       :config
 ;       (setq auctex-latexmk-inherit-TeX-PDF-mode t)
 ;       :init
 ;       (auctex-latexmk-setup))
 
-     (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-     (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-     (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+;     (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+;     (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+;     (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
 (setq TeX-view-program-selection
       '((output-pdf "PDF Viewer")))
@@ -737,7 +808,8 @@ current buffer's, reload dir-locals."
   :ensure t
   :config (counsel-projectile-mode))
 
-(defun efs/lsp-mode-setup ()
+;; top line with hierarquical info
+    (defun efs/lsp-mode-setup ()
       (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
       (lsp-headerline-breadcrumb-mode))
 
@@ -770,6 +842,22 @@ current buffer's, reload dir-locals."
 ;;  (which-key-mode)
 ;;  (add-hook 'c-mode-hook 'lsp)
 ;;  (add-hook 'c++-mode-hook 'lsp)
+
+(use-package company
+  :after lsp-mode
+  :hook (lsp-mode . company-mode)
+  :bind (:map company-active-map
+              ("<tab>" . company-complete-selection))
+  (:map lsp-mode-map
+        ("<tab>" . company-indent-or-complete-common))
+  :custom
+  (company-minimum-prefix-length 1)
+  (company-idle-delay 0.0))
+
+(use-package lsp-ui
+:hook (lsp-mode . lsp-ui-mode))
+
+(use-package lsp-treemacs :after lsp)
 
 (use-package simple-httpd
   :commands http-server-directory
@@ -866,6 +954,10 @@ current buffer's, reload dir-locals."
       :ensure t
       :config
       (add-hook 'irony-mode-hook #'irony-eldoc))
+
+(use-package i3wm-config-mode
+:ensure t
+)
 
 (use-package elcord
   :ensure t
