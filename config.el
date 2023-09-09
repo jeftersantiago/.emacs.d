@@ -66,56 +66,53 @@
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 (use-package doom-themes
-     :ensure t
-     :init (load-theme 'doom-Iosvkem t))
+             :ensure t
+          :init (load-theme 'doom-Iosvkem t))
+      
 
-   (use-package gruber-darker-theme
-     :defer t
-     :init (load-theme 'gruber-darker t))
-
-;    (use-package spacemacs-theme
-;      :defer t
-;      :init (load-theme 'spacemacs-light t))
-
-;     (set-frame-parameter (selected-frame) 'alpha '(99 99))
-;     (add-to-list 'default-frame-alist '(alpha 99 99))
-
-;   (defun efs/set-font-faces ()
-     ;     (message "Setting faces")
-
-         ;  (set-face-attribute 'default nil :font "Iosevka Nerd Font Regular" :height 180)
-        ;   (set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font Regular" :height 180)
-        ;   (set-face-attribute 'variable-pitch nil :font "Iosevka" :height 140 :weight 'regular))
-
-     ;   (if (daemonp)
-     ;       (add-hook 'after-make-frame-functions
-     ;                  (lambda (frame)
-     ;                    (with-selected-frame frame
-     ;                      (efs/set-font-faces))))
-     ;      (efs/set-font-faces))
-     (set-frame-font "Inconsolata-12:antialias=true")
+;                 (use-package gruber-darker-theme
+;                   :defer t
+;                   :init (load-theme 'gruber-darker t))
 
 
-;                                                    (when (member "Iosevka" (font-family-list))
-;                                                    (progn
-;                                                       (set-frame-font "Iosevka-10" nil t)))
+                                                    ;      (set-background-color "#0B1526")
 
+                                                    ;    (use-package spacemacs-theme
+                                                    ;      :defer t
+                                                    ;      :init (load-theme 'spacemacs-light t))
 
-                                                 ; (use-package default-text-scale
-                                                 ;   :ensure t
-                                                 ;   :hook (after-init . default-text-scale-mode))
-                                                 ; (set-language-environment "UTF-8")
-                                                 ; (global-prettify-symbols-mode t)
-                                                 ; (prefer-coding-system 'utf-8)
+;     (set-frame-parameter (selected-frame) 'alpha '(95 95))
+;     (add-to-list 'default-frame-alist '(alpha 95 95))
 
-         (global-set-key (kbd "C-x C-k") 'font-lock-mode)
+(defun efs/set-font ()
+  (message "Setting faces")
+  (when (member "Iosevka" (font-family-list))
+    (progn
+      (set-frame-font "Iosevka-10" nil t)))
+  (use-package default-text-scale
+    :ensure t
+    :hook (after-init . default-text-scale-mode))
+  (set-language-environment "UTF-8")
+  (global-prettify-symbols-mode t)
+  (prefer-coding-system 'utf-8)
+  )
 
-(use-package all-the-icons
-  :ensure t)
-(use-package doom-modeline
-  :init (doom-modeline-mode 1)
-  :custom ((doom-modeline-height 25))
-  :ensure t)
+(if (daemonp)
+    (add-hook 'after-make-frame-functions
+              (lambda (frame)
+                (setq doom-modeline-icon t)
+                (with-selected-frame frame
+                  (efs/set-font))))
+  (efs/set-font))
+
+(global-set-key (kbd "C-x C-k") 'font-lock-mode)
+
+;    (use-package all-the-icons
+;      :ensure t)
+     (use-package doom-modeline
+       :init (doom-modeline-mode 1)
+       :custom ((doom-modeline-height 25))
+       :ensure t)
 
 (setq display-line-numbers-type 'relative)
 ;     (setq column-number-mode t)
@@ -124,23 +121,26 @@
      (global-set-key (kbd "C-x C-l") 'display-line-numbers-mode)
 
 (use-package dashboard
-  :ensure t
-  :init
-  (progn
-    (setq dashboard-show-shortcuts nil)
-    (setq dashboard-center-content nil)
-    (setq dashboard-banner-logo-title "EMACS")
-    (setq dashboard-set-file-icons t)
-    (setq dashboard-set-heading-icons t)
-    (setq dashboard-startup-banner 'logo)
-    (setq dashboard-items '((recents  . 5)
-                            (projects . 5)
-                            (agenda . 0)
-                            (bookmarks . 0)
-                            (registers . 0)))
-    )
-  :config
-  (dashboard-setup-startup-hook))
+       :ensure t
+       :init
+       (progn
+         (setq dashboard-show-shortcuts nil)
+         (setq dashboard-center-content nil)
+         (setq dashboard-banner-logo-title "EMACS")
+         (setq dashboard-set-file-icons t)
+         (setq dashboard-set-heading-icons t)
+         (setq dashboard-startup-banner 'logo)
+         (setq dashboard-items '((recents  . 5)
+                                 (projects . 5)
+                                 (agenda . 0)
+                                 (bookmarks . 0)
+                                 (registers . 0)))
+         )
+       :config
+       (dashboard-setup-startup-hook))
+
+                                             ; for emacsclient
+;    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
 (defun insert-new-line-below ()
   (interactive)
@@ -201,10 +201,10 @@
   :commands (dired-sidebar-toggle-sidebar)
   :init)
 
-(use-package all-the-icons-dired
-  :after dired
-  :ensure t)
-(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+;   (use-package all-the-icons-dired
+;     :after dired
+;     :ensure t)
+;   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
 (use-package dired-open
       :after dired
@@ -251,47 +251,47 @@ current buffer's, reload dir-locals."
         (my-reload-dir-locals-for-current-buffer)))))
 
 (use-package treemacs
-    :ensure t
-    :defer t
-    :init
-    (with-eval-after-load 'winum
-      (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
-    :config
-    :bind
-    (:map global-map
-          ("M-0"       . treemacs-select-window)
-          ("C-x t 1"   . treemacs-delete-other-windows)
-          ("C-x t t"   . treemacs)
-          ("C-x t d"   . treemacs-select-directory)
-          ("C-x t B"   . treemacs-bookmark)
-          ("C-x t C-t" . treemacs-find-file)
-          ("C-x t M-t" . treemacs-find-tag)))
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :config
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t d"   . treemacs-select-directory)
+        ("C-x t B"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag)))
 
-  (use-package treemacs-evil
-    :after (treemacs evil)
-    :ensure t)
+(use-package treemacs-evil
+  :after (treemacs evil)
+  :ensure t)
 
-  (use-package treemacs-projectile
-    :after (treemacs projectile)
-    :ensure t)
+(use-package treemacs-projectile
+  :after (treemacs projectile)
+  :ensure t)
 
-  (use-package treemacs-icons-dired
-    :hook (dired-mode . treemacs-icons-dired-enable-once)
-    :ensure t)
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t)
 
-  (use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
-    :after (treemacs persp-mode) ;;or perspective vs. persp-mode
-    :ensure t
-    :config (treemacs-set-scope-type 'Perspectives))
+(use-package treemacs-persp ;;treemacs-perspective if you use perspective.el vs. persp-mode
+  :after (treemacs persp-mode) ;;or perspective vs. persp-mode
+  :ensure t
+  :config (treemacs-set-scope-type 'Perspectives))
 
-  (use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
-    :after (treemacs)
-    :ensure t
-    :config (treemacs-set-scope-type 'Tabs))
+(use-package treemacs-tab-bar ;;treemacs-tab-bar if you use tab-bar-mode
+  :after (treemacs)
+  :ensure t
+  :config (treemacs-set-scope-type 'Tabs))
 
 
-  
-; (add-hook 'treemacs-mode-hook (lambda() (display-line-numbers-mode -1)))
+
+                                        ; (add-hook 'treemacs-mode-hook (lambda() (display-line-numbers-mode -1)))
 
 (setq org-startup-folded t)
       (setq org-src-tab-acts-natively t)
@@ -368,12 +368,13 @@ current buffer's, reload dir-locals."
 ;      (add-hook 'org-mode-hook 'font-lock-mode)
       (add-hook 'org-mode-hook 'hl-line-mode)
 
-;    (defun efs/org-mode-visual-fill ()
-;       (visual-fill-column-mode 2))
+(defun efs/org-mode-visual-fill ()
 
-;    (use-package visual-fill-column
-;      :ensure t
-;      :hook (org-mode . efs/org-mode-visual-fill))
+         (visual-fill-column-mode 5))
+
+;     (use-package visual-fill-column
+;       :ensure t
+;       :hook (org-mode . efs/org-mode-visual-fill))
 
 (setq org-emphasis-alist
            '(("*" bold)
@@ -424,10 +425,10 @@ current buffer's, reload dir-locals."
 
 (custom-set-faces
  '(org-document-title ((t(
-                          :weight ultra-bold 
-                          :height 1.8
+                          :weight ultra-bold
+                          :height 1.5
                           :foreground "#f21782"
-                          :underline nil 
+                          :underline nil
                           ))))
  '(org-document-info ((t(
                          :weight bold
@@ -507,21 +508,24 @@ current buffer's, reload dir-locals."
 (global-set-key (kbd "C-x p") 'org-latex-export-to-pdf)
 (define-key global-map "\C-cc" 'org-capture)
 
-;      (setq org-preview-latex-image-directory "~/.local/share/equations/ltximg/")
+; not working yet.
+(setq preview-latex-image-directory "~/latex-previews/")
 
-                                              ; load the latex fragments automatically
-      (use-package org-fragtog :ensure t)
-      (add-hook 'org-mode-hook 'org-fragtog-mode)
-
-      (setq org-preview-latex-default-process 'dvisvgm)
-                                              ; using dvipng makes it faster, but with less quality
-      (setq org-latex-create-formula-image-program  'dvisvgm)
+                                        ; load the latex fragments automatically
+(use-package org-fragtog :ensure t)
+(add-hook 'org-mode-hook 'org-fragtog-mode)
 
 
-                                              ; adjusting the size
-      (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.0))
+(setq org-preview-latex-default-process 'dvisvgm)
+                                        ; using dvipng makes it faster, but with less quality
+(setq org-latex-create-formula-image-program  'dvisvgm)
 
-                                              ;     (setq org-latex-caption-above nil)
+
+
+                                        ; adjusting the size
+(setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
+
+                                        ;     (setq org-latex-caption-above nil)
 
 ;     (use-package cdlatex
 ;       :ensure t)
@@ -557,6 +561,7 @@ current buffer's, reload dir-locals."
      (gnuplot .t)
      (shell .t)
      (julia .t)
+     (dot . t)
      ))
   (setq org-confirm-babel-evaluate t))
 (require 'color)
@@ -699,29 +704,95 @@ current buffer's, reload dir-locals."
 
                                          ;    (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
 
-;     (use-package auctex
+;   (use-package yasnippet
+                                        ;     :ensure t
+                                        ;     :config
+                                        ;     (setq yas-snippet-dirs '("~/Repositories/yasnippets"
+                                        ;                              "~/Dropbox/private-configs/private-snippets/"))
+                                        ;     (yas-global-mode 1))
+
+(use-package yasnippet
+  :ensure t
+  :config
+  (setq yas-snippet-dirs '("~/Repositories/yasnippets"
+                           "~/Dropbox/private-configs/private-snippets/"))
+  )
+(yas-global-mode 1)
+
+;; Load yasnippet
+(require 'yasnippet)
+(yas-global-mode 1)
+
+;; LaTeX mode setup
+(defun my-latex-mode-setup ()
+  (yas-minor-mode 1))
+
+(use-package auctex
+  :hook (LaTeX-mode . my-latex-mode-setup)
+  :ensure t)
+
+(setq-default TeX-master nil)
+
+(use-package auctex-latexmk
+  :config
+  (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+  :init
+  (auctex-latexmk-setup))
+
+; stucks and freezes
+       ;; LaTeX mode setup
+;      (defun my-latex-mode-setup ()
+;        (yas-minor-mode 1)
+;        (visual-line-mode)
+;        (flyspell-mode)
+;        (LaTeX-math-mode))
+
+;      (use-package auctex
+;        :hook (LaTeX-mode . my-latex-mode-setup)
+;        :ensure t
+;        :config
+;        (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
+;        (texmathp-compile)
+
+;        (setq-default TeX-master 'shared)
+;        (setq TeX-auto-save nil)
+;        (setq TeX-parse-self t))
+
+;      (setq-default TeX-master nil)
+
+;      (use-package auctex-latexmk
+;        :config
+;        (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+;        :init
+;        (auctex-latexmk-setup))
+
+; old config -> dont work well, the yasnippets don't load.
+;    (use-package auctex
 ;      :hook ((latex-mode LaTeX-mode) . lsp)
-;       :ensure t
-;       :config
-;       (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
+;     :ensure t
+;      :config
+;      (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
 ;       (texmathp-compile)
 ;       :init
 ;       (setq-default TeX-master 'shared)
-       ;; nil is the default; this remains here as a reminder that setting it to
-       ;; true makes emacs hang on every save when enabled.
+;       ;; nil is the default; this remains here as a reminder that setting it to
+;       ;; true makes emacs hang on every save when enabled.
 ;       (setq TeX-auto-save nil)
-;       (setq TeX-parse-self t))
+;       (setq TeX-parse-self t)
+;    )
 
-;     (setq-default TeX-master nil)
-;     (use-package auctex-latexmk
-;       :config
-;       (setq auctex-latexmk-inherit-TeX-PDF-mode t)
-;       :init
-;       (auctex-latexmk-setup))
+;    (setq-default TeX-master nil)
 
-;     (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-;     (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-;     (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+;    (use-package auctex-latexmk
+;      :config
+;      (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+;      :init
+;      (auctex-latexmk-setup)
+;      )
+
+;    (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+;    (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+;    (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
 
 (setq TeX-view-program-selection
       '((output-pdf "PDF Viewer")))
@@ -756,11 +827,18 @@ current buffer's, reload dir-locals."
 
 ;    (use-package vterm
 ;      :ensure t
-;      :config 
+;      :config
 ;      (global-set-key (kbd "C-x t") 'vterm))
 ;    (global-set-key (kbd "C-x t") ')
 ;    (add-hook 'vterm-mode-hook 'font-lock-mode)
 ;   (add-hook 'vterm-mode-hook 'set-black-face)
+
+(use-package elfeed
+  :ensure t)
+(setq elfeed-feeds
+    '(("http://nullprogram.com/feed/" blog emacs)
+      "http://www.50ply.com/atom.xml"  ; no autotagging
+      ("http://nedroid.com/feed/" webcomic)))
 
 (use-package swiper
   :ensure t
@@ -781,13 +859,6 @@ current buffer's, reload dir-locals."
   :defer 0
   :ensure t
   :config (which-key-mode))
-
-(use-package yasnippet
-  :ensure t
-  :config
-  (setq yas-snippet-dirs '("~/Projects/yasnippets"
-                           "~/Dropbox/private-configs/private-snippets/"))
-  (yas-global-mode 1))
 
 (use-package flycheck
   :ensure t
@@ -843,16 +914,16 @@ current buffer's, reload dir-locals."
 ;;  (add-hook 'c-mode-hook 'lsp)
 ;;  (add-hook 'c++-mode-hook 'lsp)
 
-(use-package company
-  :after lsp-mode
-  :hook (lsp-mode . company-mode)
-  :bind (:map company-active-map
-              ("<tab>" . company-complete-selection))
-  (:map lsp-mode-map
-        ("<tab>" . company-indent-or-complete-common))
-  :custom
-  (company-minimum-prefix-length 1)
-  (company-idle-delay 0.0))
+;     (use-package company
+;       :after lsp-mode
+;       :hook (lsp-mode . company-mode)
+;       :bind (:map company-active-map
+;                   ("<tab>" . company-complete-selection))
+;       (:map lsp-mode-map
+;            ("<tab>" . company-indent-or-complete-common))
+;       :custom
+;       (company-minimum-prefix-length 1)
+;       (company-idle-delay 0.0))
 
 (use-package lsp-ui
 :hook (lsp-mode . lsp-ui-mode))
@@ -863,9 +934,9 @@ current buffer's, reload dir-locals."
   :commands http-server-directory
   :ensure t)
 
-(use-package eglot
-  :ensure t)
-(add-hook 'LaTeX-mode-hook 'eglot-ensure)
+;   (use-package eglot
+;     :ensure t)
+;   (add-hook 'LaTeX-mode-hook 'eglot-ensure)
 
 (which-key-mode)
   (add-hook 'c-mode-hook 'lsp)
@@ -904,10 +975,12 @@ current buffer's, reload dir-locals."
   :hook (python-mode . lsp-deferred))
 
 (use-package jedi
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (add-hook 'python-mode-hook 'jedi:ac-setup))
+       :ensure t
+)
+;       :init
+
+;       (add-hook 'python-mode-hook 'jedi:setup)
+;       (add-hook 'python-mode-hook 'jedi:ac-setup))
 
 (use-package gnuplot-mode
   :ensure t)
@@ -923,37 +996,38 @@ current buffer's, reload dir-locals."
   :init
   (progn
     (ac-config-default)
-    (global-auto-complete-mode t)
+    ; (global-auto-complete-mode t)
     ))
 
 (use-package company
-      :ensure t
-      :config
-      (setq company-idle-delay 0)
-      (setq company-minimum-prefix-length 2)
-      :init (global-company-mode t))
+           :ensure t
+           :config
+           (setq company-idle-delay 0)
+           (setq company-minimum-prefix-length 2)
+;           :init (global-company-mode t)
+ )
 
-   (use-package company-box
-     :ensure t
-     :hook (global-company-mode . company-box))
+        (use-package company-box
+          :ensure t
+          :hook (global-company-mode . company-box))
 
 
-    (use-package company-irony
-      :ensure t
-      :config
-      (add-to-list 'company-backends 'company-irony))
+         (use-package company-irony
+           :ensure t
+           :config
+           (add-to-list 'company-backends 'company-irony))
 
-    (use-package irony
-      :ensure t
-      :config
-      (add-hook 'c++-mode-hook 'irony-mode)
-      (add-hook 'c-mode-hook 'irony-mode))
-;      (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options))
+         (use-package irony
+           :ensure t
+           :config
+           (add-hook 'c++-mode-hook 'irony-mode)
+           (add-hook 'c-mode-hook 'irony-mode))
+     ;      (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options))
 
-    (use-package irony-eldoc
-      :ensure t
-      :config
-      (add-hook 'irony-mode-hook #'irony-eldoc))
+         (use-package irony-eldoc
+           :ensure t
+           :config
+           (add-hook 'irony-mode-hook #'irony-eldoc))
 
 (use-package i3wm-config-mode
 :ensure t

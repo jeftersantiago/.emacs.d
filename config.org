@@ -1,6 +1,6 @@
 #+title: Emacs configurations
 #+EMAIL: jeftersmares@gmail.com
-#+OPTIONS: toc:nil num:nil 
+#+OPTIONS: toc:nil num:nil
 Welcome! This is my emacs personal configs, i customize it based only in my
 general use of the editor (which is basically for everything i do in the
 computer). You may find usefull pieces of code or configurations if you're a
@@ -8,10 +8,11 @@ person that uses =LaTeX=, =orgmode=, =org-roam=, =Julia=, and many other
 stuff. I also have a separated repository only for my snippets (i use the
 =yasnippets= package) , you can find them in [[https://github.com/jefter66/][here]].
 
-* startup performance
+
+* Startup performance
 
   Taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org
-  
+
   #+begin_src emacs-lisp
     ;; The default is 800 kilobytes.  Measured in bytes.
     (setq gc-cons-threshold (* 50 1000 1000))
@@ -26,7 +27,7 @@ stuff. I also have a separated repository only for my snippets (i use the
     (add-hook 'emacs-startup-hook #'efs/display-startup-time)
 
   #+end_src
-* variables
+* Variables
 ** personal configs
 *** Info
    #+begin_src emacs-lisp
@@ -37,7 +38,7 @@ stuff. I also have a separated repository only for my snippets (i use the
 ** custom file
    Separated file to store generated config from emacs.
    Puts the outputs in a separated file.
-   
+
    Taken from:
     - https://www.reddit.com/r/emacs/comments/4x655n/packageselectedpackages_always_appear_after/
     - https://www.reddit.com/r/emacs/comments/53zpv9/how_do_i_get_emacs_to_stop_adding_custom_fields/
@@ -72,7 +73,7 @@ stuff. I also have a separated repository only for my snippets (i use the
      (setq auto-save-file-name-transforms
            `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
    #+end_src
-* ui
+* UI
 ** System default variables
   #+begin_src emacs-lisp
        (scroll-bar-mode 0)
@@ -114,67 +115,62 @@ Makes the parenthesis shine
 *** Theme
     Loading theme and setting modeline background color.
     #+begin_src emacs-lisp
+           (use-package doom-themes
+             :ensure t
+          :init (load-theme 'doom-Iosvkem t))
+      
 
-   (use-package doom-themes
-     :ensure t
-     :init (load-theme 'doom-Iosvkem t))
-
-   (use-package gruber-darker-theme
-     :defer t
-     :init (load-theme 'gruber-darker t))
-
-;    (use-package spacemacs-theme
-;      :defer t
-;      :init (load-theme 'spacemacs-light t))
+;                 (use-package gruber-darker-theme
+;                   :defer t
+;                   :init (load-theme 'gruber-darker t))
 
 
+                                                    ;      (set-background-color "#0B1526")
+
+                                                    ;    (use-package spacemacs-theme
+                                                    ;      :defer t
+                                                    ;      :init (load-theme 'spacemacs-light t))
     #+end_src
 *** Transparency
     Enabling transparency
     #+begin_src emacs-lisp
-;     (set-frame-parameter (selected-frame) 'alpha '(99 99))
-;     (add-to-list 'default-frame-alist '(alpha 99 99))
+;     (set-frame-parameter (selected-frame) 'alpha '(95 95))
+;     (add-to-list 'default-frame-alist '(alpha 95 95))
     #+end_src
 ** Font
    Taken from here:  https://emacs.stackexchange.com/q/45895
    Setting Iosevka font: https://www.reddit.com/r/emacs/comments/96q8r3/configuring_iosevka_ligatures_for_emacs/
    #+begin_src emacs-lisp
 
-     ;   (defun efs/set-font-faces ()
-     ;     (message "Setting faces")
 
-         ;  (set-face-attribute 'default nil :font "Iosevka Nerd Font Regular" :height 180)
-        ;   (set-face-attribute 'fixed-pitch nil :font "Iosevka Nerd Font Regular" :height 180)
-        ;   (set-face-attribute 'variable-pitch nil :font "Iosevka" :height 140 :weight 'regular))
+     (defun efs/set-font ()
+       (message "Setting faces")
+       (when (member "Iosevka" (font-family-list))
+         (progn
+           (set-frame-font "Iosevka-10" nil t)))
+       (use-package default-text-scale
+         :ensure t
+         :hook (after-init . default-text-scale-mode))
+       (set-language-environment "UTF-8")
+       (global-prettify-symbols-mode t)
+       (prefer-coding-system 'utf-8)
+       )
 
-     ;   (if (daemonp)
-     ;       (add-hook 'after-make-frame-functions
-     ;                  (lambda (frame)
-     ;                    (with-selected-frame frame
-     ;                      (efs/set-font-faces))))
-     ;      (efs/set-font-faces))
-     (set-frame-font "Inconsolata-12:antialias=true")
+     (if (daemonp)
+         (add-hook 'after-make-frame-functions
+                   (lambda (frame)
+                     (setq doom-modeline-icon t)
+                     (with-selected-frame frame
+                       (efs/set-font))))
+       (efs/set-font))
 
-
-;                                                    (when (member "Iosevka" (font-family-list))
-;                                                    (progn
-;                                                       (set-frame-font "Iosevka-10" nil t)))
-
-
-                                                 ; (use-package default-text-scale
-                                                 ;   :ensure t
-                                                 ;   :hook (after-init . default-text-scale-mode))
-                                                 ; (set-language-environment "UTF-8")
-                                                 ; (global-prettify-symbols-mode t)
-                                                 ; (prefer-coding-system 'utf-8)
-
-         (global-set-key (kbd "C-x C-k") 'font-lock-mode)
-   #+end_src
+     (global-set-key (kbd "C-x C-k") 'font-lock-mode)
+       #+end_src
 ** Modeline
    Nice and simple.
    #+begin_src emacs-lisp
-     (use-package all-the-icons
-       :ensure t)
+;    (use-package all-the-icons
+;      :ensure t)
      (use-package doom-modeline
        :init (doom-modeline-mode 1)
        :custom ((doom-modeline-height 25))
@@ -210,6 +206,12 @@ Makes the parenthesis shine
          )
        :config
        (dashboard-setup-startup-hook))
+
+                                             ; for emacsclient
+;    (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+
+
+
    #+end_src
 * Buffer/Text navigation
 ** Inserting new line
@@ -289,14 +291,14 @@ Yes, i use vim too.
       :commands (dired-sidebar-toggle-sidebar)
       :init)
   #+end_src
-** Icons 
+** Icons
   #+begin_src emacs-lisp
-    (use-package all-the-icons-dired
-      :after dired
-      :ensure t)
-    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+;   (use-package all-the-icons-dired
+;     :after dired
+;     :ensure t)
+;   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
   #+end_src
-** Default applications to extensions 
+** Default applications to extensions
   #+begin_src emacs-lisp
     (use-package dired-open
       :after dired
@@ -386,12 +388,9 @@ Yes, i use vim too.
     :config (treemacs-set-scope-type 'Tabs))
 
 
-  
-; (add-hook 'treemacs-mode-hook (lambda() (display-line-numbers-mode -1))) 
 
-
+                                          ; (add-hook 'treemacs-mode-hook (lambda() (display-line-numbers-mode -1)))
 #+end_src
-
 * Org-mode
 ** General config
 *** Variables
@@ -412,8 +411,7 @@ Yes, i use vim too.
 
       (setq-default org-image-actual-width 620)
       (setq org-latex-prefer-user-labels t)
-
-    #+end_src 
+    #+end_src
 *** Org-bullets and superstar
     #+begin_src emacs-lisp
       (use-package org-bullets
@@ -482,12 +480,13 @@ Yes, i use vim too.
     #+end_src
 *** Center org buffers
     #+begin_src emacs-lisp
-;    (defun efs/org-mode-visual-fill ()
-;       (visual-fill-column-mode 2))
+      (defun efs/org-mode-visual-fill ()
 
-;    (use-package visual-fill-column
-;      :ensure t
-;      :hook (org-mode . efs/org-mode-visual-fill))
+         (visual-fill-column-mode 5))
+
+;     (use-package visual-fill-column
+;       :ensure t
+;       :hook (org-mode . efs/org-mode-visual-fill))
     #+end_src
 ** Custom faces
    Inspired by [[https://protesilaos.com/codelog/2022-01-05-custom-face-org-emphasis-alist/][Protesilaos blog post]].
@@ -545,10 +544,10 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
   #+begin_src emacs-lisp
     (custom-set-faces
      '(org-document-title ((t(
-                              :weight ultra-bold 
-                              :height 1.8
+                              :weight ultra-bold
+                              :height 1.5
                               :foreground "#f21782"
-                              :underline nil 
+                              :underline nil
                               ))))
      '(org-document-info ((t(
                              :weight bold
@@ -615,13 +614,13 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
      (add-hook 'org-babel-after-execute-hook 'my/fix-inline-images)
      (add-hook 'org-mode-hook 'org-toggle-inline-images)
    #+end_src
-** org-publishing 
+** org-publishing
 *** Compiling pdf
    #+begin_src emacs-lisp
      (setq org-latex-pdf-process (list
         "latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
    #+end_src
-*** Open pdfs in evince 
+*** Open pdfs in evince
     Makes UTF-8 symbols appears in buffer i use it for editing Latex
     #+begin_src emacs-lisp
 ;     (setq org-export-with-sub-superscripts nil)
@@ -654,22 +653,24 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
      [[./images/preview-example.gif]]
 
     #+begin_src emacs-lisp
-;      (setq org-preview-latex-image-directory "~/.local/share/equations/ltximg/")
+      ; not working yet.
+      (setq preview-latex-image-directory "~/latex-previews/")
 
                                               ; load the latex fragments automatically
       (use-package org-fragtog :ensure t)
       (add-hook 'org-mode-hook 'org-fragtog-mode)
+
 
       (setq org-preview-latex-default-process 'dvisvgm)
                                               ; using dvipng makes it faster, but with less quality
       (setq org-latex-create-formula-image-program  'dvisvgm)
 
 
+
                                               ; adjusting the size
-      (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.0))
+      (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
                                               ;     (setq org-latex-caption-above nil)
-
     #+end_src
 *** cdlatex
     #+begin_src emacs-lisp
@@ -719,6 +720,7 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
           (gnuplot .t)
           (shell .t)
           (julia .t)
+          (dot . t)
           ))
        (setq org-confirm-babel-evaluate t))
      (require 'color)
@@ -787,8 +789,8 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
       (org-roam-db-autosync-mode)
       ;; If using org-roam-protocol
       (require 'org-roam-protocol))
-   #+end_src 
-** org-roam-ui 
+   #+end_src
+** org-roam-ui
   #+begin_src emacs-lisp
     (use-package websocket
       :after org-roam
@@ -881,37 +883,110 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
                                             ;    (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
 
   #+end_src
+* Yasnippet
+  I followed the [[https://www.youtube.com/watch?v=W-bRZlseNm0][Jake's B video]] to make this configuration.
+  #+begin_src emacs-lisp
+                                            ;   (use-package yasnippet
+                                            ;     :ensure t
+                                            ;     :config
+                                            ;     (setq yas-snippet-dirs '("~/Repositories/yasnippets"
+                                            ;                              "~/Dropbox/private-configs/private-snippets/"))
+                                            ;     (yas-global-mode 1))
+
+    (use-package yasnippet
+      :ensure t
+      :config
+      (setq yas-snippet-dirs '("~/Repositories/yasnippets"
+                               "~/Dropbox/private-configs/private-snippets/"))
+      )
+    (yas-global-mode 1)
+  #+end_src
 * LaTeX
 ** setup
-   Loads =Auctex= and =lsp= for latex.
+Loads =Auctex= and =lsp= for latex.
+
    #+begin_src emacs-lisp
+     ;; Load yasnippet
+     (require 'yasnippet)
+     (yas-global-mode 1)
 
-;     (use-package auctex
-;      :hook ((latex-mode LaTeX-mode) . lsp)
-;       :ensure t
-;       :config
-;       (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
-;       (texmathp-compile)
-;       :init
-;       (setq-default TeX-master 'shared)
-       ;; nil is the default; this remains here as a reminder that setting it to
-       ;; true makes emacs hang on every save when enabled.
-;       (setq TeX-auto-save nil)
-;       (setq TeX-parse-self t))
+     ;; LaTeX mode setup
+     (defun my-latex-mode-setup ()
+       (yas-minor-mode 1))
 
-;     (setq-default TeX-master nil)
-;     (use-package auctex-latexmk
-;       :config
-;       (setq auctex-latexmk-inherit-TeX-PDF-mode t)
-;       :init
-;       (auctex-latexmk-setup))
+     (use-package auctex
+       :hook (LaTeX-mode . my-latex-mode-setup)
+       :ensure t)
 
-;     (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-;     (add-hook 'LaTeX-mode-hook 'flyspell-mode)
-;     (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+     (setq-default TeX-master nil)
+
+     (use-package auctex-latexmk
+       :config
+       (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+       :init
+       (auctex-latexmk-setup))
 
    #+end_src
-** compile shortcuts and open with =xreader=
+   #+begin_src emacs-lisp
+          ; stucks and freezes
+            ;; LaTeX mode setup
+     ;      (defun my-latex-mode-setup ()
+     ;        (yas-minor-mode 1)
+     ;        (visual-line-mode)
+     ;        (flyspell-mode)
+     ;        (LaTeX-math-mode))
+
+     ;      (use-package auctex
+     ;        :hook (LaTeX-mode . my-latex-mode-setup)
+     ;        :ensure t
+     ;        :config
+     ;        (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
+     ;        (texmathp-compile)
+
+     ;        (setq-default TeX-master 'shared)
+     ;        (setq TeX-auto-save nil)
+     ;        (setq TeX-parse-self t))
+
+     ;      (setq-default TeX-master nil)
+
+     ;      (use-package auctex-latexmk
+     ;        :config
+     ;        (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+     ;        :init
+     ;        (auctex-latexmk-setup))
+
+  #+end_src
+   #+begin_src emacs-lisp
+     ; old config -> dont work well, the yasnippets don't load.
+     ;    (use-package auctex
+     ;      :hook ((latex-mode LaTeX-mode) . lsp)
+     ;     :ensure t
+     ;      :config
+     ;      (add-to-list 'texmathp-tex-commands "dmath" 'env-on)
+     ;       (texmathp-compile)
+     ;       :init
+     ;       (setq-default TeX-master 'shared)
+     ;       ;; nil is the default; this remains here as a reminder that setting it to
+     ;       ;; true makes emacs hang on every save when enabled.
+     ;       (setq TeX-auto-save nil)
+     ;       (setq TeX-parse-self t)
+     ;    )
+
+     ;    (setq-default TeX-master nil)
+
+     ;    (use-package auctex-latexmk
+     ;      :config
+     ;      (setq auctex-latexmk-inherit-TeX-PDF-mode t)
+     ;      :init
+     ;      (auctex-latexmk-setup)
+     ;      )
+
+     ;    (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+     ;    (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+     ;    (add-hook 'LaTeX-mode-hook 'LaTeX-math-mode)
+
+   #+end_src
+** compile shortcuts and open with =evince=
    #+begin_src emacs-lisp
      (setq TeX-view-program-selection
            '((output-pdf "PDF Viewer")))
@@ -925,18 +1000,18 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
 
    #+end_src
 ** super & subscript
-arrrghh dealing with super and sub script
+dealing with super and sub script
    #+begin_src emacs-lisp
-;    (add-hook 'cdlatex-mode-hook
-;              (lambda () (when (eq major-mode 'org-mode)
-;                           (make-local-variable 'org-pretty-entities-include-sub-superscripts)
-;                           (setq org-pretty-entities-include-sub-superscripts nil))))
+                                             ;    (add-hook 'cdlatex-mode-hook
+                                             ;              (lambda () (when (eq major-mode 'org-mode)
+                                             ;                           (make-local-variable 'org-pretty-entities-include-sub-superscripts)
+                                             ;                           (setq org-pretty-entities-include-sub-superscripts nil))))
 
-;    (add-hook 'org-mode-hook
-;              (lambda () (org-toggle-pretty-entities)))
+                                             ;    (add-hook 'org-mode-hook
+                                             ;              (lambda () (org-toggle-pretty-entities)))
    #+end_src
 * St
-I can't get used to use terminal emulators inside Emacs. This will run my favorite emulator 
+I can't get used to use terminal emulators inside Emacs. This will run my favorite emulator
 [[https://st.suckless.org/][simple-terminal]].
 #+begin_src emacs-lisp
   ; When running async shell commands a window pop out, this line removes it
@@ -956,12 +1031,21 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
 
                                             ;    (use-package vterm
                                             ;      :ensure t
-                                            ;      :config 
+                                            ;      :config
                                             ;      (global-set-key (kbd "C-x t") 'vterm))
                                             ;    (global-set-key (kbd "C-x t") ')
                                             ;    (add-hook 'vterm-mode-hook 'font-lock-mode)
                                             ;   (add-hook 'vterm-mode-hook 'set-black-face)
-  #+end_src  
+  #+end_src
+* Elfeed
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :ensure t)
+  (setq elfeed-feeds
+      '(("http://nullprogram.com/feed/" blog emacs)
+        "http://www.50ply.com/atom.xml"  ; no autotagging
+        ("http://nedroid.com/feed/" webcomic)))
+#+end_src
 * Swiper
   #+begin_src emacs-lisp
     (use-package swiper
@@ -988,24 +1072,13 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
       :ensure t
       :config (which-key-mode))
   #+end_src
-* Yasnippet
-  #+begin_src emacs-lisp
-
-    (use-package yasnippet
-      :ensure t
-      :config
-      (setq yas-snippet-dirs '("~/Projects/yasnippets"
-                               "~/Dropbox/private-configs/private-snippets/"))
-      (yas-global-mode 1))
-
-  #+end_src
 * Flycheck
   #+begin_src emacs-lisp
     (use-package flycheck
       :ensure t
       :init
       (global-flycheck-mode t))
-  #+end_src  
+  #+end_src
 * projectile
   #+begin_src emacs-lisp
     (use-package projectile
@@ -1021,7 +1094,6 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
       :after projectile
       :ensure t
       :config (counsel-projectile-mode))
-
   #+end_src
 * lsp-mode
 ** Basics
@@ -1063,16 +1135,16 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
   #+end_src
 ** Company mode
    #+begin_src emacs-lisp
-     (use-package company
-       :after lsp-mode
-       :hook (lsp-mode . company-mode)
-       :bind (:map company-active-map
-                   ("<tab>" . company-complete-selection))
-       (:map lsp-mode-map
-             ("<tab>" . company-indent-or-complete-common))
-       :custom
-       (company-minimum-prefix-length 1)
-       (company-idle-delay 0.0))
+;     (use-package company
+;       :after lsp-mode
+;       :hook (lsp-mode . company-mode)
+;       :bind (:map company-active-map
+;                   ("<tab>" . company-complete-selection))
+;       (:map lsp-mode-map
+;            ("<tab>" . company-indent-or-complete-common))
+;       :custom
+;       (company-minimum-prefix-length 1)
+;       (company-idle-delay 0.0))
    #+end_src
 ** ui
 *** lsp-ui
@@ -1092,11 +1164,13 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
   #+end_src
 * Eglot
   #+begin_src emacs-lisp
-    (use-package eglot
-      :ensure t)
-    (add-hook 'LaTeX-mode-hook 'eglot-ensure)
+;   (use-package eglot
+;     :ensure t)
+;   (add-hook 'LaTeX-mode-hook 'eglot-ensure)
   #+end_src
 * C/C++
+
+
 #+begin_src emacs-lisp
   (which-key-mode)
   (add-hook 'c-mode-hook 'lsp)
@@ -1114,6 +1188,21 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
 ;   (require 'dap-cpptools)
     (yas-global-mode))
 #+end_src
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 * Julia
 ** julia mode
    #+begin_src emacs-lisp
@@ -1125,7 +1214,7 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
      (use-package julia-snail
        :ensure t
        :hook (julia-mode . julia-snail-mode))
-   #+end_src 
+   #+end_src
 ** lsp-julia
    #+begin_src emacs-lisp
 ; (use-package lsp-julia
@@ -1142,13 +1231,15 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
        :ensure t
        :hook (python-mode . lsp-deferred))
    #+end_src
-** jedi-server for auto-completetion 
+** jedi-server for auto-completetion
    #+begin_src emacs-lisp
-     (use-package jedi
-       :ensure t
-       :init
-       (add-hook 'python-mode-hook 'jedi:setup)
-       (add-hook 'python-mode-hook 'jedi:ac-setup))
+          (use-package jedi
+            :ensure t
+     )
+     ;       :init
+
+     ;       (add-hook 'python-mode-hook 'jedi:setup)
+     ;       (add-hook 'python-mode-hook 'jedi:ac-setup))
    #+end_src
 * Gnuplot
   #+begin_src emacs-lisp
@@ -1169,40 +1260,41 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
     :init
     (progn
       (ac-config-default)
-      (global-auto-complete-mode t)
+      ; (global-auto-complete-mode t)
       ))
   #+end_src
 * Company
   Taken from [[https://cestlaz.github.io/posts/using-emacs-45-company/]]
   #+begin_src emacs-lisp
-        (use-package company
-          :ensure t
-          :config
-          (setq company-idle-delay 0)
-          (setq company-minimum-prefix-length 2)
-          :init (global-company-mode t))
+            (use-package company
+              :ensure t
+              :config
+              (setq company-idle-delay 0)
+              (setq company-minimum-prefix-length 2)
+   ;           :init (global-company-mode t)
+    )
 
-       (use-package company-box
-         :ensure t
-         :hook (global-company-mode . company-box))
+           (use-package company-box
+             :ensure t
+             :hook (global-company-mode . company-box))
 
 
-        (use-package company-irony
-          :ensure t
-          :config
-          (add-to-list 'company-backends 'company-irony))
+            (use-package company-irony
+              :ensure t
+              :config
+              (add-to-list 'company-backends 'company-irony))
 
-        (use-package irony
-          :ensure t
-          :config
-          (add-hook 'c++-mode-hook 'irony-mode)
-          (add-hook 'c-mode-hook 'irony-mode))
-    ;      (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options))
+            (use-package irony
+              :ensure t
+              :config
+              (add-hook 'c++-mode-hook 'irony-mode)
+              (add-hook 'c-mode-hook 'irony-mode))
+        ;      (add-hook 'irony-mode-hook 'irony-cdb-auto-setup-compile-options))
 
-        (use-package irony-eldoc
-          :ensure t
-          :config
-          (add-hook 'irony-mode-hook #'irony-eldoc))
+            (use-package irony-eldoc
+              :ensure t
+              :config
+              (add-hook 'irony-mode-hook #'irony-eldoc))
   #+end_src
 * i3config
 #+begin_src emacs-lisp
@@ -1229,4 +1321,4 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
   #+begin_src emacs-lisp
  (setq gc-cons-threshold (* 2 1000 1000))
   #+end_src
-  
+
