@@ -896,7 +896,7 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
     (use-package yasnippet
       :ensure t
       :config
-      (setq yas-snippet-dirs '("~/Repositories/yasnippets"
+      (setq yas-snippet-dirs '("~/.emacs.d/yasnippets/"
                                "~/Dropbox/private-configs/private-snippets/"))
       )
     (yas-global-mode 1)

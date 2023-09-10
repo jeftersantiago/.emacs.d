@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: exp 
+# key: exp 
+# --
+e^{$0}

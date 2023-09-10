@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: arrow
+# key:  arrow
+# --
+set arrow ${number} from ${x0}, ${y0} to ${x}. ${y}

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: arcsen 
+# key: asin 
+# --
+\arcsin $0

@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: table 
+# key:  table
+# --
+
+#+caption: $1
+#+name: $2
+#+attr_latex: :align ${|c|c|c|} :placement [H!] :center t
+$0

@@ -714,7 +714,7 @@ current buffer's, reload dir-locals."
 (use-package yasnippet
   :ensure t
   :config
-  (setq yas-snippet-dirs '("~/Repositories/yasnippets"
+  (setq yas-snippet-dirs '("~/.emacs.d/yasnippets/"
                            "~/Dropbox/private-configs/private-snippets/"))
   )
 (yas-global-mode 1)

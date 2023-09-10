@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: rho 
+# key:  ;r
+# --
+\rho $0

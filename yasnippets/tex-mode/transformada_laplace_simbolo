@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Laplace Transform
+# key: ;L
+# --
+\mathcal{L} \\{${1}\\} $0

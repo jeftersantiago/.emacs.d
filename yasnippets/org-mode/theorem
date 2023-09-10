@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: theorem 
+# key:  theorem
+# --
+#+latex: \begin{shaded}
+#+latex: \begin{theorem}[${name}]
+        $0 
+#+latex: \end{theorem}
+#+latex: \end{shaded}

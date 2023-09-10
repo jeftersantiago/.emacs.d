@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: rot 
+# key:  rot
+# --
+\nabla \times $0

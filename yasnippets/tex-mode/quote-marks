@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: quote-marks 
+# key: ;"
+# --
+
+\`\` $1 \'\'

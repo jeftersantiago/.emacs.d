@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: image 
+# key:  img 
+# --
+#+attr_latex: :width ${1}cm :height ${2}cm
+[[$3]]

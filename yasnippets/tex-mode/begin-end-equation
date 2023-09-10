@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+# name: equation 
+# key:  eq
+# --
+\begin{equation}
+    \boxed{ $1 }
+    \label{ $2 }
+\end{equation}
+$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: tics
+# key:  tics 
+# --
+set ${x/y}tics(${"x/y"} ${value})

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: greater-greater 
+# key:  >> 
+# --
+\gg $0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Long-left-arrow 
+# key: <===
+# --
+\Longleftarrow $0

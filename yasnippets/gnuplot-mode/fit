@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: fit 
+# key:  fit 
+# --
+fit ${function} ${"datafile"} using ${args} via ${params}

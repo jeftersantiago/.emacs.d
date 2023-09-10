@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: named-equation 
+# key:  tex 
+# --
+#+begin_latex
+    $0
+#+end_latex

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: sen 
+# key: sen 
+# --
+\sin $0

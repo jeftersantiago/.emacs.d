@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: left/right angle brackets 
+# key:  <> 
+# --
+\left \langle $1 \right \rangle $0

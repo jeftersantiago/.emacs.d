@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: less-less 
+# key:  << 
+# --
+\ll $0

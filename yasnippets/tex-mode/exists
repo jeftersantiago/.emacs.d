@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: exists 
+# key: EE 
+# --
+\exists $0
