@@ -1,4 +1,5 @@
 * TODO's
+  - [ ] Organize the *README* file.
   - [ ] Export =org-roam= notes in pdf for one specific location.
   - [ ] Gnuplot update without re-open the plot.
 * Welcome!
