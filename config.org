@@ -8,7 +8,6 @@ person that uses =LaTeX=, =orgmode=, =org-roam=, =Julia=, and many other
 stuff. I also have a separated repository only for my snippets (i use the
 =yasnippets= package) , you can find them in [[https://github.com/jefter66/][here]].
 
-
 * Startup performance
 
   Taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org
@@ -117,15 +116,13 @@ Makes the parenthesis shine
     #+begin_src emacs-lisp
            (use-package doom-themes
              :ensure t
-          :init (load-theme 'doom-Iosvkem t))
+          :init (load-theme 'doom-material-dark t))
       
 
 ;                 (use-package gruber-darker-theme
 ;                   :defer t
 ;                   :init (load-theme 'gruber-darker t))
 
-
-                                                    ;      (set-background-color "#0B1526")
 
                                                     ;    (use-package spacemacs-theme
                                                     ;      :defer t
@@ -169,8 +166,9 @@ Makes the parenthesis shine
 ** Modeline
    Nice and simple.
    #+begin_src emacs-lisp
-;    (use-package all-the-icons
-;      :ensure t)
+
+     (use-package all-the-icons
+       :ensure t)
      (use-package doom-modeline
        :init (doom-modeline-mode 1)
        :custom ((doom-modeline-height 25))
@@ -293,10 +291,11 @@ Yes, i use vim too.
   #+end_src
 ** Icons
   #+begin_src emacs-lisp
-;   (use-package all-the-icons-dired
-;     :after dired
-;     :ensure t)
-;   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+    (use-package nerd-icons :ensure t)
+    (use-package all-the-icons-dired
+      :after dired
+      :ensure t)
+    (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
   #+end_src
 ** Default applications to extensions
   #+begin_src emacs-lisp
@@ -1188,7 +1187,6 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
 ;   (require 'dap-cpptools)
     (yas-global-mode))
 #+end_src
-
 
 
 

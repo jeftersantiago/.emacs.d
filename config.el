@@ -67,15 +67,13 @@
 
 (use-package doom-themes
              :ensure t
-          :init (load-theme 'doom-Iosvkem t))
+          :init (load-theme 'doom-material-dark t))
       
 
 ;                 (use-package gruber-darker-theme
 ;                   :defer t
 ;                   :init (load-theme 'gruber-darker t))
 
-
-                                                    ;      (set-background-color "#0B1526")
 
                                                     ;    (use-package spacemacs-theme
                                                     ;      :defer t
@@ -107,12 +105,12 @@
 
 (global-set-key (kbd "C-x C-k") 'font-lock-mode)
 
-;    (use-package all-the-icons
-;      :ensure t)
-     (use-package doom-modeline
-       :init (doom-modeline-mode 1)
-       :custom ((doom-modeline-height 25))
-       :ensure t)
+(use-package all-the-icons
+  :ensure t)
+(use-package doom-modeline
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 25))
+  :ensure t)
 
 (setq display-line-numbers-type 'relative)
 ;     (setq column-number-mode t)
@@ -201,10 +199,11 @@
   :commands (dired-sidebar-toggle-sidebar)
   :init)
 
-;   (use-package all-the-icons-dired
-;     :after dired
-;     :ensure t)
-;   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
+(use-package nerd-icons :ensure t)
+(use-package all-the-icons-dired
+  :after dired
+  :ensure t)
+(add-hook 'dired-mode-hook 'all-the-icons-dired-mode)
 
 (use-package dired-open
       :after dired
@@ -578,62 +577,62 @@ current buffer's, reload dir-locals."
   (add-to-list 'org-structure-template-alist '("sh" . "src shell"))
   (add-to-list 'org-structure-template-alist '("py" . "src python")))
 
-(use-package org-roam
-  :ensure t
-  :custom
-  (org-roam-v2-ack t)
-  (org-roam-directory (file-truename "~/Dropbox/notes/"))
-  (org-roam-completion-everywhere t)
-  (org-roam-capture-templates
-   '(("d" "Default notes" plain
-      "%?"
-      :if-new (file+head "${slug}.org" "#+title: ${title}\n")
-      :unnarrowed t)
-     ("p" "Notes on physics" plain
-      "#+setupfile:~/Dropbox/Templates/physics.org \n* %?"
-      :if-new (file+head "${slug}.org" "#+title: ${title}\n")
-      :unnarrowed t)
-     ("m" "Notes on mathematics" plain
-      "#+setupfile:~/Dropbox/Templates/mathematics.org \n* %?"
-      :if-new (file+head "${slug}.org" "#+title: ${title}\n")
-      :unnarrowed t)
-     ("c" "Notes on computing" plain
-      "#+setupfile:~/Dropbox/Templates/computing.org \n* %?"
-      :if-new (file+head "${slug}.org" "#+title: ${title}\n")
-      :unnarrowed t)
-     ("b" "Book entry" plain
-      (file "~/Dropbox/Templates/book.org")
-      :if-new (file+head "${slug}.org" "#+title: ${title}")
-      :unnarrowed t)
-     ("s" "Paper" plain
-      "#+setupfile:~/Dropbox/Templates/paper.org \n* %?"
-      :if-new (file+head "${slug}.org" "#+title: ${title}\n")
-      )
-     ("r" "bibliography reference" plain "%?"
-      :target
-      (file+head "~/Dropbox/references/${citekey}.org" "#+title: ${title}\n")
-      :unnarrowed t)
-     ))
-  :bind
-  (("C-c n l" . org-roam-buffer-toggle)
-   ("C-c n f" . org-roam-node-find)
-   ("C-c n g" . org-roam-graph)
-   ("C-c n i" . org-roam-node-insert)
-   ("C-c n c" . org-roam-capture)
-   ;; Dailies
-   ("C-c n j" . org-roam-dailies-capture-today))
-  :config
-  (org-roam-db-autosync-mode)
-  ;; If using org-roam-protocol
-  (require 'org-roam-protocol))
+;   (use-package org-roam
+;     :ensure t
+;     :custom
+;     (org-roam-v2-ack t)
+;     (org-roam-directory (file-truename "~/Dropbox/notes/"))
+;     (org-roam-completion-everywhere t)
+;     (org-roam-capture-templates
+;      '(("d" "Default notes" plain
+;         "%?"
+;         :if-new (file+head "${slug}.org" "#+title: ${title}\n")
+;         :unnarrowed t)
+;        ("p" "Notes on physics" plain
+;         "#+setupfile:~/Dropbox/Templates/physics.org \n* %?"
+;         :if-new (file+head "${slug}.org" "#+title: ${title}\n")
+;         :unnarrowed t)
+;        ("m" "Notes on mathematics" plain
+;         "#+setupfile:~/Dropbox/Templates/mathematics.org \n* %?"
+;         :if-new (file+head "${slug}.org" "#+title: ${title}\n")
+;         :unnarrowed t)
+;        ("c" "Notes on computing" plain
+;         "#+setupfile:~/Dropbox/Templates/computing.org \n* %?"
+;         :if-new (file+head "${slug}.org" "#+title: ${title}\n")
+;         :unnarrowed t)
+;        ("b" "Book entry" plain
+;         (file "~/Dropbox/Templates/book.org")
+;         :if-new (file+head "${slug}.org" "#+title: ${title}")
+;         :unnarrowed t)
+;        ("s" "Paper" plain
+;         "#+setupfile:~/Dropbox/Templates/paper.org \n* %?"
+;         :if-new (file+head "${slug}.org" "#+title: ${title}\n")
+;         )
+;        ("r" "bibliography reference" plain "%?"
+;         :target
+;         (file+head "~/Dropbox/references/${citekey}.org" "#+title: ${title}\n")
+;         :unnarrowed t)
+;        ))
+;     :bind
+;     (("C-c n l" . org-roam-buffer-toggle)
+;      ("C-c n f" . org-roam-node-find)
+;      ("C-c n g" . org-roam-graph)
+;      ("C-c n i" . org-roam-node-insert)
+;      ("C-c n c" . org-roam-capture)
+;      ;; Dailies
+;      ("C-c n j" . org-roam-dailies-capture-today))
+;     :config
+;     (org-roam-db-autosync-mode)
+;     ;; If using org-roam-protocol
+;     (require 'org-roam-protocol))
 
-(use-package websocket
-  :after org-roam
-  :ensure t)
+;   (use-package websocket
+;     :after org-roam
+;     :ensure t)
 
-(use-package org-roam-ui
-  :after org-roam
-  :ensure t)
+;   (use-package org-roam-ui
+;     :after org-roam
+;     :ensure t)
 
 ; (use-package helm-bibtex
 ;   :ensure t)
@@ -655,7 +654,7 @@ current buffer's, reload dir-locals."
 ; :config
 ; (require 'org-ref)) ; optional: if using Org-ref v2 or v3 citation links
 
-(setq org-noter-set-start-location "~/Dropbox/Papers/")
+; (setq org-noter-set-start-location "~/Dropbox/Papers/")
 
 ;    (use-package pdf-tools
 ;      :ensure t
