@@ -114,20 +114,11 @@ Makes the parenthesis shine
 *** Theme
     Loading theme and setting modeline background color.
     #+begin_src emacs-lisp
-           (use-package doom-themes
-             :ensure t
-          :init (load-theme 'doom-material-dark t))
-      
-
-;                 (use-package gruber-darker-theme
-;                   :defer t
-;                   :init (load-theme 'gruber-darker t))
-
-
-                                                    ;    (use-package spacemacs-theme
-                                                    ;      :defer t
-                                                    ;      :init (load-theme 'spacemacs-light t))
-    #+end_src
+      (set-face-attribute 'fringe nil :background nil)
+      (use-package doom-themes :ensure t :init (load-theme 'doom-one t))
+      ; (use-package gruber-darker-theme :defer t  :init (load-theme 'gruber-darker t))
+      ; (use-package spacemacs-theme :defer t :init (load-theme 'spacemacs-light t))
+   #+end_src
 *** Transparency
     Enabling transparency
     #+begin_src emacs-lisp
@@ -1187,7 +1178,6 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
 ;   (require 'dap-cpptools)
     (yas-global-mode))
 #+end_src
-
 
 
 

@@ -65,19 +65,10 @@
   :ensure t)
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-(use-package doom-themes
-             :ensure t
-          :init (load-theme 'doom-material-dark t))
-      
-
-;                 (use-package gruber-darker-theme
-;                   :defer t
-;                   :init (load-theme 'gruber-darker t))
-
-
-                                                    ;    (use-package spacemacs-theme
-                                                    ;      :defer t
-                                                    ;      :init (load-theme 'spacemacs-light t))
+(set-face-attribute 'fringe nil :background nil)
+(use-package doom-themes :ensure t :init (load-theme 'doom-one t))
+; (use-package gruber-darker-theme :defer t  :init (load-theme 'gruber-darker t))
+; (use-package spacemacs-theme :defer t :init (load-theme 'spacemacs-light t))
 
 ;     (set-frame-parameter (selected-frame) 'alpha '(95 95))
 ;     (add-to-list 'default-frame-alist '(alpha 95 95))
