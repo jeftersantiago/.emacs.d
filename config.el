@@ -66,9 +66,16 @@
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
 (set-face-attribute 'fringe nil :background nil)
-(use-package doom-themes :ensure t :init (load-theme 'doom-one t))
-; (use-package gruber-darker-theme :defer t  :init (load-theme 'gruber-darker t))
-; (use-package spacemacs-theme :defer t :init (load-theme 'spacemacs-light t))
+                                        ; talvez monokai-pro
+                                        ; talvez xcode
+                                        ;      (use-package doom-themes :ensure t :init (load-theme 'doom-xcode t))
+                                        ;      (use-package gruber-darker-theme
+                                        ;        :defer t
+                                        ;        :init (load-theme 'gruber-darker t))
+                                        ; (use-package spacemacs-theme :defer t :init (load-theme 'spacemacs-light t))
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+(load-theme 'minimal-darker t)
 
 ;     (set-frame-parameter (selected-frame) 'alpha '(95 95))
 ;     (add-to-list 'default-frame-alist '(alpha 95 95))
@@ -360,19 +367,19 @@ current buffer's, reload dir-locals."
 
 (defun efs/org-mode-visual-fill ()
 
-         (visual-fill-column-mode 5))
+  (visual-fill-column-mode 5))
 
-;     (use-package visual-fill-column
-;       :ensure t
-;       :hook (org-mode . efs/org-mode-visual-fill))
+(use-package visual-fill-column
+  :ensure t
+  :hook (org-mode . efs/org-mode-visual-fill))
 
 (setq org-emphasis-alist
-           '(("*" bold)
-             ("/" italic)
-             ("_" underline)
-             ("=" org-verbatim verbatim)
-             ("~" org-code verbatim)
-             ("+" (:strick-through t))))
+      '(("*" bold)
+        ("/" italic)
+        ("_" underline)
+        ("=" org-verbatim verbatim)
+        ("~" org-code verbatim)
+        ("+" (:strick-through t))))
 
 (defface custom-bold
   '((default :inherit bold)
@@ -382,49 +389,77 @@ current buffer's, reload dir-locals."
      :foreground "#f21782"  :weight ultra-bold))
   "My bold emphasis for Org.")
 
-     (defface custom-italic
-       '((default :inherit italic)
-         (((class color) (min-colors 88) (background light))
-          :foreground "#005e00")
-         (((class color) (min-colors 88) (background dark))
-          :foreground "#f21782"))
-       "Italic emphasis for Org.")
+(defface custom-italic
+  '((default :inherit italic)
+    (((class color) (min-colors 88) (background light))
+     :foreground "#005e00")
+    (((class color) (min-colors 88) (background dark))
+     :foreground "#f21782"))
+  "Italic emphasis for Org.")
 
-     (defface custom-underline
-       '((default :inherit underline)
-         (((class color) (min-colors 88) (background light))
-          :foreground "#813e00")
-         (((class color) (min-colors 88) (background dark))
-          :foreground  "#d36198" ))
-       "Underline emphasis for Org.")
+(defface custom-underline
+  '((default :inherit underline)
+    (((class color) (min-colors 88) (background light))
+     :foreground "#813e00")
+    (((class color) (min-colors 88) (background dark))
+     :foreground  "#d36198" ))
+  "Underline emphasis for Org.")
 
-     (defface custom-strike-through
-       '((((class color) (min-colors 88) (background light))
-          :strike-through "#BABDB6" :foreground "#FF0000")
-         (((class color) (min-colors 88) (background dark))
-          :strike-through "#d36198" :foreground "#ff0023"))
-       "Custom strike-through for Org.")
+(defface custom-strike-through
+  '((((class color) (min-colors 88) (background light))
+     :strike-through "#BABDB6" :foreground "#FF0000")
+    (((class color) (min-colors 88) (background dark))
+     :strike-through "#d36198" :foreground "#ff0023"))
+  "Custom strike-through for Org.")
 
-     (setq org-emphasis-alist
-           '(("*" custom-bold)
-             ("/" custom-italic)
-             ("_" custom-underline)
-             ("=" org-verbatim fixed-pitch)
-             ("~" org-code fixed-pitch)
-             ("+" (bold custom-strike-through))))
+(setq org-emphasis-alist
+      '(("*" custom-bold)
+        ("/" custom-italic)
+        ("_" custom-underline)
+        ("=" org-verbatim fixed-pitch)
+        ("~" org-code fixed-pitch)
+        ("+" (bold custom-strike-through))))
 
 (custom-set-faces
  '(org-document-title ((t(
                           :weight ultra-bold
-                          :height 1.5
+                          :height 2.5
                           :foreground "#f21782"
                           :underline nil
                           ))))
  '(org-document-info ((t(
                          :weight bold
-                         :height 1.2
+                         :height 1.5
                          :foreground "#d36198"
                          ))))
+ '(org-document-info-keyword ((t (
+                                  :inherit shadow
+                                  :foreground "dark slate blue"
+                                  :underline t
+                                  :height 1.0))))
+ '(org-hide ((t (
+                 :foreground "#181818"))))
+
+ '(org-level-1 ((t (
+                    :inherit outline-1
+                    :extend nil
+                    :weight bold
+                    :height 1.8
+                    :foreground "#f21782"))))
+ '(org-level-2 ((t (
+                    :inherit outline-1
+                    :extend nil
+                    :weight bold
+                    :height 1.5
+                    :foreground "#ddc923"))))
+ '(org-level-3 ((t (
+                    :inherit outline-1
+                    :extend nil
+                    :weight bold
+                    :height 1.3 :
+                    foreground "#2426d4"))))
+ ;; line starting with #+
+ ;'(org-meta-line ((t (:foreground "#808b96" :box (:line-width (2 . 2) :color "grey75" :style released-button)))))
  )
 
 (use-package imenu
@@ -499,19 +534,18 @@ current buffer's, reload dir-locals."
 (define-key global-map "\C-cc" 'org-capture)
 
 ; not working yet.
-(setq preview-latex-image-directory "~/latex-previews/")
-
+; (setq preview-latex-image-directory "~/latex-previews/")
                                         ; load the latex fragments automatically
 (use-package org-fragtog :ensure t)
 (add-hook 'org-mode-hook 'org-fragtog-mode)
 
 
-(setq org-preview-latex-default-process 'dvisvgm)
+                                        ;      (setq org-preview-latex-default-process 'dvisvgm)
                                         ; using dvipng makes it faster, but with less quality
-(setq org-latex-create-formula-image-program  'dvisvgm)
+                                        ;      (setq org-latex-create-formula-image-program  'dvisvgm)
 
-
-
+(setq org-latex-create-formula-image-program  'dvipng)
+(setq org-preview-latex-default-process 'dvipng)
                                         ; adjusting the size
 (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
 
@@ -792,7 +826,7 @@ current buffer's, reload dir-locals."
 
 (eval-after-load "tex"
   '(add-to-list 'TeX-command-list
-                '("PdfLatex" "pdflatex -interaction=nonstopmode %s" TeX-run-command t t :help "Run pdflatex") t))
+                '("PdfLatex" "pdflatex -interaction=nonstopmode --shell-escape %s" TeX-run-command t t :help "Run pdflatex") t))
 
 ;    (add-hook 'cdlatex-mode-hook
 ;              (lambda () (when (eq major-mode 'org-mode)
