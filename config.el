@@ -728,19 +728,11 @@ current buffer's, reload dir-locals."
 
                                          ;    (add-hook 'pdf-view-mode-hook #'pdf-view-midnight-minor-mode)
 
-;   (use-package yasnippet
-                                        ;     :ensure t
-                                        ;     :config
-                                        ;     (setq yas-snippet-dirs '("~/Repositories/yasnippets"
-                                        ;                              "~/Dropbox/private-configs/private-snippets/"))
-                                        ;     (yas-global-mode 1))
-
 (use-package yasnippet
   :ensure t
   :config
-  (setq yas-snippet-dirs '("~/.emacs.d/yasnippets/"
-                           "~/Dropbox/private-configs/private-snippets/"))
-  )
+  (setq yas-snippet-dirs '(
+                           "~/Dropbox/private-configs/snippets")))
 (yas-global-mode 1)
 
 ;; Load yasnippet

@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: label 
-# key:  labels 
-# --
-set xlabel ${1}
-set ylabel ${2}

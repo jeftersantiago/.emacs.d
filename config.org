@@ -914,19 +914,11 @@ Ref: [[https://lists.gnu.org/archive/html/emacs-orgmode/2010-03/msg00758.html]]
 * Yasnippet
   I followed the [[https://www.youtube.com/watch?v=W-bRZlseNm0][Jake's B video]] to make this configuration.
   #+begin_src emacs-lisp
-                                            ;   (use-package yasnippet
-                                            ;     :ensure t
-                                            ;     :config
-                                            ;     (setq yas-snippet-dirs '("~/Repositories/yasnippets"
-                                            ;                              "~/Dropbox/private-configs/private-snippets/"))
-                                            ;     (yas-global-mode 1))
-
     (use-package yasnippet
       :ensure t
       :config
-      (setq yas-snippet-dirs '("~/.emacs.d/yasnippets/"
-                               "~/Dropbox/private-configs/private-snippets/"))
-      )
+      (setq yas-snippet-dirs '(
+                               "~/Dropbox/private-configs/snippets")))
     (yas-global-mode 1)
   #+end_src
 * LaTeX

@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: range
-# key:  range 
-# --
-xrange [${*} : ${*}] ${noreverse writeback}
-yrange [${*} : ${*}] ${noreverse writeback}

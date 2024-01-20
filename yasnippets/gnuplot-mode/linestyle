@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: linestyle
-# key: linestyle 
-# --
-set style line ${style} lt ${type} lw ${width} lc ${color}

@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: mapsto 
-# key: mapsto 
-# --
-$1 \mapsto $2 $0
