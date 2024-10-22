@@ -65,43 +65,39 @@
   :ensure t)
 (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 
-(set-face-attribute 'fringe nil :background nil)
-                                        ; talvez monokai-pro
-                                        ; talvez xcode
-                                        ;      (use-package doom-themes :ensure t :init (load-theme 'doom-xcode t))
-                                        ;      (use-package gruber-darker-theme
-                                        ;        :defer t
-                                        ;        :init (load-theme 'gruber-darker t))
-                                        ; (use-package spacemacs-theme :defer t :init (load-theme 'spacemacs-light t))
+(use-package spacemacs-theme :defer t :init (load-theme 'spacemacs-dark t))
+;     (use-package gruber-darker-theme
+;       :defer t
+;       :init (load-theme 'gruber-darker t))
 
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(load-theme 'minimal-darker t)
+(set-frame-parameter (selected-frame) 'alpha '(100 100))
+(add-to-list 'default-frame-alist '(alpha 100 100))
 
-;     (set-frame-parameter (selected-frame) 'alpha '(95 95))
-;     (add-to-list 'default-frame-alist '(alpha 95 95))
+(set-frame-font "Liberation Mono-9:antialias=1")
 
-(defun efs/set-font ()
-  (message "Setting faces")
-  (when (member "Iosevka" (font-family-list))
-    (progn
-      (set-frame-font "Iosevka-10" nil t)))
-  (use-package default-text-scale
-    :ensure t
-    :hook (after-init . default-text-scale-mode))
-  (set-language-environment "UTF-8")
-  (global-prettify-symbols-mode t)
-  (prefer-coding-system 'utf-8)
-  )
 
-(if (daemonp)
-    (add-hook 'after-make-frame-functions
-              (lambda (frame)
-                (setq doom-modeline-icon t)
-                (with-selected-frame frame
-                  (efs/set-font))))
-  (efs/set-font))
+    ;(defun efs/set-font ()
+    ;  (message "Setting faces")
+    ;  (when (member "Iosevka" (font-family-list))
+    ;    (progn
+    ;      (set-frame-font "Iosevka-10" nil t)))
+    ;  (use-package default-text-scale
+    ;    :ensure t
+    ;    :hook (after-init . default-text-scale-mode))
+    ;  (set-language-environment "UTF-8")
+    ;  (global-prettify-symbols-mode t)
+    ;  (prefer-coding-system 'utf-8)
+    ;  )
 
-(global-set-key (kbd "C-x C-k") 'font-lock-mode)
+    ;(if (daemonp)
+    ;    (add-hook 'after-make-frame-functions
+    ;              (lambda (frame)
+    ;                (setq doom-modeline-icon t)
+    ;                (with-selected-frame frame
+    ;                  (efs/set-font))))
+    ;  (efs/set-font))
+
+     (global-set-key (kbd "C-x C-k") 'font-lock-mode)
 
 (use-package all-the-icons
   :ensure t)
@@ -365,13 +361,11 @@ current buffer's, reload dir-locals."
 ;      (add-hook 'org-mode-hook 'font-lock-mode)
       (add-hook 'org-mode-hook 'hl-line-mode)
 
-(defun efs/org-mode-visual-fill ()
-
-  (visual-fill-column-mode 5))
-
-(use-package visual-fill-column
-  :ensure t
-  :hook (org-mode . efs/org-mode-visual-fill))
+;     (defun efs/org-mode-visual-fill ()
+;       (visual-fill-column-mode 5))
+;     (use-package visual-fill-column
+;       :ensure t
+;       :hook (org-mode . efs/org-mode-visual-fill))
 
 (setq org-emphasis-alist
       '(("*" bold)

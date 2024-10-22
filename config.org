@@ -114,56 +114,46 @@ Makes the parenthesis shine
 *** Theme
     Loading theme and setting modeline background color.
     #+begin_src emacs-lisp
-      (set-face-attribute 'fringe nil :background nil)
-                                              ; talvez monokai-pro
-                                              ; talvez xcode
-                                              ;      (use-package doom-themes :ensure t :init (load-theme 'doom-xcode t))
-                                              ;      (use-package gruber-darker-theme
-                                              ;        :defer t
-                                              ;        :init (load-theme 'gruber-darker t))
-                                              ; (use-package spacemacs-theme :defer t :init (load-theme 'spacemacs-light t))
-
-      (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-      (load-theme 'minimal-darker t)
-
-
-
-
-   #+end_src
+      (use-package spacemacs-theme :defer t :init (load-theme 'spacemacs-dark t))
+;     (use-package gruber-darker-theme
+;       :defer t
+;       :init (load-theme 'gruber-darker t))
+    #+end_src
 *** Transparency
     Enabling transparency
     #+begin_src emacs-lisp
-;     (set-frame-parameter (selected-frame) 'alpha '(95 95))
-;     (add-to-list 'default-frame-alist '(alpha 95 95))
+      (set-frame-parameter (selected-frame) 'alpha '(100 100))
+      (add-to-list 'default-frame-alist '(alpha 100 100))
     #+end_src
 ** Font
    Taken from here:  https://emacs.stackexchange.com/q/45895
    Setting Iosevka font: https://www.reddit.com/r/emacs/comments/96q8r3/configuring_iosevka_ligatures_for_emacs/
    #+begin_src emacs-lisp
+     (set-frame-font "Liberation Mono-9:antialias=1")
 
+     
+         ;(defun efs/set-font ()
+         ;  (message "Setting faces")
+         ;  (when (member "Iosevka" (font-family-list))
+         ;    (progn
+         ;      (set-frame-font "Iosevka-10" nil t)))
+         ;  (use-package default-text-scale
+         ;    :ensure t
+         ;    :hook (after-init . default-text-scale-mode))
+         ;  (set-language-environment "UTF-8")
+         ;  (global-prettify-symbols-mode t)
+         ;  (prefer-coding-system 'utf-8)
+         ;  )
 
-     (defun efs/set-font ()
-       (message "Setting faces")
-       (when (member "Iosevka" (font-family-list))
-         (progn
-           (set-frame-font "Iosevka-10" nil t)))
-       (use-package default-text-scale
-         :ensure t
-         :hook (after-init . default-text-scale-mode))
-       (set-language-environment "UTF-8")
-       (global-prettify-symbols-mode t)
-       (prefer-coding-system 'utf-8)
-       )
+         ;(if (daemonp)
+         ;    (add-hook 'after-make-frame-functions
+         ;              (lambda (frame)
+         ;                (setq doom-modeline-icon t)
+         ;                (with-selected-frame frame
+         ;                  (efs/set-font))))
+         ;  (efs/set-font))
 
-     (if (daemonp)
-         (add-hook 'after-make-frame-functions
-                   (lambda (frame)
-                     (setq doom-modeline-icon t)
-                     (with-selected-frame frame
-                       (efs/set-font))))
-       (efs/set-font))
-
-     (global-set-key (kbd "C-x C-k") 'font-lock-mode)
+          (global-set-key (kbd "C-x C-k") 'font-lock-mode)
        #+end_src
 ** Modeline
    Nice and simple.
@@ -481,16 +471,13 @@ Yes, i use vim too.
     #+end_src
 *** Center org buffers
     #+begin_src emacs-lisp
-      (defun efs/org-mode-visual-fill ()
-
-        (visual-fill-column-mode 5))
-
-      (use-package visual-fill-column
-        :ensure t
-        :hook (org-mode . efs/org-mode-visual-fill))
+;     (defun efs/org-mode-visual-fill ()
+;       (visual-fill-column-mode 5))
+;     (use-package visual-fill-column
+;       :ensure t
+;       :hook (org-mode . efs/org-mode-visual-fill))
     #+end_src
 ** Custom faces
-    Inspired by [[https://protesilaos.com/codelog/2022-01-05-custom-face-org-emphasis-alist/][Protesilaos blog post]].
    #+begin_src emacs-lisp
      (setq org-emphasis-alist
            '(("*" bold)
