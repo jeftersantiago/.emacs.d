@@ -292,13 +292,10 @@ current buffer's, reload dir-locals."
       (setq org-src-fontify-natively t)
       (setq org-hide-emphasis-markers t)
 ;      (setq modus-themes-intense-markup t)
-
       (setq visual-fill-column-width 100 visual-fill-column-center-text t)
-
       (setq-default fill-column 100)
       (setq org-refile-use-outline-path t)
       (setq org-outline-path-complete-in-steps nil)
-
       (setq-default org-image-actual-width 620)
       (setq org-latex-prefer-user-labels t)
 
@@ -846,9 +843,9 @@ current buffer's, reload dir-locals."
 (use-package elfeed
   :ensure t)
 (setq elfeed-feeds
-    '(("http://nullprogram.com/feed/" blog emacs)
-      "http://www.50ply.com/atom.xml"  ; no autotagging
-      ("http://nedroid.com/feed/" webcomic)))
+      '(("http://nullprogram.com/feed/" blog emacs)
+        "http://www.50ply.com/atom.xml"  ; no autotagging
+        ("http://nedroid.com/feed/" webcomic)))
 
 (use-package swiper
   :ensure t
@@ -881,8 +878,8 @@ current buffer's, reload dir-locals."
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :init
-  (when (file-directory-p "~/Projects/")
-    (setq projectile-project-search-path '("~/Projects/"))))
+  (when (file-directory-p "~/Workspace/")
+    (setq projectile-project-search-path '("~/Workspace/"))))
 (setq projectile-switch-projects-action #'projectile-dired)
 (use-package counsel-projectile
   :after projectile

@@ -9,7 +9,6 @@ stuff. I also have a separated repository only for my snippets (i use the
 =yasnippets= package) , you can find them in [[https://github.com/jefter66/][here]].
 
 * Startup performance
-
 Taken from https://github.com/daviwil/emacs-from-scratch/blob/master/Emacs.org
 
   #+begin_src emacs-lisp
@@ -386,20 +385,16 @@ Yes, i use vim too.
 ** General config
 *** Variables
     #+begin_src emacs-lisp
-
       (setq org-startup-folded t)
       (setq org-src-tab-acts-natively t)
       (setq org-src-window-setup 'current-window)
       (setq org-src-fontify-natively t)
       (setq org-hide-emphasis-markers t)
 ;      (setq modus-themes-intense-markup t)
-
       (setq visual-fill-column-width 100 visual-fill-column-center-text t)
-
       (setq-default fill-column 100)
       (setq org-refile-use-outline-path t)
       (setq org-outline-path-complete-in-steps nil)
-
       (setq-default org-image-actual-width 620)
       (setq org-latex-prefer-user-labels t)
     #+end_src
@@ -1049,9 +1044,9 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
   (use-package elfeed
     :ensure t)
   (setq elfeed-feeds
-      '(("http://nullprogram.com/feed/" blog emacs)
-        "http://www.50ply.com/atom.xml"  ; no autotagging
-        ("http://nedroid.com/feed/" webcomic)))
+        '(("http://nullprogram.com/feed/" blog emacs)
+          "http://www.50ply.com/atom.xml"  ; no autotagging
+          ("http://nedroid.com/feed/" webcomic)))
 #+end_src
 * Swiper
   #+begin_src emacs-lisp
@@ -1065,7 +1060,7 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
   #+end_src
 * Try
   #+begin_src emacs-lisp
-     (use-package try
+    (use-package try
       :ensure t
       :config
       (progn  (global-set-key (kbd "C-x b") 'ivy-switch-buffer)))
@@ -1094,8 +1089,8 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
       :bind-keymap
       ("C-c p" . projectile-command-map)
       :init
-      (when (file-directory-p "~/Projects/")
-        (setq projectile-project-search-path '("~/Projects/"))))
+      (when (file-directory-p "~/Workspace/")
+        (setq projectile-project-search-path '("~/Workspace/"))))
     (setq projectile-switch-projects-action #'projectile-dired)
     (use-package counsel-projectile
       :after projectile
@@ -1288,25 +1283,8 @@ I can't get used to use terminal emulators inside Emacs. This will run my favori
   #+end_src
 * i3config
 #+begin_src emacs-lisp
-  (use-package i3wm-config-mode
-  :ensure t
-  )
+  (use-package i3wm-config-mode :ensure t)
 #+end_src
-* External
-** Elcord
-   Showing emacs as discord status.
-   #+begin_src emacs-lisp
-     (use-package elcord
-       :ensure t
-       :config
-
-       (global-set-key (kbd "C-c d") 'elcord-mode)
-
-       (setq elcord-use-major-mode-as-main-icon t)
-       (setq elcord-display-buffer-detail 'nil)
-       (setq elcord-refresh-rate 2)
-       :init)
-   #+end_src
 * Runtime performance
   #+begin_src emacs-lisp
  (setq gc-cons-threshold (* 2 1000 1000))
